@@ -1,0 +1,1993 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/">
+      
+      
+        <link rel="next" href="../2.8%20Summary%20and%20Reflections/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>2.7 Building Chatbots with LangChain - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#27-building-chatbots-with-langchain" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.7 Building Chatbots with LangChain
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-to-conversational-chatbots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction to Conversational Chatbots
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up the Environment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting Up the Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables-and-platform-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variables and Platform Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-documents-and-creating-a-vector-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Documents and Creating a Vector Store
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-retrieval-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Retrieval Techniques
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conversational-context-and-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversational Context and Memory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conversational Context and Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#incorporating-chat-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incorporating Chat History
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversation-buffer-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation Buffer Memory
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-conversational-retrieval-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the Conversational Retrieval Chain
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building the Conversational Retrieval Chain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-setup-and-api-key-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Setup and API Key Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selecting-the-appropriate-language-model-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selecting the Appropriate Language Model Version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qa-system-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q&amp;A System Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-a-conversational-retrieval-chain-with-memory-in-qa-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing a Conversational Retrieval Chain with Memory in Q+A Systems
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing a Conversational Retrieval Chain with Memory in Q+A Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-memory-for-conversation-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Memory for Conversation History
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-conversational-retrieval-chain_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the Conversational Retrieval Chain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-questions-and-generating-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Questions and Generating Answers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-chatbot-for-document-based-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Chatbot for Document-Based Q&amp;A
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Chatbot for Document-Based Q&A">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-setup-and-imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Setup and Imports
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-loading-and-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Loading and Processing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-chatbot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating chatbot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating chatbot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importing-necessary-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing Necessary Libraries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-the-chatbot-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Defining the Chatbot Class
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Documents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processing-user-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing User Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#displaying-database-queries-and-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Displaying Database Queries and Responses
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearing-conversation-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clearing Conversation History
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#essential-imports-and-chatbot-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Essential Imports and Chatbot Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-user-interface-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring User Interface Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-conversation-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the Conversation Interface
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="27-building-chatbots-with-langchain">2.7 Building Chatbots with LangChain</h1>
+<p>This chapter delves into the construction and optimization of conversational chatbots using LangChain, a tool designed for integrating language models with data retrieval systems to enable dynamic question answering capabilities. It targets ML Engineers, Data Scientists, Software Developers, and related professionals, offering a comprehensive guide on developing chatbots capable of managing follow-up questions and maintaining contextual conversations. The chapter is structured to cover foundational concepts, delve into specific tools and methodologies, and conclude with best practices and examples to solidify understanding.</p>
+<h2 id="introduction-to-conversational-chatbots">Introduction to Conversational Chatbots</h2>
+<p>Conversational chatbots have revolutionized the way we interact with technology, offering new avenues for accessing and processing information through natural language dialogue. Unlike traditional chatbots, conversational chatbots can understand and remember the context of a conversation, allowing for more natural and engaging interactions.</p>
+<h2 id="setting-up-the-environment">Setting Up the Environment</h2>
+<h3 id="environment-variables-and-platform-setup">Environment Variables and Platform Setup</h3>
+<p>Before delving into chatbot development, it's crucial to configure the working environment. This includes loading necessary environment variables and ensuring the platform is adequately set up to support the development process. Turning on the platform from the beginning allows developers to monitor the system's inner workings, facilitating debugging and optimization.</p>
+<h3 id="loading-documents-and-creating-a-vector-store">Loading Documents and Creating a Vector Store</h3>
+<p>The initial steps involve loading documents from various sources using LangChain's document loaders, which support over 80 different formats. Once documents are loaded, they are split into manageable chunks. These chunks are then converted into embeddings and stored in a vector store, enabling semantic search capabilities.</p>
+<h2 id="advanced-retrieval-techniques">Advanced Retrieval Techniques</h2>
+<p>After setting up the vector store, the focus shifts to retrieval methods. This section explores various advanced retrieval algorithms that enhance the chatbot's ability to understand and respond to queries accurately. Techniques such as self-query, compression, and semantic search are discussed, highlighting their modular nature and how they can be integrated into the chatbot framework.</p>
+<h2 id="conversational-context-and-memory">Conversational Context and Memory</h2>
+<h3 id="incorporating-chat-history">Incorporating Chat History</h3>
+<p>One of the key advancements in conversational chatbots is the ability to incorporate chat history into the response generation process. This capability allows the chatbot to maintain context over the course of a conversation, enabling it to understand and respond to follow-up questions accurately.</p>
+<h3 id="conversation-buffer-memory">Conversation Buffer Memory</h3>
+<p>Implementing conversation buffer memory involves maintaining a list of previous chat messages and passing these along with new questions to the chatbot. This section provides step-by-step instructions on setting up conversation buffer memory, including specifying memory keys and handling chat histories as lists of messages.</p>
+<h2 id="building-the-conversational-retrieval-chain">Building the Conversational Retrieval Chain</h2>
+<p>The conversational retrieval chain represents the core of the chatbot's functionality. It integrates the language model, the retrieval system, and memory to process and respond to user queries within the context of an ongoing conversation. This section details the construction of the conversational retrieval chain, including how to pass in the language model, the retriever, and memory components.</p>
+<h4 id="environment-setup-and-api-key-configuration">Environment Setup and API Key Configuration</h4>
+<p>Firstly, it's essential to set up the environment correctly and securely handle API keys, which are crucial for accessing cloud-based LLM services such as OpenAI's GPT models.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import necessary libraries for environment management and API access</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+<span class="c1"># Ensure Panel for GUI is properly imported and initialized for interactive applications</span>
+<span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+<span class="n">pn</span><span class="o">.</span><span class="n">extension</span><span class="p">()</span>
+
+<span class="c1"># Load .env file to securely access environment variables, including the OpenAI API key</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># Assign the OpenAI API key from environment variables to authenticate API requests</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h4 id="selecting-the-appropriate-language-model-version">Selecting the Appropriate Language Model Version</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import the datetime library to manage date-based logic for model selection</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="c1"># Determine the current date to decide on the language model version</span>
+<span class="n">current_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+
+<span class="c1"># Choose the language model version</span>
+<span class="n">language_model_version</span> <span class="o">=</span> <span class="s2">&quot;gpt-3.5-turbo&quot;</span>
+
+<span class="c1"># Display the selected language model version</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">language_model_version</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="qa-system-setup">Q&amp;A System Setup</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import necessary libraries for handling embeddings and vector stores</span>
+<span class="kn">from</span> <span class="nn">langchain.vectorstores</span> <span class="kn">import</span> <span class="n">Chroma</span>
+<span class="kn">from</span> <span class="nn">langchain.embeddings.openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="c1"># Setting up environment variables for LangChain API access</span>
+<span class="c1"># Note: Replace &#39;your_directory_path&#39; with the actual directory path where you intend to store document embeddings</span>
+<span class="c1"># and &#39;your_api_key&#39; with your actual LangChain API key for authentication</span>
+<span class="n">persist_directory</span> <span class="o">=</span> <span class="s1">&#39;your_directory_path/&#39;</span>
+<span class="n">embedding_function</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+<span class="n">vector_database</span> <span class="o">=</span> <span class="n">Chroma</span><span class="p">(</span><span class="n">persist_directory</span><span class="o">=</span><span class="n">persist_directory</span><span class="p">,</span> <span class="n">embedding_function</span><span class="o">=</span><span class="n">embedding_function</span><span class="p">)</span>
+
+<span class="c1"># Define a question for which you want to find relevant documents</span>
+<span class="n">search_question</span> <span class="o">=</span> <span class="s2">&quot;What are the key subjects covered in this course?&quot;</span>
+<span class="c1"># Perform a similarity search to find the top 3 documents related to the question</span>
+<span class="n">top_documents</span> <span class="o">=</span> <span class="n">vector_database</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">search_question</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Determine the number of documents found</span>
+<span class="n">number_of_documents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">top_documents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of relevant documents found: </span><span class="si">{</span><span class="n">number_of_documents</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Import the Chat model from LangChain for generating responses</span>
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+
+<span class="c1"># Initialize the Language Model for chat, setting the model&#39;s temperature to 0 for deterministic responses</span>
+<span class="n">language_model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;gpt-3.5-turbo&#39;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Ensure to replace &#39;gpt-3.5-turbo&#39; with your model</span>
+
+<span class="c1"># Example of generating a simple greeting response</span>
+<span class="n">greeting_response</span> <span class="o">=</span> <span class="n">language_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;Greetings, universe!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">greeting_response</span><span class="p">)</span>
+
+<span class="c1"># Building a prompt template for structured question answering</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
+
+<span class="c1"># Define a template that instructs how to use the given context to provide a concise and helpful answer</span>
+<span class="n">prompt_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Use the following pieces of context to answer the question at the end. If you&#39;re unsure about the answer, indicate so rather than speculating. </span>
+<span class="s2">Try to keep your response within three sentences for clarity and conciseness. </span>
+<span class="s2">End your answer with &quot;thanks for asking!&quot; to maintain a polite tone.</span>
+
+<span class="s2">Context: </span><span class="si">{context}</span>
+<span class="s2">Question: </span><span class="si">{question}</span>
+<span class="s2">Helpful Answer:</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Initialize a PromptTemplate object with specified input variables and the defined template</span>
+<span class="n">qa_prompt_template</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span><span class="n">input_variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;question&quot;</span><span class="p">],</span> <span class="n">template</span><span class="o">=</span><span class="n">prompt_template</span><span class="p">)</span>
+
+<span class="c1"># Running the conversational retrieval and question-answering chain</span>
+<span class="kn">from</span> <span class="nn">langchain.chains</span> <span class="kn">import</span> <span class="n">RetrievalQA</span>
+
+<span class="c1"># Define a specific question to be answered within the conversational context</span>
+<span class="n">specific_question</span> <span class="o">=</span> <span class="s2">&quot;Does this course require understanding of probability?&quot;</span>
+
+<span class="c1"># Initialize the QA Chain with the language model, vector database as a retriever, and the custom prompt template</span>
+<span class="n">qa_chain</span> <span class="o">=</span> <span class="n">RetrievalQA</span><span class="o">.</span><span class="n">from_chain_type</span><span class="p">(</span><span class="n">language_model</span><span class="p">,</span>
+                                       <span class="n">retriever</span><span class="o">=</span><span class="n">vector_database</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(),</span>
+                                       <span class="n">return_source_documents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                       <span class="n">chain_type_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;prompt&quot;</span><span class="p">:</span> <span class="n">qa_prompt_template</span><span class="p">})</span>
+
+<span class="c1"># Execute the QA Chain with the specific question to obtain a structured and helpful answer</span>
+<span class="n">qa_result</span> <span class="o">=</span> <span class="n">qa_chain</span><span class="p">({</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">specific_question</span><span class="p">})</span>
+
+<span class="c1"># Print the resulting answer from the QA Chain</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Resulting Answer:&quot;</span><span class="p">,</span> <span class="n">qa_result</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="implementing-a-conversational-retrieval-chain-with-memory-in-qa-systems">Implementing a Conversational Retrieval Chain with Memory in Q+A Systems</h3>
+<p>This section of the guidebook is dedicated to ML Engineers, Data Scientists, and Software Developers interested in developing advanced Q+A systems capable of understanding and maintaining the context of a conversation. The focus here is on integrating a Conversational Retrieval Chain with a memory component using the LangChain library, a powerful tool for building conversational AI applications.</p>
+<h4 id="setting-up-memory-for-conversation-history">Setting Up Memory for Conversation History</h4>
+<p>To enable our Q+A system to remember the context of a conversation, we utilize the <code>ConversationBufferMemory</code> class. This class is specifically designed to store the history of interactions, allowing the system to reference previous exchanges and provide contextually relevant responses to follow-up questions.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import the ConversationBufferMemory class from the langchain.memory module</span>
+<span class="kn">from</span> <span class="nn">langchain.memory</span> <span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
+
+<span class="c1"># Initialize the ConversationBufferMemory with a key for storing chat history</span>
+<span class="c1"># and configure it to return the full list of messages exchanged during the conversation</span>
+<span class="n">conversation_history_memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span>
+    <span class="n">memory_key</span><span class="o">=</span><span class="s2">&quot;conversation_history&quot;</span><span class="p">,</span>
+    <span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="building-the-conversational-retrieval-chain_1">Building the Conversational Retrieval Chain</h4>
+<p>With the memory component set up, the next step involves constructing the Conversational Retrieval Chain. This component is the heart of the Q+A system, integrating the language model, document retrieval functionality, and conversation memory to process questions and generate answers within a conversational context.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import the ConversationalRetrievalChain class from the langchain.chains module</span>
+<span class="kn">from</span> <span class="nn">langchain.chains</span> <span class="kn">import</span> <span class="n">ConversationalRetrievalChain</span>
+
+<span class="c1"># Assuming &#39;vector_database&#39; is an initialized instance of a vector store used for document retrieval</span>
+<span class="c1"># Convert the vector database to a retriever format compatible with the ConversationalRetrievalChain</span>
+<span class="n">document_retriever</span> <span class="o">=</span> <span class="n">vector_database</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+
+<span class="c1"># Initialize the ConversationalRetrievalChain with the language model, document retriever,</span>
+<span class="c1"># and the conversation history memory component</span>
+<span class="n">question_answering_chain</span> <span class="o">=</span> <span class="n">ConversationalRetrievalChain</span><span class="o">.</span><span class="n">from_llm</span><span class="p">(</span>
+    <span class="n">language_model</span><span class="o">=</span><span class="n">language_model_instance</span><span class="p">,</span>
+    <span class="n">retriever</span><span class="o">=</span><span class="n">document_retriever</span><span class="p">,</span>
+    <span class="n">memory</span><span class="o">=</span><span class="n">conversation_history_memory</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="handling-questions-and-generating-answers">Handling Questions and Generating Answers</h4>
+<p>Once the Conversational Retrieval Chain is established, the system can handle incoming questions and generate appropriate answers by leveraging the stored conversation history for context.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a question related to the conversation topic</span>
+<span class="n">initial_question</span> <span class="o">=</span> <span class="s2">&quot;Is probability a fundamental topic in this course?&quot;</span>
+<span class="c1"># Process the question through the Conversational Retrieval Chain</span>
+<span class="n">initial_result</span> <span class="o">=</span> <span class="n">question_answering_chain</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">initial_question</span><span class="p">})</span>
+<span class="c1"># Extract and print the answer from the result</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Answer:&quot;</span><span class="p">,</span> <span class="n">initial_result</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">])</span>
+
+<span class="c1"># Following up with another question, building upon the context of the initial question</span>
+<span class="n">follow_up_question</span> <span class="o">=</span> <span class="s2">&quot;Why are those topics considered prerequisites?&quot;</span>
+<span class="c1"># Process the follow-up question, using the conversation history for context</span>
+<span class="n">follow_up_result</span> <span class="o">=</span> <span class="n">question_answering_chain</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">follow_up_question</span><span class="p">})</span>
+<span class="c1"># Extract and print the follow-up answer</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Answer:&quot;</span><span class="p">,</span> <span class="n">follow_up_result</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">])</span>
+</code></pre></div>
+<h3 id="creating-a-chatbot-for-document-based-qa">Creating a Chatbot for Document-Based Q&amp;A</h3>
+<p>This chapter provides a comprehensive guide on developing a chatbot capable of handling questions and answers (Q&amp;A) based on the content of documents. Aimed at ML Engineers, Data Scientists, Software Developers, and related professionals, this section covers the process from document loading to implementing a conversational retrieval chain. The following instructions and code snippets are designed to ensure clarity, enhance readability, and provide practical guidance for building an effective chatbot using LangChain.</p>
+<h4 id="initial-setup-and-imports">Initial Setup and Imports</h4>
+<p>Before diving into the chatbot creation process, it's crucial to import the necessary classes and modules from LangChain. These components facilitate document loading, text splitting, embedding generation, and conversational chain creation.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import classes for embedding generation, text splitting, in-memory search, document loading, </span>
+<span class="c1"># conversational chains, and memory handling from LangChain</span>
+<span class="kn">from</span> <span class="nn">langchain.embeddings.openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+<span class="kn">from</span> <span class="nn">langchain.vectorstores</span> <span class="kn">import</span> <span class="n">DocArrayInMemorySearch</span>
+<span class="kn">from</span> <span class="nn">langchain.document_loaders</span> <span class="kn">import</span> <span class="n">TextLoader</span><span class="p">,</span> <span class="n">PyPDFLoader</span>
+<span class="kn">from</span> <span class="nn">langchain.chains</span> <span class="kn">import</span> <span class="n">ConversationalRetrievalChain</span>
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+</code></pre></div>
+<h4 id="document-loading-and-processing">Document Loading and Processing</h4>
+<p>The first step in creating a chatbot is to load and process the documents that will serve as the knowledge base for answering questions. This involves reading documents, splitting them into manageable chunks, and generating embeddings for each chunk.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_documents_and_prepare_database</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">chain_type</span><span class="p">,</span> <span class="n">top_k_results</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads documents from a specified file, splits them into manageable chunks,</span>
+<span class="sd">    generates embeddings, and prepares a vector database for retrieval.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    - file_path: Path to the document file (PDF, text, etc.).</span>
+<span class="sd">    - chain_type: Specifies the type of conversational chain to be used.</span>
+<span class="sd">    - top_k_results: Number of top results to retrieve in searches.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - A conversational retrieval chain instance ready for answering questions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load documents using the appropriate loader based on file type</span>
+    <span class="n">document_loader</span> <span class="o">=</span> <span class="n">PyPDFLoader</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="n">document_loader</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+
+    <span class="c1"># Split documents into chunks for easier processing and retrieval</span>
+    <span class="n">text_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">document_chunks</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="n">split_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+
+    <span class="c1"># Generate embeddings for each document chunk</span>
+    <span class="n">embeddings_generator</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+    <span class="n">vector_database</span> <span class="o">=</span> <span class="n">DocArrayInMemorySearch</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span><span class="n">document_chunks</span><span class="p">,</span> <span class="n">embeddings_generator</span><span class="p">)</span>
+
+    <span class="c1"># Prepare the document retriever for the conversational chain</span>
+    <span class="n">document_retriever</span> <span class="o">=</span> <span class="n">vector_database</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">search_type</span><span class="o">=</span><span class="s2">&quot;similarity&quot;</span><span class="p">,</span> <span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="n">top_k_results</span><span class="p">})</span>
+
+    <span class="c1"># Initialize the conversational retrieval chain with the specified parameters</span>
+    <span class="n">chatbot_chain</span> <span class="o">=</span> <span class="n">ConversationalRetrievalChain</span><span class="o">.</span><span class="n">from_llm</span><span class="p">(</span>
+        <span class="n">llm</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;gpt-3.5-turbo&#39;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> 
+        <span class="n">chain_type</span><span class="o">=</span><span class="n">chain_type</span><span class="p">,</span> 
+        <span class="n">retriever</span><span class="o">=</span><span class="n">document_retriever</span><span class="p">,</span> 
+        <span class="n">return_source_documents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">return_generated_question</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">chatbot_chain</span>
+</code></pre></div>
+<h3 id="creating-chatbot">Creating chatbot</h3>
+<h4 id="importing-necessary-libraries">Importing Necessary Libraries</h4>
+<p>First, ensure the necessary libraries are imported. Panel (<code>pn</code>) is used for building the user interface, and Param (<code>param</code>) manages parameters within our chatbot class.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+<span class="kn">import</span> <span class="nn">param</span>
+</code></pre></div>
+<h4 id="defining-the-chatbot-class">Defining the Chatbot Class</h4>
+<p>The chatbot class, here named <code>DocumentBasedChatbot</code>, encapsulates all the functionality needed to load documents, process queries, and maintain a conversation history.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DocumentBasedChatbot</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    <span class="n">conversation_history</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">List</span><span class="p">([])</span>  <span class="c1"># To store pairs of query and response</span>
+    <span class="n">current_answer</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>      <span class="c1"># The chatbot&#39;s latest response</span>
+    <span class="n">database_query</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>      <span class="c1"># The query sent to the document database</span>
+    <span class="n">database_response</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">List</span><span class="p">([])</span>     <span class="c1"># The documents retrieved as responses</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentBasedChatbot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interface_elements</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Stores UI elements for displaying conversation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded_document</span> <span class="o">=</span> <span class="s2">&quot;docs/cs229_lectures/MachineLearning-Lecture01.pdf&quot;</span>  <span class="c1"># Default document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chatbot_model</span> <span class="o">=</span> <span class="n">load_db</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_document</span><span class="p">,</span> <span class="s2">&quot;retrieval_type&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  <span class="c1"># Initialize chatbot model</span>
+</code></pre></div>
+<h4 id="loading-documents">Loading Documents</h4>
+<p>The <code>load_db</code> function loads documents into the chatbot's knowledge base. The function checks for a user-uploaded file; if none is found, it uses a default document. Upon loading a new document, the conversation history is cleared.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">load_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upload_count</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">upload_count</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">file_input</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>  <span class="c1"># Check if a new file is uploaded</span>
+            <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded Document: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_document</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_input</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;temp.pdf&quot;</span><span class="p">)</span>  <span class="c1"># Save uploaded file temporarily</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded_document</span> <span class="o">=</span> <span class="n">file_input</span><span class="o">.</span><span class="n">filename</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chatbot_model</span> <span class="o">=</span> <span class="n">load_db</span><span class="p">(</span><span class="s2">&quot;temp.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;retrieval_type&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>  <span class="c1"># Load new document into the model</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_conversation_history</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded Document: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">loaded_document</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="processing-user-queries">Processing User Queries</h4>
+<p>The <code>process_query</code> method takes user input, sends it to the chatbot model for processing, and updates the UI with the chatbot's response and related document excerpts.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">process_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_query</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_query</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">WidgetBox</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="s1">&#39;User:&#39;</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)),</span> <span class="n">scroll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chatbot_model</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">user_query</span><span class="p">,</span> <span class="s2">&quot;conversation_history&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conversation_history</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversation_history</span><span class="o">.</span><span class="n">extend</span><span class="p">([(</span><span class="n">user_query</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">])])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_query</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;generated_question&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_response</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;source_documents&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_answer</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interface_elements</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="s1">&#39;User:&#39;</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">user_query</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)),</span>
+            <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="s1">&#39;ChatBot:&#39;</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_answer</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;#F6F6F6&#39;</span><span class="p">}))</span>
+        <span class="p">])</span>
+        <span class="n">input_field</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># Clear input field after processing</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">WidgetBox</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">interface_elements</span><span class="p">,</span> <span class="n">scroll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="displaying-database-queries-and-responses">Displaying Database Queries and Responses</h4>
+<p>Methods <code>display_last_database_query</code> and <code>display_database_responses</code> show the last query made to the document database and the documents retrieved as responses, respectively.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">display_last_database_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_query</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+                <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;Last database query:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;#F6F6F6&#39;</span><span class="p">})),</span>
+                <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="s2">&quot;No database queries made so far&quot;</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+            <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;Database query:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;#F6F6F6&#39;</span><span class="p">})),</span>
+            <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database_query</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">display_database_responses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_response</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">response_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;Result of database lookup:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;background-color&#39;</span><span class="p">:</span> <span class="s1">&#39;#F6F6F6&#39;</span><span class="p">}))]</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_response</span><span class="p">:</span>
+            <span class="n">response_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="n">doc</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">pn</span>
+
+<span class="o">.</span><span class="n">WidgetBox</span><span class="p">(</span><span class="o">*</span><span class="n">response_list</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">scroll</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="clearing-conversation-history">Clearing Conversation History</h4>
+<p>The <code>clear_conversation_history</code> method allows users to reset the conversation, removing all previously exchanged messages.</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">clear_conversation_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conversation_history</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div>
+<h4 id="essential-imports-and-chatbot-initialization">Essential Imports and Chatbot Initialization</h4>
+<p>Start by importing the necessary modules from Panel and Param, and initialize the chatbot class which encapsulates all the logic for document loading, query processing, and interface interaction.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">panel</span> <span class="k">as</span> <span class="nn">pn</span>
+<span class="kn">import</span> <span class="nn">param</span>
+
+<span class="c1"># Define the chatbot class with necessary functionalities</span>
+<span class="k">class</span> <span class="nc">ChatWithYourDataBot</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">Parameterized</span><span class="p">):</span>
+    <span class="c1"># Initialize parameters for storing conversation history, answers, and document queries</span>
+    <span class="n">conversation_history</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">List</span><span class="p">([])</span>
+    <span class="n">latest_answer</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">document_query</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">document_response</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">List</span><span class="p">([])</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="c1"># Placeholder for UI elements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interface_elements</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Default document path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_document_path</span> <span class="o">=</span> <span class="s2">&quot;docs/cs229_lectures/MachineLearning-Lecture01.pdf&quot;</span>
+        <span class="c1"># Initialize the chatbot model with a default document</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chatbot_model</span> <span class="o">=</span> <span class="n">load_db</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_document_path</span><span class="p">,</span> <span class="s2">&quot;retrieval_mode&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="configuring-user-interface-components">Configuring User Interface Components</h4>
+<p>Create the user interface components for document upload, database loading, history management, and query input. This setup includes file input for document upload, buttons for loading documents and clearing chat history, and a text input for user queries.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># UI components for document upload and interaction</span>
+<span class="n">document_upload</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">FileInput</span><span class="p">(</span><span class="n">accept</span><span class="o">=</span><span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
+<span class="n">load_database_button</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Load Document&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
+<span class="n">clear_history_button</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Clear History&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="p">)</span>
+<span class="n">clear_history_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">clear_history</span><span class="p">)</span>
+<span class="n">user_query_input</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;Enter your question here…&#39;</span><span class="p">)</span>
+
+<span class="c1"># Binding UI components to chatbot functionalities</span>
+<span class="n">load_document_action</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">load_document</span><span class="p">,</span> <span class="n">load_database_button</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">clicks</span><span class="p">)</span>
+<span class="n">process_query</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">process_query</span><span class="p">,</span> <span class="n">user_query_input</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="building-the-conversation-interface">Building the Conversation Interface</h4>
+<p>Construct the conversation interface where user queries and chatbot responses are displayed. This includes managing the conversation flow, displaying the latest document queries, and showing the sources of document-based answers.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Image pane for visual representation</span>
+<span class="n">conversation_visual</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;./img/conversation_flow.jpg&#39;</span><span class="p">)</span>
+
+<span class="c1"># Organizing the conversation tab</span>
+<span class="n">conversation_tab</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">user_query_input</span><span class="p">),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">Divider</span><span class="p">(),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">process_query</span><span class="p">,</span> <span class="n">loading_indicator</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">Divider</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="c1"># Organizing additional information tabs (Database Queries, Source Documents, Chat History)</span>
+<span class="n">database_query_tab</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">display_last_database_query</span><span class="p">),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">Divider</span><span class="p">(),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">display_database_responses</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">chat_history_tab</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">panel</span><span class="p">(</span><span class="n">ChatWithYourDataBot</span><span class="o">.</span><span class="n">display_chat_history</span><span class="p">),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">Divider</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">configuration_tab</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">document_upload</span><span class="p">,</span> <span class="n">load_database_button</span><span class="p">,</span> <span class="n">load_document_action</span><span class="p">),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">clear_history_button</span><span class="p">,</span> <span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;Clears the conversation history for a new topic.&quot;</span><span class="p">)),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">Divider</span><span class="p">(),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">conversation_visual</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="c1"># Assembling the dashboard</span>
+<span class="n">chatbot_dashboard</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">pane</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;# ChatWithYourData_Bot&#39;</span><span class="p">)),</span>
+    <span class="n">pn</span><span class="o">.</span><span class="n">Tabs</span><span class="p">((</span><span class="s1">&#39;Conversation&#39;</span><span class="p">,</span> <span class="n">conversation_tab</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Database Queries&#39;</span><span class="p">,</span> <span class="n">database_query_tab</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Chat History&#39;</span><span class="p">,</span> <span class="n">chat_history_tab</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Configure&#39;</span><span class="p">,</span> <span class="n">configuration_tab</span><span class="p">))</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="summary">Summary</h3>
+<p>In this comprehensive chapter, we've explored the development of conversational chatbots with a focus on leveraging LangChain for dynamic question answering capabilities. The guide is tailored for ML Engineers, Data Scientists, Software Developers, and similar professionals aiming to build chatbots capable of contextual conversations and managing follow-up questions. Starting with an introduction to the transformative potential of conversational chatbots, we've covered essential steps from setting up the environment to implementing advanced retrieval techniques and incorporating chat history for nuanced interactions.</p>
+<p>Key sections of the chapter include:</p>
+<ul>
+<li><strong>Setting Up the Environment</strong>: Highlighting the importance of preparing the development environment and configuring necessary environment variables for seamless chatbot development.</li>
+<li><strong>Loading Documents and Creating a Vector Store</strong>: Detailed instructions on loading documents, splitting them into manageable chunks, and converting these chunks into embeddings for semantic search capabilities.</li>
+<li><strong>Advanced Retrieval Techniques</strong>: Exploration of various retrieval methods like self-query, compression, and semantic search, emphasizing their integration into the chatbot framework for enhanced understanding and response accuracy.</li>
+<li><strong>Conversational Context and Memory</strong>: Insights into incorporating chat history into the chatbot's response generation process, including practical steps for setting up conversation buffer memory.</li>
+<li><strong>Building the Conversational Retrieval Chain</strong>: A step-by-step guide on constructing the core functionality of the chatbot by integrating the language model, retrieval system, and memory components.</li>
+</ul>
+<p>Practical examples and code snippets accompany each section, ensuring readers can apply the concepts in real-world projects. Tips for optimizing performance, avoiding common pitfalls, and suggestions for further reading and external resources are provided to deepen understanding and encourage exploration.</p>
+<p>By following the structured approach and best practices outlined in this chapter, readers will gain a solid foundation in building sophisticated conversational chatbots using LangChain, from foundational concepts to advanced methodologies. This guide aims to equip professionals with the knowledge and skills needed to create engaging, context-aware chatbots that can significantly enhance user interaction and information retrieval processes.</p>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>What are the essential components needed to set up the environment for developing conversational chatbots using LangChain?</li>
+<li>How does incorporating chat history into the response generation process enhance a conversational chatbot's functionality?</li>
+<li>Describe the process of converting document chunks into embeddings and explain why this is crucial for building conversational chatbots.</li>
+<li>What are the advantages of using advanced retrieval techniques such as self-query, compression, and semantic search in conversational chatbots?</li>
+<li>Explain how the conversational retrieval chain integrates language models, retrieval systems, and memory to manage and respond to user queries.</li>
+<li>How does the <code>ConversationBufferMemory</code> class facilitate maintaining context over the course of a conversation in chatbots?</li>
+<li>Detail the steps involved in setting up a vector store for semantic search capabilities within LangChain.</li>
+<li>Why is environment variable and API key management important in the development of conversational chatbots?</li>
+<li>Discuss the modular nature of LangChain’s retrieval methods and how they contribute to the flexibility of chatbot development.</li>
+<li>Explain the significance of selecting the appropriate language model version for building a conversational chatbot.</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<ol>
+<li>
+<p><strong>Creating and Populating a Vector Store:</strong>
+   Develop a function named <code>create_vector_store</code> that takes a list of documents (strings) as input, converts each document into embeddings using a placeholder embedding function, and stores these embeddings in a simple in-memory structure. The function should then return this structure. Assume the embedding function is already implemented and can be called as <code>embed_document(document_text)</code>.</p>
+</li>
+<li>
+<p><strong>Advanced Retrieval with Semantic Search:</strong>
+   Implement a function called <code>perform_semantic_search</code> that takes two arguments: a query string and a vector store (as created in task 2). This function should compute the embedding of the query, perform a semantic search to find the most similar document in the vector store, and return the index of that document. For simplicity, use a placeholder function <code>calculate_similarity(query_embedding, document_embedding)</code> that returns a similarity score between the query and each document.</p>
+</li>
+<li>
+<p><strong>Incorporating Chat History into Response Generation:</strong>
+   Write a Python class <code>Chatbot</code> with a method <code>respond_to_query</code> that takes a user's query as input and returns a response. The class should maintain a history of past queries and responses as context for generating future responses. The response generation can be simulated with a placeholder function <code>generate_response(query, context)</code> where <code>context</code> is a list of past queries and responses.</p>
+</li>
+<li>
+<p><strong>Building a Conversational Retrieval Chain:</strong>
+   Define a function <code>setup_conversational_retrieval_chain</code> that initializes a mock retrieval chain for a chatbot. This chain should incorporate a language model, a document retriever, and a conversation memory system. For this task, use placeholder functions or classes <code>LanguageModel()</code>, <code>DocumentRetriever()</code>, and <code>ConversationMemory()</code>, and demonstrate how they would be integrated into a single retrieval chain object.</p>
+</li>
+<li>
+<p><strong>Setting Up Memory for Conversation History:</strong>
+   Extend the <code>Chatbot</code> class from task 4 to include a method for adding new entries to the conversation history and another method for resetting the conversation history. Ensure that the chatbot's response generation takes into account the entire conversation history.</p>
+</li>
+<li>
+<p><strong>Document-Based Q&amp;A System:</strong>
+   Create a simplified script for a document-based Q&amp;A system. The script should load a document (as a string), split it into manageable chunks, create embeddings for each chunk, and store these in a vector store. It should then accept a question, perform semantic search to find the most relevant chunk, and simulate generating an answer based on this chunk. Use placeholder functions for embedding and answer generation.</p>
+</li>
+<li>
+<p><strong>Conversational Retrieval Chain with Memory Integration:</strong>
+   Implement a function <code>integrate_memory_with_retrieval_chain</code> that takes a conversational retrieval chain (as described in task 5) and integrates it with a conversation memory system (as extended in task 6). This function should demonstrate how the retrieval chain uses the conversation memory to maintain context across interactions.</p>
+</li>
+<li>
+<p><strong>User Interface for Chatbot Interaction:</strong>
+   Develop a simple command-line interface (CLI) for interacting with the <code>Chatbot</code> class from task 6. The CLI should allow users to input queries and display the chatbot's responses. Include options for users to view the conversation history and reset it.</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>
