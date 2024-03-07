@@ -1,0 +1,1757 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../2.3%20Deep%20Dive%20into%20Text%20Splitting/">
+      
+      
+        <link rel="next" href="../2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>2.4 The Power of Embeddings - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#24-the-power-of-embeddings" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.4 The Power of Embeddings
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Are Embeddings?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Are Embeddings?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detailed-process-of-creating-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detailed Process of Creating Embeddings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application-of-embeddings-in-semantic-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application of Embeddings in Semantic Search
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vector-stores-efficient-retrieval-of-similar-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vector Stores: Efficient Retrieval of Similar Vectors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vector Stores: Efficient Retrieval of Similar Vectors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-features-and-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features and Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criteria-for-choosing-a-vector-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      Criteria for Choosing a Vector Store
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-chroma-for-rapid-prototyping-and-small-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Chroma for Rapid Prototyping and Small Datasets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-document-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Document Splitting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-embedding-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Embedding Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-vector-store-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Vector Store Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-query-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Query Processing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-response-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Response Generation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up the Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-loading-and-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Loading and Splitting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document Loading and Splitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loading Documents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splitting Documents
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating Embeddings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vector-stores-for-efficient-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vector Stores for Efficient Retrieval
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vector Stores for Efficient Retrieval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-chroma-as-the-vector-store" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Chroma as the Vector Store
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conducting-similarity-searches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conducting Similarity Searches
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#addressing-failure-modes-and-enhancing-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Addressing Failure Modes and Enhancing Search
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Addressing Failure Modes and Enhancing Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identifying-and-addressing-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identifying and Addressing Failure Modes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further Reading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="24-the-power-of-embeddings">2.4 The Power of Embeddings</h1>
+<h3 id="what-are-embeddings">What Are Embeddings?</h3>
+<p>Embeddings are a technique used to convert textual information into numerical form. This transformation is essential because, unlike humans, computers are more adept at handling numbers than text. The process involves mapping words, sentences, or entire documents to vectors of real numbers in a high-dimensional space. The main goal of embeddings is to encapsulate the semantic meaning of the text, such that words or sentences with similar meanings are located closer to each other in this vector space. </p>
+<h4 id="detailed-process-of-creating-embeddings">Detailed Process of Creating Embeddings</h4>
+<p>Creating embeddings involves several steps and methodologies, with one of the most common being the training of models on large text corpora. During this training, the model learns to associate words with their contexts, capturing nuanced semantic relationships. For instance, in word embeddings, each word is assigned a specific vector in the vector space. The positioning of these vectors is not random; it is determined based on the usage and context of the words within a large dataset. This means that synonyms or words used in similar contexts end up being positioned near each other. </p>
+<h4 id="application-of-embeddings-in-semantic-search">Application of Embeddings in Semantic Search</h4>
+<p>Semantic search represents an advanced type of search that goes beyond matching keywords to understand the intent and contextual meaning behind a query. Embeddings are at the heart of this technology, enabling systems to grasp the semantic nuances of both the search queries and the content within the documents they search through. </p>
+<p>Here's a step-by-step overview of how embeddings are used in semantic search:</p>
+<ol>
+<li>
+<p><strong>Preparation of Document Embeddings:</strong> Initially, each document in the search corpus is processed to generate its embedding. This step is crucial for encapsulating the semantic essence of each document into a numerical vector.</p>
+</li>
+<li>
+<p><strong>Query Embedding Generation:</strong> When a search query is received, it is also transformed into an embedding. This process ensures that the query can be compared directly with the document embeddings in the corpus.</p>
+</li>
+<li>
+<p><strong>Similarity Comparison:</strong> With both the documents and the query converted into embeddings, the next step involves computing the similarity between the query vector and each document vector. This comparison typically involves calculating the distance (such as Euclidean distance) or similarity (such as cosine similarity) between vectors. Documents whose embeddings are closer to the query embedding are considered more relevant to the search query.</p>
+</li>
+<li>
+<p><strong>Retrieval of Relevant Documents:</strong> Based on the similarity scores, documents are ranked, and the most relevant ones are retrieved as search results. This method allows for the identification of documents that are semantically related to the query, even if they do not share exact keyword matches.</p>
+</li>
+</ol>
+<p>In summary, embeddings transform the way textual content is analyzed, stored, and retrieved, enabling more sophisticated and semantically rich interactions between users and information systems. By capturing the deeper meaning of text, embeddings facilitate a range of applications, from enhancing search engines to powering recommendation systems and beyond.</p>
+<h2 id="vector-stores-efficient-retrieval-of-similar-vectors">Vector Stores: Efficient Retrieval of Similar Vectors</h2>
+<p>A vector store is a type of database optimized for the storage, management, and retrieval of vector data. Vector data, in this context, refers to the numerical vectors that represent embeddings of text, images, or any other data type converted into a numerical form for processing by machine learning models. The primary functionality of a vector store is to facilitate similarity searches. This means it can quickly identify and retrieve vectors in the database that are closest to a given query vector, according to certain distance metrics like Euclidean distance or cosine similarity.</p>
+<h4 id="key-features-and-operations">Key Features and Operations</h4>
+<p>Vector stores are engineered to perform high-speed similarity searches across large volumes of vector data. They achieve this through various optimization techniques such as indexing, which allows for efficient query processing by reducing the number of vectors that need to be compared directly with the query vector. These stores support operations that are crucial for applications like recommendation systems, where finding items similar to a user's interests is essential, or in natural language processing tasks, where finding documents with content similar to a query can enhance information retrieval and text analysis processes.</p>
+<h4 id="criteria-for-choosing-a-vector-store">Criteria for Choosing a Vector Store</h4>
+<p>When selecting a vector store for a project, several considerations come into play:</p>
+<ol>
+<li>
+<p><strong>Dataset Size:</strong> The volume of data you expect to store and query impacts the choice of vector store. Some vector stores are designed to handle large, distributed datasets efficiently, while others may be optimized for smaller, in-memory datasets.</p>
+</li>
+<li>
+<p><strong>Persistence Requirement:</strong> Depending on whether the data needs to be durable (persisted across sessions) or can be ephemeral (temporary and in-memory), different vector stores offer varying capabilities. Persistent storage is crucial for applications where data is continuously accumulated and needs to be reliably stored for long-term retrieval. In contrast, in-memory storage may suffice for temporary datasets or rapid prototyping environments.</p>
+</li>
+<li>
+<p><strong>Specific Use Case:</strong> The nature of the application—whether it's for research, development, or production use—also influences the choice. Some vector stores are designed with specific features to support complex queries and analytics, making them suitable for research and development. Others prioritize scalability and robustness for production environments.</p>
+</li>
+</ol>
+<h3 id="example-chroma-for-rapid-prototyping-and-small-datasets">Example: Chroma for Rapid Prototyping and Small Datasets</h3>
+<p>Chroma is highlighted as an example of a vector store that is particularly well-suited for rapid prototyping and applications dealing with small datasets. Its in-memory nature means that it stores data directly in RAM, allowing for fast data retrieval and high throughput at the cost of persistence and scalability. This makes Chroma an excellent choice for experimental projects or applications where the dataset size is manageable and data persistence beyond the application session is not critical.</p>
+<p>Other vector stores might offer features like distributed storage, cloud-based services, and enhanced persistence mechanisms, catering to applications that require scalability and the ability to handle growing data volumes over time. These systems may be preferred for production-grade applications where data reliability, availability, and scalability are paramount.</p>
+<p>In conclusion, the selection of a vector store is a critical decision that impacts the efficiency and scalability of applications involving similarity searches and vector data retrieval. By carefully considering the dataset size, persistence requirements, and specific use case requirements, developers can choose the most appropriate vector store to meet their application's needs.</p>
+<h2 id="workflow-overview">Workflow Overview</h2>
+<p>The workflow for implementing embeddings and vector stores in semantic search comprises the following steps:</p>
+<h4 id="1-document-splitting">1. Document Splitting</h4>
+<p>The initial step involves breaking down the corpus of original documents into smaller, more manageable pieces that are semantically coherent. This process, known as document splitting, is crucial for improving the granularity of the search results. Each chunk or segment should ideally represent a single topic or concept to ensure that the embeddings generated in the subsequent step accurately capture the semantic essence of the text. This step enhances the system's ability to match specific parts of documents to queries, rather than retrieving entire documents that may only be partially relevant.</p>
+<h4 id="2-embedding-generation">2. Embedding Generation</h4>
+<p>Once the documents are split into semantically coherent chunks, the next step is to convert these chunks into embeddings. Embedding generation involves using machine learning models to map the text into high-dimensional vectors. These vectors represent the semantic features of the text, such that text chunks with similar meanings are represented by vectors that are close to each other in the vector space. This step is fundamental in transforming textual information into a format that can be efficiently processed and compared by computational systems.</p>
+<h4 id="3-vector-store-indexing">3. Vector Store Indexing</h4>
+<p>After generating embeddings for each document chunk, these embeddings are then stored in a vector store. The vector store is a specialized database designed for the efficient storage and retrieval of high-dimensional vector data. By indexing the embeddings in a vector store, the system can quickly perform similarity searches to find vectors that are most similar to a given query vector. This capability is key to enabling fast and accurate retrieval of document chunks that are relevant to a user's search query.</p>
+<h4 id="4-query-processing">4. Query Processing</h4>
+<p>When a user submits a query, the system generates an embedding for the query using the same process as for the document chunks. This query embedding is then used to search the vector store for the embeddings that are most similar to it. The similarity search can be based on various distance metrics, such as Euclidean distance or cosine similarity, to identify the document chunks whose embeddings have the shortest distance or highest similarity to the query embedding. This step ensures that the search results are semantically related to the query, improving the relevance of the retrieved information.</p>
+<h4 id="5-response-generation">5. Response Generation</h4>
+<p>The final step involves passing the retrieved document chunks to a large language model (LLM) along with the original query. The LLM uses the information from the document chunks and the query to generate a coherent and contextually relevant response. This process leverages the LLM's ability to understand and generate natural language, providing users with answers that are not only relevant but also formulated in a way that is easy to understand. This step is crucial for enhancing the user experience by delivering precise and informative answers based on the semantically relevant document chunks retrieved from the vector store.</p>
+<h2 id="setting-up-the-environment">Setting Up the Environment</h2>
+<p>Before diving into the complexities of embeddings and vector stores, it's essential to prepare the development environment. This involves importing necessary libraries, setting up API keys, and ensuring that the system is configured correctly.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+<span class="c1"># Extend the system path to include the project directory</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../..&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load environment variables</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># Configure the OpenAI API key</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="document-loading-and-splitting">Document Loading and Splitting</h2>
+<p>The initial stage in the workflow involves loading documents and splitting them into smaller, semantically meaningful chunks. This step is crucial for managing the data more effectively and preparing it for embedding.</p>
+<h3 id="loading-documents">Loading Documents</h3>
+<p>For demonstration purposes, a series of PDF documents from a lecture series are loaded. This includes intentionally duplicating one document to simulate a scenario with messy data.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import the PyPDFLoader class from the langchain library</span>
+<span class="kn">from</span> <span class="nn">langchain.document_loaders</span> <span class="kn">import</span> <span class="n">PyPDFLoader</span>
+
+<span class="c1"># Initialize a list of PDF loaders, each representing a specific lecture document</span>
+<span class="n">pdf_document_loaders</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PyPDFLoader</span><span class="p">(</span><span class="s2">&quot;docs/doc1.pdf&quot;</span><span class="p">),</span>
+    <span class="n">PyPDFLoader</span><span class="p">(</span><span class="s2">&quot;docs/doc2.pdf&quot;</span><span class="p">),</span>
+    <span class="n">PyPDFLoader</span><span class="p">(</span><span class="s2">&quot;docs/doc3.pdf&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Create an empty list to store the content of each loaded document</span>
+<span class="n">loaded_documents_content</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Iterate through each PDF loader in the list to load documents</span>
+<span class="k">for</span> <span class="n">document_loader</span> <span class="ow">in</span> <span class="n">pdf_document_loaders</span><span class="p">:</span>
+    <span class="c1"># Use the load method of each PyPDFLoader instance to load the document&#39;s content</span>
+    <span class="c1"># and extend the loaded_documents_content list with the result</span>
+    <span class="n">loaded_documents_content</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">document_loader</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+
+<span class="c1"># At this point, loaded_documents_content contains the content of all specified PDFs</span>
+</code></pre></div>
+<h3 id="splitting-documents">Splitting Documents</h3>
+<p>After loading, documents are split into smaller chunks to enhance the manageability and efficiency of the subsequent processes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+
+<span class="c1"># Configure and apply the text splitter</span>
+<span class="n">document_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">150</span>
+<span class="p">)</span>
+<span class="n">document_splits</span> <span class="o">=</span> <span class="n">document_splitter</span><span class="o">.</span><span class="n">split_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="generating-embeddings">Generating Embeddings</h2>
+<p>Embeddings are created for each document chunk, transforming the textual information into numerical vectors that capture the semantic essence of the text.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.embeddings.openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">embedding_generator</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+
+<span class="c1"># Example sentences for embedding</span>
+<span class="n">sentence_examples</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I like dogs&quot;</span><span class="p">,</span> <span class="s2">&quot;I like canines&quot;</span><span class="p">,</span> <span class="s2">&quot;The weather is ugly outside&quot;</span><span class="p">]</span>
+
+<span class="c1"># Generate embeddings for each sentence</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding_generator</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentence_examples</span><span class="p">]</span>
+
+<span class="c1"># Demonstrating similarity through dot product</span>
+<span class="n">similarity_dog_canine</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">embeddings</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">similarity_dog_weather</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">embeddings</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div>
+<h2 id="vector-stores-for-efficient-retrieval">Vector Stores for Efficient Retrieval</h2>
+<p>With embeddings generated, the next step involves indexing these vectors in a vector store to facilitate efficient similarity searches.</p>
+<h3 id="setting-up-chroma-as-the-vector-store">Setting Up Chroma as the Vector Store</h3>
+<p>Chroma is selected for its lightweight and in-memory characteristics, suitable for demonstration purposes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.vectorstores</span> <span class="kn">import</span> <span class="n">Chroma</span>
+
+<span class="c1"># Define the directory for persisting the vector store</span>
+<span class="n">persist_directory</span> <span class="o">=</span> <span class="s1">&#39;docs/chroma/&#39;</span>
+
+<span class="c1"># Clear any existing data in the persist directory</span>
+<span class="err">!</span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">./</span><span class="n">docs</span><span class="o">/</span><span class="n">chroma</span>
+
+<span class="c1"># Initialize and populate the vector store with document splits and their embeddings</span>
+<span class="n">vector_database</span> <span class="o">=</span> <span class="n">Chroma</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span>
+    <span class="n">documents</span><span class="o">=</span><span class="n">document_splits</span><span class="p">,</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">embedding_generator</span><span class="p">,</span>
+    <span class="n">persist_directory</span><span class="o">=</span><span class="n">persist_directory</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="conducting-similarity-searches">Conducting Similarity Searches</h2>
+<p>The primary utility of embeddings and vector stores is demonstrated through similarity searches, which allow for the retrieval of document chunks most relevant to a given query.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Example query</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;Is there an email I can ask for help?&quot;</span>
+
+<span class="c1"># Retrieve the top 3 most similar document chunks</span>
+<span class="n">retrieved_documents</span> <span class="o">=</span> <span class="n">vector_database</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Inspect the content of the top result</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">retrieved_documents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">page_content</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="addressing-failure-modes-and-enhancing-search">Addressing Failure Modes and Enhancing Search</h2>
+<p>While basic similarity searches are effective, certain edge cases and failure modes necessitate further refinement.</p>
+<h3 id="identifying-and-addressing-failure-modes">Identifying and Addressing Failure Modes</h3>
+<p>Duplicate entries and the inclusion of irrelevant documents from other lectures are common issues that can undermine the effectiveness of semantic searches.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Example failure mode query</span>
+<span class="n">query_matlab</span> <span class="o">=</span> <span class="s2">&quot;What did they say about MATLAB?&quot;</span>
+
+<span class="c1"># Identifying duplicate chunks in retrieval results</span>
+<span class="n">retrieved_documents_matlab</span> <span class="o">=</span> <span class="n">vector_database</span>
+
+<span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">query_matlab</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>Future discussions will explore strategies for addressing these failure modes, ensuring the retrieval of both relevant and distinct chunks.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Embeddings and vector stores offer powerful tools for semantic search within large corpora. By carefully processing text into embeddings and leveraging efficient vector retrieval mechanisms, developers can create sophisticated systems capable of understanding and responding to complex queries. The exploration of failure modes and refinement strategies further enhances the robustness and accuracy of these systems.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li>OpenAI API Documentation: An in-depth guide to generating embeddings using OpenAI's models.</li>
+<li>Vector Database Technologies: A comparison of various vector stores and their applications in semantic search and retrieval systems.</li>
+</ul>
+<p>This chapter provides a comprehensive overview of the process and methodologies involved in leveraging embeddings and vector stores for semantic search, setting a foundation for advanced applications in machine learning and data science.</p>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>What is the primary purpose of converting textual information into embeddings?</li>
+<li>How do embeddings help in achieving semantic similarity between words or sentences?</li>
+<li>Describe the process of creating word embeddings and the significance of context in this process.</li>
+<li>How are embeddings utilized in semantic search to improve search results compared to traditional keyword-based searches?</li>
+<li>Explain the role of document embeddings and query embeddings in the process of semantic search.</li>
+<li>What is a vector store, and why is it important in the context of embeddings?</li>
+<li>Discuss the criteria that should be considered when choosing a vector store for a specific application.</li>
+<li>Why might Chroma be a suitable vector store for rapid prototyping and small datasets, and what are its limitations?</li>
+<li>Outline the workflow involved in implementing embeddings and vector stores in semantic search.</li>
+<li>How does document splitting enhance the granularity and relevance of search results in semantic search systems?</li>
+<li>Describe the process of generating embeddings for document chunks and the significance of these embeddings in semantic search.</li>
+<li>What is the importance of vector store indexing in the context of similarity searches?</li>
+<li>How does query processing work in semantic search, and what metrics are typically used to compare query embeddings with document embeddings?</li>
+<li>Explain how the response generation step in the workflow enhances user experience in semantic search applications.</li>
+<li>What preliminary steps are necessary to set up a development environment for working with embeddings and vector stores?</li>
+<li>Describe a practical scenario where document loading and splitting are crucial steps in processing textual data for semantic search.</li>
+<li>How does generating embeddings transform textual information, and what is an example of how similarity can be demonstrated between embeddings?</li>
+<li>What considerations should be taken into account when setting up a vector store like Chroma for efficient retrieval?</li>
+<li>Discuss how similarity searches facilitate the retrieval of relevant document chunks in a semantic search system.</li>
+<li>Identify and explain potential failure modes in semantic searches and strategies for addressing them to improve search accuracy and relevance.</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<p>Based on the chapter content, here are some practice code tasks related to the concepts of embeddings, vector stores, and their applications in semantic search:</p>
+<ol>
+<li>
+<p>Write a Python function named <code>generate_embeddings</code> that takes a list of strings (sentences) as input and returns a list of embeddings. Use a placeholder model to simulate the embedding generation process (e.g., simply return the length of each string as its "embedding").</p>
+</li>
+<li>
+<p>Implement a Python function named <code>cosine_similarity</code> that calculates and returns the cosine similarity between two vectors. The vectors can be represented as lists of numbers. You can assume both vectors are of the same dimension.</p>
+</li>
+<li>
+<p>Create a Python class named <code>SimpleVectorStore</code> that simulates basic functionalities of a vector store. The class should support adding vectors (<code>add_vector</code> method) and retrieving the most similar vector to a given query vector (<code>find_most_similar</code> method) based on cosine similarity.</p>
+</li>
+<li>
+<p>Write a Python script that loads text from a file, splits the text into chunks of a specified size (e.g., 500 characters), and prints each chunk. Assume the file path and chunk size are provided as command-line arguments.</p>
+</li>
+<li>
+<p>Develop a Python function named <code>query_processing</code> that simulates the process of generating a query embedding, conducting a similarity search in a <code>SimpleVectorStore</code>, and printing the content of the most similar document chunk. Use a placeholder for generating the query embedding.</p>
+</li>
+<li>
+<p>Implement a function named <code>remove_duplicates</code> that takes a list of document chunks (strings) and returns a new list with duplicates removed. Define a criterion for considering chunks as duplicates (e.g., exact match or similarity threshold).</p>
+</li>
+<li>
+<p>Write a Python script that initializes a <code>SimpleVectorStore</code>, adds a set of document embeddings (use placeholders), and then performs a similarity search with a sample query. Print the IDs or contents of the top 3 most similar document chunks.</p>
+</li>
+<li>
+<p>Create a function named <code>embed_and_store_documents</code> that takes a list of document chunks, generates embeddings for each chunk (using placeholders), and stores these embeddings in a <code>SimpleVectorStore</code>. The function should then return the initialized <code>SimpleVectorStore</code>.</p>
+</li>
+<li>
+<p>Develop a Python function named <code>vector_store_persistence</code> that demonstrates how to save and load the state of a <code>SimpleVectorStore</code> to and from a file. Implement methods for serialization and deserialization of the vector store's data.</p>
+</li>
+<li>
+<p>Write a Python function named <code>evaluate_search_accuracy</code> that takes a list of queries and their expected most similar document chunks. The function should perform similarity searches for each query, compare the retrieved chunks with the expected results, and compute the accuracy of the search results.</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>

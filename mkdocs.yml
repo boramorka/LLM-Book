@@ -1,0 +1,67 @@
+site_name: LLMOps. Make AI Work For You. 
+repo_url: https://github.com/boramorka/LLM-book
+repo_name: boramorka/LLM-book
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  palette:
+    primary: black
+
+markdown_extensions:
+  - meta
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+nav:
+  - Overview: index.md
+  - CHAPTER-1. OPEN AI API:
+      - 1.1 Introduction: 'CHAPTER-1/1.1 Introduction.md'
+      - 1.2 Classification: 'CHAPTER-1/1.2 Classification.md'
+      - 1.3 Advanced Moderaton: 'CHAPTER-1/1.3 Advanced Moderaton.md'
+      - 1.4 Elevating Machine Reasoning: 'CHAPTER-1/1.4 Elevating Machine Reasoning: Advanced Strategies.md'
+      - 1.5 The Power of Prompt Chaining: 'CHAPTER-1/1.5 The Power of Prompt Chaining.md'
+      - 1.6 Building and Evaluating LLM Applications: 'CHAPTER-1/1.6 Building and Evaluating LLM Applications.md'
+      - 1.7 Summary and Reflections: 'CHAPTER-1/1.7 Summary and Reflections.md'
+  - CHAPTER-2. LANGCHAIN:
+      - 2.1 Introduction: 'CHAPTER-2/2.1 Introduction.md'
+      - 2.2 LangChain Document Loaders: 'CHAPTER-2/2.2 LangChain Document Loaders.md'
+      - 2.3 Deep Dive into Text Splitting: 'CHAPTER-2/2.3 Deep Dive into Text Splitting.md'
+      - 2.4 The Power of Embeddings: 'CHAPTER-2/2.4 The Power of Embeddings.md'
+      - 2.5 Semantic Search. Advanced Retrieval Strategies: 'CHAPTER-2/2.5 Semantic Search. Advanced Retrieval Strategies.md'
+      - 2.6 RAG Systems. Techniques for Question Answering: 'CHAPTER-2/2.6 RAG Systems. Techniques for Question Answering.md'
+      - 2.7 Building Chatbots with LangChain: 'CHAPTER-2/2.7 Building Chatbots with LangChain.md'
+      - 2.8 Summary and Reflections: 'CHAPTER-2/2.8 Summary and Reflections.md'
+  - CHAPTER-3. LLMOPS:
+      - 3.1 Introduction: 'CHAPTER-3/3.1 Introduction.md'
+      - 3.2 Mastering LLM Workflows with Kubeflow Pipelines: 'CHAPTER-3/3.2 Mastering LLM Workflows with Kubeflow Pipelines.md'
+      - 3.3 Implementing the AI Quiz Generation Mechanism: 'CHAPTER-3/3.3 Implementing the AI Quiz Generation Mechanism.md'
+      - 3.4 Summary and Reflections: 'CHAPTER-3/3.4 Summary and Reflections.md'
+  - Answers:
+      - 1.1 Introduction: 'CHAPTER-1/Answers 1.1.md'
+      - 1.2 Classification: 'CHAPTER-1/Answers 1.2.md'
+      - 1.3 Advanced Moderaton: 'CHAPTER-1/Answers 1.3.md'
+      - 1.4 Elevating Machine Reasoning: 'CHAPTER-1/Answers 1.4.md'
+      - 1.5 The Power of Prompt Chaining: 'CHAPTER-1/Answers 1.5.md'
+      - 1.6 Building and Evaluating LLM Applications: 'CHAPTER-1/Answers 1.6.md'
+      - 2.2 LangChain Document Loaders: 'CHAPTER-2/Answers 2.2.md'
+      - 2.3 Deep Dive into Text Splitting: 'CHAPTER-2/Answers 2.3.md'
+      - 2.4 The Power of Embeddings: 'CHAPTER-2/Answers 2.4.md'
+      - 2.5 Semantic Search. Advanced Retrieval Strategies: 'CHAPTER-2/Answers 2.5.md'
+      - 2.6 RAG Systems. Techniques for Question Answering: 'CHAPTER-2/Answers 2.6.md'
+      - 2.7 Building Chatbots with LangChain: 'CHAPTER-2/Answers 2.7.md'
+      - 3.2 Mastering LLM Workflows with Kubeflow Pipelines: 'CHAPTER-3/Answers 3.2.md'
+      - 3.3 Implementing the AI Quiz Generation Mechanism: 'CHAPTER-3/Answers 3.3.md'
