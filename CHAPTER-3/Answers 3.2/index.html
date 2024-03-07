@@ -1,0 +1,1569 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../CHAPTER-2/Answers%202.7/">
+      
+      
+        <link rel="next" href="../Answers%203.3/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>3.2 Mastering LLM Workflows with Kubeflow Pipelines - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#answers-33" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.2 Mastering LLM Workflows with Kubeflow Pipelines
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-setup-kubeflow-pipelines-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Setup Kubeflow Pipelines SDK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-define-a-simple-pipeline-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Define a Simple Pipeline Component
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-suppress-specific-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Suppress Specific Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-chain-components-in-a-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Chain Components in a Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-compile-and-prepare-a-pipeline-for-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Compile and Prepare a Pipeline for Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-handling-pipelinetask-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Handling PipelineTask Objects
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-error-handling-in-pipeline-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Error Handling in Pipeline Definitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-automating-data-preparation-for-model-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Automating Data Preparation for Model Training
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-implementing-model-versioning-in-a-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Implementing Model Versioning in a Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-parameterize-and-execute-a-kubeflow-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Parameterize and Execute a Kubeflow Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="answers-33">Answers 3.3</h1>
+<h2 id="theory">Theory</h2>
+<ol>
+<li>Kubeflow Pipelines automate machine learning workflows, ensuring experiments are consistent and repeatable by managing complex workflows efficiently, thus saving time and enhancing robustness in model development.</li>
+<li>The <code>dsl</code> module provides decorators and classes to define components and pipeline structure, while the <code>compiler</code> module compiles the pipeline into an executable format for the Kubeflow engine.</li>
+<li>Future warnings from Kubeflow Pipelines can be managed by selectively suppressing them, allowing developers to focus on immediate concerns while staying informed about significant updates through documentation.</li>
+<li>Clear interfaces and reusability in pipeline components facilitate integration into pipelines, ensuring compatibility and enhancing the modularity and efficiency of machine learning projects.</li>
+<li>The <code>@dsl.component</code> decorator defines a function as a pipeline component, treating it as a self-contained step within a pipeline, facilitating its integration into the workflow.</li>
+<li>A <code>PipelineTask</code> object, returned when a <code>@dsl.component</code>-decorated function is called, represents the execution of the component, enabling the passing of data to subsequent components.</li>
+<li>Outputs from one component can be passed to another by accessing the <code>.output</code> attribute of the <code>PipelineTask</code> object, enabling seamless data flow through the pipeline.</li>
+<li>Using keyword arguments when invoking component functions ensures clarity and prevents errors, especially in complex pipelines with multiple inputs.</li>
+<li>Chaining components requires passing the <code>.output</code> attribute to ensure data flow, emphasizing the importance of careful planning and execution in pipeline construction.</li>
+<li>A Kubeflow pipeline is defined with the <code>@dsl.pipeline</code> decorator, orchestrating components to ensure data flows correctly, requiring attention to execution environment and output handling.</li>
+<li>Compiling a pipeline involves translating the Python-defined workflow into a YAML file, which is then deployed and executed in a suitable environment, showcasing the pipeline's structure and data flow.</li>
+<li>Reusing existing pipelines like the Supervised Tuning Pipeline for PaLM 2 accelerates development by leveraging pre-built workflows and embedded best practices.</li>
+<li>Model versioning, critical for MLOps, ensures reproducibility and auditing; for example, appending the current date and time to a model name creates a unique identifier.</li>
+<li>Pipeline arguments are defined to specify inputs and configurations, customizing the tuning process to meet specific requirements, and are crucial for the efficient execution of pipelines.</li>
+<li>Automating and orchestrating machine learning workflows with Kubeflow Pipelines offers significant benefits in efficiency and scalability, especially for fine-tuning large models, though it requires careful planning and understanding of the pipeline's components and data flow.</li>
+</ol>
+<h2 id="practice">Practice</h2>
+<p>Here are the solutions for the tasks you've requested:</p>
+<h3 id="1-setup-kubeflow-pipelines-sdk">1. Setup Kubeflow Pipelines SDK</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Importing the necessary modules from the Kubeflow Pipelines SDK</span>
+<span class="kn">from</span> <span class="nn">kfp</span> <span class="kn">import</span> <span class="n">dsl</span><span class="p">,</span> <span class="n">compiler</span>
+
+<span class="c1"># Suppressing FutureWarning warnings from the Kubeflow Pipelines SDK</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;kfp.*&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>This script imports the <code>dsl</code> and <code>compiler</code> modules from the Kubeflow Pipelines SDK and suppresses <code>FutureWarning</code> warnings that originate from any module starting with <code>kfp.</code>.</p>
+<h3 id="2-define-a-simple-pipeline-component">2. Define a Simple Pipeline Component</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">kfp</span> <span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Defining a simple component to add two numbers</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+<span class="k">def</span> <span class="nf">add_numbers</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+</code></pre></div>
+<p>This Python function, decorated with <code>@dsl.component</code>, defines a simple Kubeflow Pipeline component named <code>add_numbers</code> that takes two integers as input (<code>num1</code> and <code>num2</code>) and returns their sum.</p>
+<h3 id="3-suppress-specific-warnings">3. Suppress Specific Warnings</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+</code></pre></div>
+<p>This updated script suppresses <code>DeprecationWarning</code> warnings from any module. The modification from the original script involves changing the <code>category</code> argument of the <code>filterwarnings</code> method from <code>FutureWarning</code> to <code>DeprecationWarning</code>, affecting warnings from all modules, not just those starting with <code>kfp.</code>.</p>
+<h3 id="4-chain-components-in-a-pipeline">4. Chain Components in a Pipeline</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">kfp</span> <span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Component to generate a fixed number</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+<span class="k">def</span> <span class="nf">generate_number</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">42</span>
+
+<span class="c1"># Component to double the number received as input</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+<span class="k">def</span> <span class="nf">double_number</span><span class="p">(</span><span class="n">input_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">input_number</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="c1"># Defining the pipeline that chains the two components</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Number doubling pipeline&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A pipeline that generates a number and doubles it.&quot;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">number_doubling_pipeline</span><span class="p">():</span>
+    <span class="c1"># Step 1: Generate a number</span>
+    <span class="n">generated_number_task</span> <span class="o">=</span> <span class="n">generate_number</span><span class="p">()</span>
+
+    <span class="c1"># Step 2: Double the generated number</span>
+    <span class="n">double_number_task</span> <span class="o">=</span> <span class="n">double_number</span><span class="p">(</span><span class="n">input_number</span><span class="o">=</span><span class="n">generated_number_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<p>This pipeline consists of two components: <code>generate_number</code> which returns a fixed integer, and <code>double_number</code> which takes an integer input and returns its double. The pipeline demonstrates chaining these components by passing the output of <code>generate_number</code> as input to <code>double_number</code>.</p>
+<h3 id="5-compile-and-prepare-a-pipeline-for-execution">5. Compile and Prepare a Pipeline for Execution</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">kfp</span> <span class="kn">import</span> <span class="n">compiler</span>
+
+<span class="c1"># Assuming the pipeline definition is named number_doubling_pipeline</span>
+<span class="n">pipeline_func</span> <span class="o">=</span> <span class="n">number_doubling_pipeline</span>
+
+<span class="c1"># Compiling the pipeline</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">Compiler</span><span class="p">()</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">pipeline_func</span><span class="o">=</span><span class="n">pipeline_func</span><span class="p">,</span>
+    <span class="n">package_path</span><span class="o">=</span><span class="s1">&#39;number_doubling_pipeline.yaml&#39;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>This script compiles the <code>number_doubling_pipeline</code> into a YAML file named <code>number_doubling_pipeline.yaml</code>. The compiled pipeline can then be uploaded to a Kubeflow Pipelines environment for execution.</p>
+<h3 id="6-handling-pipelinetask-objects">6. Handling <code>PipelineTask</code> Objects</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># This is a hypothetical function and cannot be executed as-is. It&#39;s meant to illustrate the concept.</span>
+<span class="k">def</span> <span class="nf">handle_pipeline_task</span><span class="p">():</span>
+    <span class="c1"># Hypothetical function call to a component named my_component</span>
+    <span class="c1"># In a real scenario, this should be within a pipeline function</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">my_component</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Accessing the output of the component</span>
+    <span class="c1"># This line is illustrative and would normally be used to pass outputs between components in a pipeline</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">output</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accessed the output of the component:&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+
+<span class="c1"># Note: In real use, my_component would be defined as a Kubeflow Pipeline component</span>
+<span class="c1"># and the task manipulation should happen within the context of a pipeline function.</span>
+</code></pre></div>
+<p>This Python function illustrates the concept of calling a Kubeflow Pipeline component, which returns a <code>PipelineTask</code> object, and then accessing its output via <code>task.output</code>. Note that this is a theoretical example meant to show how outputs are managed with <code>PipelineTask</code> objects in Kubeflow Pipelines; actual implementation requires a pipeline context.</p>
+<h3 id="7-error-handling-in-pipeline-definitions">7. Error Handling in Pipeline Definitions</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">kfp</span> <span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Incorrect Pipeline Definition</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Incorrect Pipeline&#39;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;An example that attempts to return a PipelineTask object directly.&#39;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">incorrect_pipeline_example</span><span class="p">():</span>
+    <span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+    <span class="k">def</span> <span class="nf">generate_number</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">42</span>
+
+    <span class="n">generated_number_task</span> <span class="o">=</span> <span class="n">generate_number</span><span class="p">()</span>
+    <span class="c1"># Incorrectly attempting to return the PipelineTask object itself</span>
+    <span class="k">return</span> <span class="n">generated_number_task</span>  <span class="c1"># This would result in an error</span>
+
+<span class="c1"># Correct Pipeline Definition</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Correct Pipeline&#39;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A corrected example that does not attempt to return a PipelineTask object.&#39;</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">correct_pipeline_example</span><span class="p">():</span>
+    <span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+    <span class="k">def</span> <span class="nf">generate_number</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">42</span>
+
+    <span class="n">generated_number_task</span> <span class="o">=</span> <span class="n">generate_number</span><span class="p">()</span>
+    <span class="c1"># Correct approach: Do not attempt to return a PipelineTask object directly from a pipeline function.</span>
+    <span class="c1"># The pipeline function does not need to return anything.</span>
+
+<span class="c1"># Explanation:</span>
+<span class="c1"># In Kubeflow Pipelines, a pipeline function orchestrates the flow of data between components but does not return data directly.</span>
+<span class="c1"># Attempting to return a PipelineTask object from a pipeline function is incorrect because the pipeline definition</span>
+<span class="c1"># should describe the structure and dependencies of the components, not handle data directly.</span>
+<span class="c1"># The corrected version removes the return statement, aligning with the expected behavior of pipeline functions.</span>
+</code></pre></div>
+<h3 id="8-automating-data-preparation-for-model-training">8. Automating Data Preparation for Model Training</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Simulating data preparation for model training</span>
+<span class="k">def</span> <span class="nf">preprocess_data</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">):</span>
+    <span class="c1"># Reading data from a JSON file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+
+    <span class="c1"># Perform a simple transformation: filter data</span>
+    <span class="c1"># For illustration, let&#39;s assume we only want items with a specific condition</span>
+    <span class="c1"># E.g., filtering items where the value of &quot;useful&quot; is True</span>
+    <span class="n">filtered_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;useful&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>
+
+    <span class="c1"># Saving the transformed data to another JSON file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">preprocess_data</span><span class="p">(</span><span class="s1">&#39;input_data.json&#39;</span><span class="p">,</span> <span class="s1">&#39;processed_data.json&#39;</span><span class="p">)</span>
+
+<span class="c1"># Note: This script assumes the presence of &#39;input_data.json&#39; file in the current directory</span>
+<span class="c1"># and will save the processed data to &#39;processed_data.json&#39;.</span>
+<span class="c1"># In a real scenario, paths and the transformation logic should be adjusted according to the specific requirements.</span>
+</code></pre></div>
+<p>This script demonstrates a simple data preparation process, reading data from a JSON file, performing a transformation (in this case, filtering based on a condition), and then saving the processed data to another JSON file. This type of task could be encapsulated in a Kubeflow Pipeline component for automating data preparation steps in ML model training workflows.</p>
+<h3 id="9-implementing-model-versioning-in-a-pipeline">9. Implementing Model Versioning in a Pipeline</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">generate_model_name</span><span class="p">(</span><span class="n">base_model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Generating a timestamp in the format &quot;YYYYMMDD-HHMMSS&quot;</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">-%H%M%S&quot;</span><span class="p">)</span>
+    <span class="c1"># Appending the timestamp to the base model name to create a unique model name</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_model_name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">model_name</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">base_model_name</span> <span class="o">=</span> <span class="s2">&quot;my_model&quot;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="n">generate_model_name</span><span class="p">(</span><span class="n">base_model_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generated model name:&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+
+<span class="c1"># This function generates a unique model name by appending the current date and time to a base model name.</span>
+<span class="c1"># This practice helps in versioning models, making it easier to track and manage different versions of models in ML operations.</span>
+</code></pre></div>
+<h3 id="10-parameterize-and-execute-a-kubeflow-pipeline">10. Parameterize and Execute a Kubeflow Pipeline</h3>
+<p>For the purpose of this task, let's assume we're working in an environment where we have access to Kubeflow Pipeline's execution API. Since actual execution details can vary depending on the specific platform and API version, this script provides a hypothetical example based on common patterns.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Assuming the existence of necessary imports and configurations for interacting with the execution environment</span>
+
+<span class="k">def</span> <span class="nf">submit_pipeline_execution</span><span class="p">(</span><span class="n">compiled_pipeline_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pipeline_arguments</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c1"># Placeholder for the API or SDK method to submit a pipeline for execution</span>
+    <span class="c1"># In a real scenario, this would involve using the Kubeflow Pipelines SDK or a cloud provider&#39;s SDK</span>
+    <span class="c1"># For example, using the Kubeflow Pipelines SDK or a cloud service like Google Cloud AI Platform Pipelines</span>
+
+    <span class="c1"># Assuming a function `submit_pipeline_job` exists and can be used for submission</span>
+    <span class="c1"># This function would be part of the execution environment&#39;s SDK or API</span>
+    <span class="n">submit_pipeline_job</span><span class="p">(</span><span class="n">compiled_pipeline_path</span><span class="p">,</span> <span class="n">pipeline_arguments</span><span class="p">)</span>
+
+<span class="c1"># Example pipeline arguments</span>
+<span class="n">pipeline_arguments</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;recipient_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span>
+<span class="p">}</span>
+
+<span class="c1"># Path to the compiled Kubeflow Pipeline YAML file</span>
+<span class="n">compiled_pipeline_path</span> <span class="o">=</span> <span class="s2">&quot;path_to_compiled_pipeline.yaml&quot;</span>
+
+<span class="c1"># Submitting the pipeline for execution</span>
+<span class="n">submit_pipeline_execution</span><span class="p">(</span><span class="n">compiled_pipeline_path</span><span class="p">,</span> <span class="n">pipeline_arguments</span><span class="p">)</span>
+
+<span class="c1"># Note: This example assumes the existence of a function `submit_pipeline_job` which would be specific</span>
+<span class="c1"># to the execution environment&#39;s API or SDK. In a real implementation, you would replace this placeholder</span>
+<span class="c1"># with actual code to interact with the Kubeflow Pipelines API or the API of a managed service like Google Cloud AI Platform.</span>
+</code></pre></div>
+<p>This script outlines how you might parameterize and submit a compiled Kubeflow Pipeline for execution, assuming the existence of a suitable API or SDK method (<code>submit_pipeline_job</code> in this hypothetical example). The actual method to submit a job would depend on the specifics of your execution environment or cloud service provider.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>

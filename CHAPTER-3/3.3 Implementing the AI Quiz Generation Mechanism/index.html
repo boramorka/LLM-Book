@@ -1,0 +1,1910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/">
+      
+      
+        <link rel="next" href="../3.4%20Summary%20and%20Reflections/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>3.3 Implementing the AI Quiz Generation Mechanism - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#33-implementing-the-ai-quiz-generation-mechanism" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.3 Implementing the AI Quiz Generation Mechanism
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#section-1-preparing-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 1: Preparing the Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-2-creating-the-quiz-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 2: Creating the Quiz Dataset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-3-engineering-the-quiz-generation-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 3: Engineering the Quiz Generation Prompt
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-4-utilizing-langchain-to-structure-the-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 4: Utilizing Langchain to Structure the Prompt
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#section-5-executing-the-quiz-generation-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Section 5: Executing the Quiz Generation Process
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-and-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary and Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-and-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-example-generating-and-evaluating-a-science-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Example: Generating and Evaluating a Science Quiz
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-and-tips_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-overview_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Definition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-example-testing-for-appropriate-refusal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Example: Testing for Appropriate Refusal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-and-tips_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Tips
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revised-function-for-science-quiz-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revised Function for Science Quiz Evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Revised Function for Science Quiz Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-definition-for-science-quiz-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Definition for Science Quiz Test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-and-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execution and Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices-and-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#circleci-configuration-file-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      CircleCI Configuration File Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-components-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components Explained
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-your-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Your Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="33-implementing-the-ai-quiz-generation-mechanism">3.3 Implementing the AI Quiz Generation Mechanism</h1>
+<p>In this chapter, we explore the creation of an AI-powered quiz generator, a sample application that demonstrates how to leverage third-party APIs, dataset creation, and prompt engineering for AI models. This project illustrates the practical application of AI in generating educational content, specifically quizzes, based on user-selected categories.</p>
+<h4 id="section-1-preparing-the-environment">Section 1: Preparing the Environment</h4>
+<p>The first step in building our AI-powered quiz generator involves setting up the environment and ensuring that we have access to necessary third-party APIs. This setup includes silencing warnings that can clutter our output, thereby making our development process smoother and more readable.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import the warnings library to control warning messages</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Ignore all warning messages to ensure clean output during execution</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load API tokens for third-party services used in the project</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">get_circle_ci_api_key</span><span class="p">,</span> <span class="n">get_github_api_key</span><span class="p">,</span> <span class="n">get_openai_api_key</span>
+
+<span class="c1"># Retrieve individual API keys for CircleCI, GitHub, and OpenAI</span>
+<span class="n">circle_ci_api_key</span> <span class="o">=</span> <span class="n">get_circle_ci_api_key</span><span class="p">()</span>
+<span class="n">github_api_key</span> <span class="o">=</span> <span class="n">get_github_api_key</span><span class="p">()</span>
+<span class="n">openai_api_key</span> <span class="o">=</span> <span class="n">get_openai_api_key</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="section-2-creating-the-quiz-dataset">Section 2: Creating the Quiz Dataset</h4>
+<p>The core of our quiz generator is the dataset from which it will generate questions. This dataset includes subjects from various categories, each with unique facts that can be used to craft quiz questions.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a template for structuring quiz questions</span>
+<span class="n">quiz_question_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span>
+
+<span class="c1"># Initialize the quiz bank with subjects, categories, and facts</span>
+<span class="n">quiz_bank</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Here are three new quiz questions following the given format:</span>
+
+<span class="s2">1. Subject: Historical Conflict  </span>
+<span class="s2">   Categories: History, Politics  </span>
+<span class="s2">   Facts:  </span>
+<span class="s2">   - Began in 1914 and ended in 1918  </span>
+<span class="s2">   - Involved two major alliances: the Allies and the Central Powers  </span>
+<span class="s2">   - Known for the extensive use of trench warfare on the Western Front  </span>
+
+<span class="s2">2. Subject: Revolutionary Communication Technology  </span>
+<span class="s2">   Categories: Technology, History  </span>
+<span class="s2">   Facts:  </span>
+<span class="s2">   - Invented by Alexander Graham Bell in 1876  </span>
+<span class="s2">   - Revolutionized long-distance communication  </span>
+<span class="s2">   - First words transmitted were &quot;Mr. Watson, come here, I want to see you&quot;  </span>
+
+<span class="s2">3. Subject: Iconic American Landmark  </span>
+<span class="s2">   Categories: Geography, History  </span>
+<span class="s2">   Facts:  </span>
+<span class="s2">   - Gifted to the United States by France in 1886  </span>
+<span class="s2">   - Symbolizes freedom and democracy  </span>
+<span class="s2">   - Located on Liberty Island in New York Harbor  </span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="section-3-engineering-the-quiz-generation-prompt">Section 3: Engineering the Quiz Generation Prompt</h4>
+<p>To generate quizzes tailored to the user's preferred category, we craft a detailed prompt template that guides the AI in creating quizzes. This template outlines the steps the AI should follow, from category selection to question generation.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a delimiter to separate different parts of the quiz prompt</span>
+<span class="n">section_delimiter</span> <span class="o">=</span> <span class="s2">&quot;####&quot;</span>
+
+<span class="c1"># Craft a detailed prompt template guiding the AI to generate custom quizzes</span>
+<span class="n">quiz_generation_prompt_template</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Instructions for Generating a Customized Quiz:</span>
+<span class="s2">Each question is separated by four hashtags, i.e., </span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span>
+
+<span class="s2">The user selects a category for their quiz. Ensure questions are relevant to the chosen category.</span>
+
+<span class="s2">Step 1:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> Identify the user&#39;s chosen category from the following list:</span>
+<span class="s2">* Culture</span>
+<span class="s2">* Science</span>
+<span class="s2">* Art</span>
+
+<span class="s2">Step 2:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> Select up to two subjects that align with the chosen category from the quiz bank:</span>
+
+<span class="si">{</span><span class="n">quiz_bank</span><span class="si">}</span>
+
+<span class="s2">Step 3:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> Create a quiz based on the selected subjects, formulating three questions per subject.</span>
+
+<span class="s2">Quiz Format:</span>
+<span class="s2">Question 1:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> &lt;Insert Question 1&gt;</span>
+<span class="s2">Question 2:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> &lt;Insert Question 2&gt;</span>
+<span class="s2">Question 3:</span><span class="si">{</span><span class="n">section_delimiter</span><span class="si">}</span><span class="s2"> &lt;Insert Question 3&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="section-4-utilizing-langchain-to-structure-the-prompt">Section 4: Utilizing Langchain to Structure the Prompt</h4>
+<p>With the prompt template ready, we use Langchain's capabilities to structure it for processing by an AI model. This includes setting up a chat prompt, choosing the AI model, and parsing its output.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import necessary components from Langchain for prompt structuring and AI model interaction</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.output_parser</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="c1"># Convert the detailed quiz generation prompt into a structured format for the AI</span>
+<span class="n">structured_chat_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">quiz_generation_prompt_template</span><span class="p">)])</span>
+
+<span class="c1"># Select the language model for generating quiz questions</span>
+<span class="n">language_model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Set up an output parser to convert the AI&#39;s response into a readable format</span>
+<span class="n">response_parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="section-5-executing-the-quiz-generation-process">Section 5: Executing the Quiz Generation Process</h4>
+<p>Finally, we combine all the components using Langchain's expression language to create a seamless quiz generation pipeline.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Connect the structured prompt, language model, and output parser to form the quiz generation pipeline</span>
+<span class="n">quiz_generation_pipeline</span> <span class="o">=</span> <span class="n">structured_chat_prompt</span> <span class="o">|</span> <span class="n">language_model</span> <span class="o">|</span> <span class="n">response_parser</span>
+
+<span class="c1"># Execute the pipeline to generate a quiz (execution example not shown)</span>
+</code></pre></div>
+<h4 id="summary-and-best-practices">Summary and Best Practices</h4>
+<p>In this chapter, we've covered the steps to build an AI-powered quiz generator, from environmental setup and dataset creation to prompt engineering and execution. Best practices include clear variable naming for readability, detailed commenting for maintainability, and structured prompt design for effective AI utilization.</p>
+<p>For further exploration, consider experimenting with different AI models, refining the quiz bank for more diverse subjects, or integrating additional APIs for expanded functionality.</p>
+<p>In this section, we encapsulate the entire process of setting up and executing the AI-powered quiz generation into a single, reusable function. This design pattern promotes modularity and reusability, allowing for easy adjustments and maintenance. The function <code>generate_quiz_assistant_pipeline</code> combines all the necessary components—prompt creation, model selection, and output parsing—into a coherent workflow that can be invoked with customized inputs.</p>
+<h3 id="function-overview">Function Overview</h3>
+<p>The <code>generate_quiz_assistant_pipeline</code> function is designed to be versatile, accommodating different prompts and configurations for the quiz generation process. Its parameters allow for customization of the user's question template and the selection of specific language models and output parsers.</p>
+<h4 id="function-definition">Function Definition</h4>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.output_parser</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="k">def</span> <span class="nf">generate_quiz_assistant_pipeline</span><span class="p">(</span>
+    <span class="n">system_prompt_message</span><span class="p">,</span>
+    <span class="n">user_question_template</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">selected_language_model</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">response_format_parser</span><span class="o">=</span><span class="n">StrOutputParser</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assembles the components required for generating quizzes through an AI-powered process.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - system_prompt_message: The message containing instructions or context for the quiz generation.</span>
+<span class="sd">    - user_question_template: A template for structuring user questions, defaulting to a simple placeholder.</span>
+<span class="sd">    - selected_language_model: The AI model used for generating content, with a default model specified.</span>
+<span class="sd">    - response_format_parser: The mechanism for parsing the AI model&#39;s response into a desired format.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    A Langchain pipeline that, when executed, generates a quiz based on the provided system message and user template.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create a structured chat prompt from the system and user messages</span>
+    <span class="n">structured_chat_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+        <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="n">system_prompt_message</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user_question_template</span><span class="p">),</span>
+    <span class="p">])</span>
+
+    <span class="c1"># Assemble the chat prompt, language model, and output parser into a single pipeline</span>
+    <span class="n">quiz_generation_pipeline</span> <span class="o">=</span> <span class="n">structured_chat_prompt</span> <span class="o">|</span> <span class="n">selected_language_model</span> <span class="o">|</span> <span class="n">response_format_parser</span>
+
+    <span class="k">return</span> <span class="n">quiz_generation_pipeline</span>
+</code></pre></div>
+<h4 id="practical-usage">Practical Usage</h4>
+<p>This function abstracts away the complexity of setting up individual components for quiz generation. By calling <code>generate_quiz_assistant_pipeline</code> with appropriate arguments, users can easily generate quizzes on various subjects and categories. This abstraction not only simplifies the process for developers but also enhances the flexibility of the quiz generator, allowing for easy integration into larger systems or applications.</p>
+<h4 id="best-practices-and-tips">Best Practices and Tips</h4>
+<ul>
+<li><strong>Customization</strong>: Utilize the function's parameters to customize the quiz generation process according to different needs or contexts.</li>
+<li><strong>Model Selection</strong>: Experiment with different language models to find the one that best suits your accuracy and creativity requirements.</li>
+<li><strong>Template Design</strong>: Craft your <code>user_question_template</code> and <code>system_prompt_message</code> carefully to guide the AI in generating relevant and engaging quiz questions.</li>
+<li><strong>Error Handling</strong>: Implement error handling within the function to manage issues that may arise during the quiz generation process, such as API limitations or unexpected model responses.</li>
+</ul>
+<p>Incorporating this function into your project simplifies the creation of AI-powered quizzes, enabling innovative educational tools and interactive content.</p>
+<p>To enhance the AI-powered quiz generator with evaluation capabilities, we introduce the <code>evaluate_quiz_content</code> function. This function is designed to evaluate the generated quiz content, ensuring that it contains expected keywords related to a given topic. This kind of evaluation is crucial for verifying the relevance and accuracy of the generated quizzes, especially in educational or training contexts where content validity is paramount.</p>
+<h3 id="function-overview_1">Function Overview</h3>
+<p>The <code>evaluate_quiz_content</code> function integrates with the previously established quiz generation pipeline. It takes a system message (which includes instructions or context for generating a quiz), a specific question (such as a request to generate a quiz on a particular topic), and a list of expected words or phrases that should appear in the quiz content to consider the generation successful.</p>
+<h4 id="function-definition_1">Function Definition</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">evaluate_quiz_content</span><span class="p">(</span>
+    <span class="n">system_prompt_message</span><span class="p">,</span>
+    <span class="n">quiz_request_question</span><span class="p">,</span>
+    <span class="n">expected_keywords</span><span class="p">,</span>
+    <span class="n">user_question_template</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">selected_language_model</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">response_format_parser</span><span class="o">=</span><span class="n">StrOutputParser</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluates the generated quiz content to ensure it includes expected keywords or phrases.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - system_prompt_message: Instructions or context for the quiz generation.</span>
+<span class="sd">    - quiz_request_question: The specific question or request for generating a quiz.</span>
+<span class="sd">    - expected_keywords: A list of words or phrases expected to be included in the quiz content.</span>
+<span class="sd">    - user_question_template: A template for structuring user questions, with a default placeholder.</span>
+<span class="sd">    - selected_language_model: The AI model used for content generation, with a default model specified.</span>
+<span class="sd">    - response_format_parser: The mechanism for parsing the AI model&#39;s response into a desired format.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - AssertionError: If none of the expected keywords are found in the generated quiz content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Utilize the assistant_chain function to generate quiz content based on the provided question</span>
+    <span class="n">generated_content</span> <span class="o">=</span> <span class="n">generate_quiz_assistant_pipeline</span><span class="p">(</span>
+        <span class="n">system_prompt_message</span><span class="p">,</span>
+        <span class="n">user_question_template</span><span class="p">,</span>
+        <span class="n">selected_language_model</span><span class="p">,</span>
+        <span class="n">response_format_parser</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">quiz_request_question</span><span class="p">})</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">generated_content</span><span class="p">)</span>
+
+    <span class="c1"># Verify that the generated content includes at least one of the expected keywords</span>
+    <span class="k">assert</span> <span class="nb">any</span><span class="p">(</span><span class="n">keyword</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">generated_content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">expected_keywords</span><span class="p">),</span> \
+        <span class="sa">f</span><span class="s2">&quot;Expected the generated quiz to include one of &#39;</span><span class="si">{</span><span class="n">expected_keywords</span><span class="si">}</span><span class="s2">&#39;, but it did not.&quot;</span>
+</code></pre></div>
+<h4 id="practical-example-generating-and-evaluating-a-science-quiz">Practical Example: Generating and Evaluating a Science Quiz</h4>
+<p>To put this evaluation function into practice, let's consider a test case where we generate and evaluate a quiz about science.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define the system message (or prompt template), the specific question, and the expected keywords</span>
+<span class="n">system_prompt_message</span> <span class="o">=</span> <span class="n">quiz_generation_prompt_template</span>  <span class="c1"># Assume this variable is defined as before</span>
+<span class="n">quiz_request_question</span> <span class="o">=</span> <span class="s2">&quot;Generate a quiz about science.&quot;</span>
+<span class="n">expected_keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;renaissance innovator&quot;</span><span class="p">,</span> <span class="s2">&quot;astronomical observation tools&quot;</span><span class="p">,</span> <span class="s2">&quot;natural sciences&quot;</span><span class="p">]</span>
+
+<span class="c1"># Call the evaluation function with the test case parameters</span>
+<span class="n">evaluate_quiz_content</span><span class="p">(</span>
+    <span class="n">system_prompt_message</span><span class="p">,</span>
+    <span class="n">quiz_request_question</span><span class="p">,</span>
+    <span class="n">expected_keywords</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>This example demonstrates how to use the <code>evaluate_quiz_content</code> function to ensure that the generated quiz about science includes relevant content, such as questions related to significant scientific figures, tools, or concepts.</p>
+<h4 id="best-practices-and-tips_1">Best Practices and Tips</h4>
+<ul>
+<li><strong>Keyword Selection</strong>: Choose expected keywords or phrases that are specific enough to accurately assess the quiz content's relevance but also broad enough to allow for creative variations in the AI's responses.</li>
+<li><strong>Comprehensive Evaluation</strong>: Consider using multiple sets of expected keywords for diverse topics to thoroughly test the AI's ability to generate relevant quizzes across different subjects.</li>
+<li><strong>Iterative Improvement</strong>: Use the evaluation results to iteratively refine the quiz generation process, including adjusting the prompt template, the language model's parameters, or the dataset used for generating quizzes.</li>
+</ul>
+<p>To ensure that our AI-powered quiz generator can appropriately handle requests that fall outside its scope or capabilities, we introduce the <code>evaluate_request_refusal</code> function. This function is designed to test the system's ability to decline to answer under certain conditions, such as when the request is not applicable or beyond the system's current knowledge base. Handling such cases gracefully is essential for maintaining user trust and ensuring a positive user experience.</p>
+<h3 id="function-overview_2">Function Overview</h3>
+<p>The <code>evaluate_request_refusal</code> function simulates scenarios where the system should refuse to generate a quiz, based on predefined criteria such as the relevance of the request or the system's limitations. It verifies that the system responds with a specified refusal message, indicating its inability to fulfill the request.</p>
+<h4 id="function-definition_2">Function Definition</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">evaluate_request_refusal</span><span class="p">(</span>
+    <span class="n">system_prompt_message</span><span class="p">,</span>
+    <span class="n">invalid_quiz_request_question</span><span class="p">,</span>
+    <span class="n">expected_refusal_response</span><span class="p">,</span>
+    <span class="n">user_question_template</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">selected_language_model</span><span class="o">=</span><span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">response_format_parser</span><span class="o">=</span><span class="n">StrOutputParser</span><span class="p">()):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluates the system&#39;s response to ensure it appropriately declines to answer invalid or inapplicable requests.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - system_prompt_message: Instructions or context for the quiz generation.</span>
+<span class="sd">    - invalid_quiz_request_question: A request that the system should decline to fulfill.</span>
+<span class="sd">    - expected_refusal_response: The expected response indicating the system&#39;s refusal to answer the request.</span>
+<span class="sd">    - user_question_template: A template for structuring user questions, with a default placeholder.</span>
+<span class="sd">    - selected_language_model: The AI model used for content generation, with a default model specified.</span>
+<span class="sd">    - response_format_parser: The mechanism for parsing the AI model&#39;s response into a desired format.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - AssertionError: If the system&#39;s response does not include the expected refusal message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Reorder parameters to match the expected order in `generate_quiz_assistant_pipeline`</span>
+    <span class="n">generated_response</span> <span class="o">=</span> <span class="n">generate_quiz_assistant_pipeline</span><span class="p">(</span>
+        <span class="n">system_prompt_message</span><span class="p">,</span>
+        <span class="n">user_question_template</span><span class="p">,</span>
+        <span class="n">selected_language_model</span><span class="p">,</span>
+        <span class="n">response_format_parser</span><span class="p">)</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">invalid_quiz_request_question</span><span class="p">})</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">generated_response</span><span class="p">)</span>
+
+    <span class="c1"># Verify that the system&#39;s response includes the expected refusal message</span>
+    <span class="k">assert</span> <span class="n">expected_refusal_response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">generated_response</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> \
+        <span class="sa">f</span><span class="s2">&quot;Expected the system to decline with &#39;</span><span class="si">{</span><span class="n">expected_refusal_response</span><span class="si">}</span><span class="s2">&#39;, but received: </span><span class="si">{</span><span class="n">generated_response</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+<h4 id="practical-example-testing-for-appropriate-refusal">Practical Example: Testing for Appropriate Refusal</h4>
+<p>To illustrate how <code>evaluate_request_refusal</code> works, let's consider a scenario where the quiz generator should refuse to generate a quiz due to the request being out of scope or not supported by the current configuration.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define the system message (or prompt template), a request that should be declined, and the expected refusal response</span>
+<span class="n">system_prompt_message</span> <span class="o">=</span> <span class="n">quiz_generation_prompt_template</span>  <span class="c1"># Assume this variable is defined as before</span>
+<span class="n">invalid_quiz_request_question</span> <span class="o">=</span> <span class="s2">&quot;Generate a quiz about Rome.&quot;</span>
+<span class="n">expected_refusal_response</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m sorry, but I can&#39;t generate a quiz about Rome at this time.&quot;</span>
+
+<span class="c1"># Execute the refusal evaluation function with the specified parameters</span>
+<span class="n">evaluate_request_refusal</span><span class="p">(</span>
+    <span class="n">system_prompt_message</span><span class="p">,</span>
+    <span class="n">invalid_quiz_request_question</span><span class="p">,</span>
+    <span class="n">expected_refusal_response</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>This example demonstrates the function's ability to test the quiz generator's response to a request that should be declined. By verifying the presence of the expected refusal message, we can ensure that the system behaves as intended when faced with requests it cannot fulfill.</p>
+<h4 id="best-practices-and-tips_2">Best Practices and Tips</h4>
+<ul>
+<li><strong>Clear Refusal Messages</strong>: Design refusal messages to be clear and informative, helping users understand why their request cannot be fulfilled.</li>
+<li><strong>Comprehensive Testing</strong>: Use a variety of test cases, including requests for unsupported topics or formats, to thoroughly evaluate the system's refusal logic.</li>
+<li><strong>Refinement and Feedback</strong>: Based on testing outcomes, refine the refusal logic and messages to enhance user understanding and satisfaction.</li>
+<li><strong>Consider User Experience</strong>: While refusal is sometimes necessary, consider providing alternative suggestions or guidance to maintain a positive user interaction.</li>
+</ul>
+<p>Implementing and testing refusal scenarios ensures that the quiz generator can handle a wide range of user requests gracefully, maintaining reliability and user trust even when it cannot provide the requested content.</p>
+<p>To adapt the provided template for a practical test scenario focused on generating a science-themed quiz, the function <code>test_science_quiz</code> is designed. This function aims to evaluate whether the AI-generated quiz questions indeed revolve around expected science topics or subjects. By incorporating the <code>evaluate_quiz_content</code> function, we can ensure that the quiz includes specific keywords or themes indicative of a science category.</p>
+<h3 id="revised-function-for-science-quiz-evaluation">Revised Function for Science Quiz Evaluation</h3>
+<p>Below, I'll adapt the previously outlined <code>evaluate_quiz_content</code> function into the context of this test scenario, ensuring clarity on expected outcomes and the evaluation process. The function will test if the AI-generated content aligns with the expected scientific themes.</p>
+<h4 id="function-definition-for-science-quiz-test">Function Definition for Science Quiz Test</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_science_quiz</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tests the quiz generator&#39;s ability to produce questions related to science, verifying the inclusion of expected subjects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define the request for generating a quiz question</span>
+    <span class="n">question_request</span> <span class="o">=</span> <span class="s2">&quot;Generate a quiz question.&quot;</span>
+
+    <span class="c1"># List of expected keywords or subjects that indicate the quiz&#39;s alignment with science topics</span>
+    <span class="n">expected_science_subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;physics&quot;</span><span class="p">,</span> <span class="s2">&quot;chemistry&quot;</span><span class="p">,</span> <span class="s2">&quot;biology&quot;</span><span class="p">,</span> <span class="s2">&quot;astronomy&quot;</span><span class="p">]</span>
+
+    <span class="c1"># System message or prompt template configured for quiz generation</span>
+    <span class="n">system_prompt_message</span> <span class="o">=</span> <span class="n">quiz_generation_prompt_template</span>  <span class="c1"># This should be defined earlier in your code</span>
+
+    <span class="c1"># Invoke the evaluation function with the science-specific parameters</span>
+    <span class="n">evaluate_quiz_content</span><span class="p">(</span>
+        <span class="n">system_prompt_message</span><span class="o">=</span><span class="n">system_prompt_message</span><span class="p">,</span>
+        <span class="n">quiz_request_question</span><span class="o">=</span><span class="n">question_request</span><span class="p">,</span>
+        <span class="n">expected_keywords</span><span class="o">=</span><span class="n">expected_science_subjects</span>
+    <span class="p">)</span>
+</code></pre></div>
+<p>This function encapsulates the evaluation logic to ensure that when a quiz question is requested, the generated content reflects science subjects accurately. It leverages the structure of invoking the quiz generation and subsequent evaluation to ascertain the presence of science-related keywords or subjects within the generated content.</p>
+<h4 id="execution-and-evaluation">Execution and Evaluation</h4>
+<p>Executing <code>test_science_quiz</code> effectively simulates the scenario of requesting a quiz question from the system and then scrutinizing the response to confirm the inclusion of science-related subjects. This test plays a crucial role in verifying the system's capability to understand the context of the request and generate relevant content accordingly.</p>
+<h4 id="best-practices-and-considerations">Best Practices and Considerations</h4>
+<ul>
+<li><strong>Adjust Expectations as Needed</strong>: Depending on the specificity of your quiz generator's domain or the breadth of the science category, you might need to refine the list of expected subjects or keywords to better match your application's scope and accuracy.</li>
+<li><strong>Comprehensive Testing</strong>: Beyond science, consider implementing similar test functions for other categories your quiz generator supports, such as history, geography, or arts, to ensure comprehensive coverage and functionality across diverse subjects.</li>
+<li><strong>Analyze Failures for Improvement</strong>: Should the test fail, analyze the discrepancies between expected subjects and generated content to identify potential areas for refinement in your quiz generation logic or dataset.</li>
+</ul>
+<p>This structured approach to testing not only ensures that the quiz generator performs as expected but also highlights areas for improvement, driving enhancements in content relevance and user engagement.</p>
+<h3 id="circleci-configuration-file-overview">CircleCI Configuration File Overview</h3>
+<p>A CircleCI configuration file is named <code>.circleci/config.yml</code> and is placed at the root of your project's repository. This file defines the entire CI/CD pipeline in YAML syntax, specifying how your software should be built, tested, and deployed.</p>
+<p>Here's an outline of what a basic CircleCI config file might look like for a Python project, including running tests automatically:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.1</span>
+
+<span class="nt">orbs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">circleci/python@1.2.0</span><span class="w">  </span><span class="c1"># Use the Python orb to simplify your config</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build-and-test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">docker</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cimg/python:3.8</span><span class="w">  </span><span class="c1"># Specify the Python version</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">checkout</span><span class="w">  </span><span class="c1"># Check out the source code</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">restore_cache</span><span class="p">:</span><span class="w">  </span><span class="c1"># Restore cache to save time on dependencies installation</span>
+<span class="w">          </span><span class="nt">keys</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1-dependencies-{{ checksum &quot;requirements.txt&quot; }}</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1-dependencies-</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install Dependencies</span>
+<span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">save_cache</span><span class="p">:</span><span class="w">  </span><span class="c1"># Cache dependencies to speed up future builds</span>
+<span class="w">          </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./venv</span>
+<span class="w">          </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1-dependencies-{{ checksum &quot;requirements.txt&quot; }}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Tests</span>
+<span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest</span><span class="w">  </span><span class="c1"># Or any other command to run your tests</span>
+
+<span class="nt">workflows</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">build_and_test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build-and-test</span>
+</code></pre></div>
+<h3 id="key-components-explained">Key Components Explained</h3>
+<ul>
+<li><strong>version</strong>: Specifies the CircleCI configuration version. As of my last update, <code>2.1</code> is commonly used.</li>
+<li><strong>orbs</strong>: Orbs are reusable snippets of code that simplify your configuration. The <code>python</code> orb is used here as an example to help set up Python environments.</li>
+<li><strong>jobs</strong>: Defines the jobs that will be run. In this case, there's a single job called <code>build-and-test</code>.</li>
+<li><strong>docker</strong>: Specifies the Docker image to use for the job. Here, it's using CircleCI's Python 3.8 image.</li>
+<li><strong>steps</strong>: The steps to be run as part of the job, including checking out the code, restoring cache, installing dependencies, and running tests.</li>
+<li><strong>workflows</strong>: Defines the workflow to run the jobs. This configuration has a single workflow that runs the <code>build-and-test</code> job.</li>
+</ul>
+<h3 id="customizing-your-configuration">Customizing Your Configuration</h3>
+<ul>
+<li>Adjust the Python version in the <code>docker</code> section according to your project's needs.</li>
+<li>Replace the <code>pytest</code> command with the specific command you use to run your tests, if different.</li>
+<li>If your project has additional setup steps (like setting up databases, configuring environment variables, etc.), you can add them as additional <code>- run:</code> steps in the <code>jobs</code> section.</li>
+</ul>
+<p>To set up your tests to run automatically in CircleCI, commit this <code>.circleci/config.yml</code> file to your repository. Once pushed, CircleCI, if integrated with your GitHub or Bitbucket account, will automatically detect the configuration file and run your defined pipeline on each commit according to the rules you've set up.</p>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>What are the necessary components for setting up the environment for an AI-powered quiz generator?</li>
+<li>Describe how to structure a dataset for generating quiz questions. Include examples of categories and facts.</li>
+<li>How does prompt engineering influence the generation of customized quizzes? Provide an example of a prompt template.</li>
+<li>Explain the role of Langchain in structuring prompts for processing by an AI model.</li>
+<li>What constitutes the quiz generation pipeline in the context of using Langchain's expression language?</li>
+<li>How can one ensure the relevance and accuracy of generated quiz content through evaluation functions?</li>
+<li>Describe a method for testing the system's ability to decline generating a quiz under certain conditions.</li>
+<li>How can one test the AI-generated quiz questions for alignment with expected science topics or subjects?</li>
+<li>Outline the basic components of a CircleCI configuration file for a Python project, including automatic test running.</li>
+<li>Discuss the importance of customization in the CircleCI configuration file to match project-specific needs.</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<ol>
+<li>
+<p><strong>Create Quiz Dataset</strong>: Define a Python dictionary named <code>quiz_bank</code> that represents a collection of quiz questions, each with subjects, categories, and facts similar to the given example. Ensure your dictionary allows for easy access to subjects, categories, and facts.</p>
+</li>
+<li>
+<p><strong>Generate Quiz Questions Using Prompts</strong>: Craft a function <code>generate_quiz_questions(category)</code> that takes a category (e.g., "History", "Technology") as input and returns a list of generated quiz questions based on the subjects and facts from the <code>quiz_bank</code> dictionary. Use string manipulation or template strings to construct your quiz questions.</p>
+</li>
+<li>
+<p><strong>Implement Langchain Prompt Structuring</strong>: Simulate the process of using Langchain's capabilities by defining a function <code>structure_quiz_prompt(quiz_questions)</code> that takes a list of quiz questions and returns a structured chat prompt in a format similar to the one outlined, without actually integrating Langchain.</p>
+</li>
+<li>
+<p><strong>Quiz Generation Pipeline</strong>: Create a Python function named <code>generate_quiz_pipeline()</code> that mimics the creation and execution of a quiz generation pipeline, using placeholders for Langchain components. The function should print a message simulating the execution of the pipeline.</p>
+</li>
+<li>
+<p><strong>Reusable Quiz Generation Function</strong>: Implement a Python function <code>generate_quiz_assistant_pipeline(system_prompt_message, user_question_template="{question}")</code> that simulates assembling the components required for generating quizzes. Use string formatting to construct a detailed prompt based on the inputs.</p>
+</li>
+<li>
+<p><strong>Evaluate Generated Quiz Content</strong>: Write a function <code>evaluate_quiz_content(generated_content, expected_keywords)</code> that takes generated quiz content and a list of expected keywords as inputs, and checks if the content contains any of the keywords. Raise an assertion error with a custom message if none of the keywords are found.</p>
+</li>
+<li>
+<p><strong>Handle Invalid Quiz Requests</strong>: Design a function <code>evaluate_request_refusal(invalid_request, expected_response)</code> that simulates evaluating the system's response to an invalid quiz request. The function should assert whether the generated refusal response matches the expected refusal response.</p>
+</li>
+<li>
+<p><strong>Science Quiz Evaluation Test</strong>: Develop a Python function <code>test_science_quiz()</code> that uses the <code>evaluate_quiz_content</code> function to test if a generated science quiz includes questions related to expected scientific topics, such as "physics" or "chemistry".</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>

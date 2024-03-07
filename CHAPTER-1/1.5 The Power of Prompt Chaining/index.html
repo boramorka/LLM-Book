@@ -1,0 +1,1601 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/">
+      
+      
+        <link rel="next" href="../1.6%20Building%20and%20Evaluating%20LLM%20Applications/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>1.5 The Power of Prompt Chaining - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#15-the-power-of-prompt-chaining" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1.5 The Power of Prompt Chaining
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications-and-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications and Benefits
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methodologies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up the Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extracting-relevant-information-from-user-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extracting Relevant Information from User Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-detailed-product-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving Detailed Product Information
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-and-processing-json-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading and Processing JSON Strings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-user-responses-based-on-product-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating User Responses Based on Product Information
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprehensive-customer-service-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comprehensive Customer Service Interaction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="15-the-power-of-prompt-chaining">1.5 The Power of Prompt Chaining</h1>
+<h2 id="core-concepts">Core Concepts</h2>
+<p><strong>Understanding Prompt Chaining</strong></p>
+<p>Prompt chaining involves breaking down a complex task into a series of simpler, interconnected prompts, each handling a specific subtask. This method contrasts with single-prompt approaches, which attempt to resolve complex queries in one go. The rationale behind prompt chaining is similar to tackling a multifaceted problem by addressing its components one at a time, thereby simplifying the overall process.</p>
+<p><strong>Analogies for Clarity</strong></p>
+<ul>
+<li><strong>Cooking a Meal</strong>: Comparing single-step cooking of a complex dish to preparing it in stages. The latter approach minimizes errors and ensures each component is perfectly cooked.</li>
+<li><strong>Software Development</strong>: Relating the concept to writing modular code versus dealing with spaghetti code. Modular code simplifies debugging and maintenance by clearly defining dependencies and responsibilities.</li>
+</ul>
+<h2 id="practical-applications-and-benefits">Practical Applications and Benefits</h2>
+<p><strong>Workflow Management</strong></p>
+<p>By maintaining the system's state at each step and adapting subsequent actions based on this state, prompt chaining allows for a more structured approach to problem-solving. This technique is particularly useful in scenarios where the outcome of one subtask determines the direction of the next, such as customer service interactions where queries are classified before specific information is retrieved and presented.</p>
+<p><strong>Cost Efficiency</strong></p>
+<p>Longer prompts consume more computational resources. By using prompt chaining, only the necessary information is processed at each step, potentially reducing the operational costs associated with language model usage.</p>
+<p><strong>Error Reduction</strong></p>
+<p>Focusing on one subtask at a time reduces the likelihood of errors and simplifies the debugging process. It also makes it easier to insert human intervention at specific stages if needed, further enhancing the accuracy and reliability of the workflow.</p>
+<p><strong>Dynamic Information Loading</strong></p>
+<p>Prompt chaining facilitates the selective inclusion of relevant information at different stages, thereby keeping the model's context focused and manageable. This is particularly advantageous given the context limitations of current language models, which restrict the amount of information that can be processed in a single interaction.</p>
+<h2 id="methodologies">Methodologies</h2>
+<p><strong>Step-by-Step Approach</strong></p>
+<ol>
+<li><strong>Initial Task Decomposition</strong>: Break down the complex task into smaller, logically ordered subtasks.</li>
+<li><strong>State Management</strong>: Design a system to track the progress and outcomes of each subtask, ensuring smooth transitions between stages.</li>
+<li><strong>Prompt Design</strong>: For each subtask, create focused prompts that provide the model with just enough information to proceed without overwhelming it.</li>
+<li><strong>Information Retrieval and Processing</strong>: Implement helper functions or use existing tools to fetch and preprocess data as required by the workflow.</li>
+<li><strong>Dynamic Context Adjustment</strong>: Adjust the model's context dynamically, based on the outcomes of previous subtasks, to ensure relevance and efficiency in information processing.</li>
+</ol>
+<p><strong>Best Practices</strong></p>
+<ul>
+<li><strong>Minimize Complexity</strong>: Use prompt chaining judiciously, avoiding it for tasks simple enough to be handled with a single prompt.</li>
+<li><strong>Ensure Clarity</strong>: Design each prompt to be as clear and focused as possible, reducing the risk of misinterpretation by the model.</li>
+<li><strong>Manage Context</strong>: Keep track of the context externally and update the model's context dynamically to prevent information overload.</li>
+<li><strong>Optimize for Efficiency</strong>: Structure the workflow to minimize computational costs without sacrificing the quality of outcomes.</li>
+<li><strong>Continuous Testing and Refinement</strong>: Regularly test the entire chain for potential failures and refine prompts based on performance.</li>
+</ul>
+<h2 id="example">Example</h2>
+<h3 id="setting-up-the-environment">Setting Up the Environment</h3>
+<p>Before diving into the code, ensure that your environment is properly set up by installing necessary Python libraries and loading API keys. This setup involves using the <code>dotenv</code> library to manage environment variables securely and the <code>openai</code> library to interact with OpenAI's GPT models.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+<span class="c1"># Load the environment variables from a .env file</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># Set the OpenAI API key from environment variables</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="extracting-relevant-information-from-user-queries">Extracting Relevant Information from User Queries</h3>
+<p>The first step in our workflow involves processing user queries to extract relevant product and category information. This process is facilitated by structured system messages that guide the model's response format, ensuring consistency and accuracy.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a function to retrieve model completions based on user and system messages</span>
+<span class="k">def</span> <span class="nf">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">message_sequence</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span> 
+        <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span> 
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+
+<span class="c1"># System message defining the task structure and expected response format</span>
+<span class="n">system_instruction</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You will be provided with customer service queries. The query will be delimited with &#39;####&#39;.</span>
+<span class="s2">Output a Python list of objects, each representing a product or category mentioned in the query.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Example user query about specific products and categories</span>
+<span class="n">user_query</span> <span class="o">=</span> <span class="s2">&quot;#### Tell me about the SmartX ProPhone and the FotoSnap DSLR Camera, and about your TVs ####&quot;</span>
+
+<span class="c1"># Prepare the message sequence for the model</span>
+<span class="n">message_sequence</span> <span class="o">=</span> <span class="p">[</span>  
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span><span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">system_instruction</span><span class="p">},</span>    
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">user_query</span><span class="p">},</span>  
+<span class="p">]</span>
+
+<span class="c1"># Retrieve and print the model&#39;s response</span>
+<span class="n">extracted_info</span> <span class="o">=</span> <span class="n">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">extracted_info</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="retrieving-detailed-product-information">Retrieving Detailed Product Information</h3>
+<p>After extracting the necessary information from user queries, the next step involves fetching detailed information about the identified products and categories. This section shows how to structure your product database and query it efficiently.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Sample product database</span>
+<span class="n">product_database</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;TechPro Ultrabook&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TechPro Ultrabook&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Computers and Laptops&quot;</span><span class="p">,</span>
+        <span class="c1"># Additional product details...</span>
+    <span class="p">},</span>
+    <span class="c1"># Other products...</span>
+<span class="p">}</span>
+
+<span class="c1"># Function to get product information by name</span>
+<span class="k">def</span> <span class="nf">get_product_details_by_name</span><span class="p">(</span><span class="n">product_name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">product_database</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">product_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Function to get all products in a specific category</span>
+<span class="k">def</span> <span class="nf">get_products_in_category</span><span class="p">(</span><span class="n">category_name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">product</span> <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">product_database</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">product</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">category_name</span><span class="p">]</span>
+
+<span class="c1"># Example usage</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_product_details_by_name</span><span class="p">(</span><span class="s2">&quot;TechPro Ultrabook&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_products_in_category</span><span class="p">(</span><span class="s2">&quot;Computers and Laptops&quot;</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="reading-and-processing-json-strings">Reading and Processing JSON Strings</h3>
+<p>When working with complex workflows, it's common to pass data in JSON format. The following example demonstrates how to convert a JSON string back into Python objects for further processing.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="c1"># Function to convert JSON string to Python list</span>
+<span class="k">def</span> <span class="nf">json_string_to_python_list</span><span class="p">(</span><span class="n">json_string</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">json_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Ensure proper JSON format by replacing single quotes with double quotes</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: Invalid JSON string&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<span class="c1"># Example JSON string (replace with actual model output)</span>
+<span class="n">json_input</span> <span class="o">=</span> <span class="s2">&quot;[{&#39;category&#39;: &#39;Smartphones and Accessories&#39;, &#39;products&#39;: [&#39;SmartX ProPhone&#39;]}]&quot;</span>
+
+<span class="c1"># Convert and print the Python list</span>
+<span class="n">python_list</span> <span class="o">=</span> <span class="n">json_string_to_python_list</span><span class="p">(</span><span class="n">json_input</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="generating-user-responses-based-on-product-information">Generating User Responses Based on Product Information</h3>
+<p>Finally, after retrieving the necessary product information, it's time to generate a response to the user's query. This process involves formatting the retrieved data into a comprehensive and user-friendly format.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Function to generate a response string from product data</span>
+<span class="k">def</span> <span class="nf">generate_response_from_data</span><span class="p">(</span><span class="n">product_data_list</span>
+
+<span class="p">):</span>
+    <span class="n">response_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">product_data_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response_string</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">product_data_list</span><span class="p">:</span>
+        <span class="c1"># Process each product or category...</span>
+        <span class="n">response_string</span> <span class="o">+=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">response_string</span>
+
+<span class="c1"># System message for responding to user queries</span>
+<span class="n">response_instruction</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You are a customer service assistant. Respond with concise answers and ask follow-up questions if necessary.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Generate the response based on product information</span>
+<span class="n">final_response</span> <span class="o">=</span> <span class="n">generate_response_from_data</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">final_response</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="comprehensive-customer-service-interaction">Comprehensive Customer Service Interaction</h3>
+<p>Alex starts by inquiring about photography products, encounters an issue with a recently purchased product, asks about warranty coverage, and receives recommendations for accessories.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define the system instruction for handling customer service queries</span>
+<span class="n">system_instruction</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You will be provided with customer service queries. The query will be delimited with &#39;####&#39;. Output a Python list of objects, each representing a product or category mentioned in the query.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Alex&#39;s initial product inquiry</span>
+<span class="n">user_query_1</span> <span class="o">=</span> <span class="s2">&quot;#### I&#39;m interested in upgrading my photography equipment. Can you tell me about the latest DSLR cameras and any compatible accessories? ####&quot;</span>
+
+<span class="c1"># Process the initial inquiry</span>
+<span class="n">message_sequence_1</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">system_instruction</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">user_query_1</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response_1</span> <span class="o">=</span> <span class="n">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence_1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product Inquiry Response:&quot;</span><span class="p">,</span> <span class="n">response_1</span><span class="p">)</span>
+
+<span class="c1"># Alex encounters an issue with the new camera</span>
+<span class="n">troubleshooting_query</span> <span class="o">=</span> <span class="s2">&quot;#### I just bought the FotoSnap DSLR Camera you recommended, but I&#39;m having trouble connecting it to my smartphone. What should I do? ####&quot;</span>
+
+<span class="c1"># Process the troubleshooting request</span>
+<span class="n">system_instruction_troubleshooting</span> <span class="o">=</span> <span class="s2">&quot;Provide step-by-step troubleshooting advice for the customer&#39;s issue.&quot;</span>
+<span class="n">message_sequence_2</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">system_instruction_troubleshooting</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">troubleshooting_query</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response_2</span> <span class="o">=</span> <span class="n">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence_2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Troubleshooting Response:&quot;</span><span class="p">,</span> <span class="n">response_2</span><span class="p">)</span>
+
+<span class="c1"># Alex asks about the warranty for the new camera</span>
+<span class="n">follow_up_query</span> <span class="o">=</span> <span class="s2">&quot;#### Also, can you clarify what the warranty covers for the FotoSnap DSLR Camera? ####&quot;</span>
+
+<span class="c1"># Process the warranty inquiry</span>
+<span class="n">system_instruction_follow_up</span> <span class="o">=</span> <span class="s2">&quot;Provide detailed information about the product&#39;s warranty coverage.&quot;</span>
+<span class="n">message_sequence_3</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">system_instruction_follow_up</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">follow_up_query</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response_3</span> <span class="o">=</span> <span class="n">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence_3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warranty Information Response:&quot;</span><span class="p">,</span> <span class="n">response_3</span><span class="p">)</span>
+
+<span class="c1"># The system offers additional assistance based on Alex&#39;s interest</span>
+<span class="n">additional_assistance_query</span> <span class="o">=</span> <span class="s2">&quot;#### Given your interest in photography, would you like recommendations on lenses and tripods compatible with the FotoSnap DSLR Camera? ####&quot;</span>
+
+<span class="c1"># Process the additional assistance offer</span>
+<span class="n">system_instruction_additional_assistance</span> <span class="o">=</span> <span class="s2">&quot;Offer recommendations for accessories that complement the user&#39;s existing products.&quot;</span>
+<span class="n">message_sequence_4</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;system&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">system_instruction_additional_assistance</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">additional_assistance_query</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">response_4</span> <span class="o">=</span> <span class="n">retrieve_model_response</span><span class="p">(</span><span class="n">message_sequence_4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Additional Assistance Response:&quot;</span><span class="p">,</span> <span class="n">response_4</span><span class="p">)</span>
+</code></pre></div>
+<p>This example illustrates a cohesive and realistic interaction between a customer and a customer service AI, seamlessly transitioning through various stages of customer engagement. From initial product inquiry to troubleshooting, warranty clarification, and personalized recommendations, each step is logically connected, demonstrating how GPT models can be employed to create a comprehensive and satisfying customer service experience.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This guidebook chapter has walked you through an advanced workflow for processing user queries, retrieving detailed product information, and generating informative responses. By structuring your code and data efficiently, you can build robust systems capable of handling complex tasks with ease. Remember to continuously test and refine your approach to improve accuracy and user satisfaction.</p>
+<p>To create a single, logically consistent example that weaves through various customer service scenarios using a chain of prompts, let's simulate a customer named Alex engaging with a customer service AI. This interaction will cover product inquiries, troubleshooting, warranty questions, and additional assistance suggestions, all centered around Alex's interest in photography and electronics.</p>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>What is prompt chaining, and how does it differ from using a single prompt for complex tasks?</li>
+<li>Provide two analogies that help clarify the concept of prompt chaining. Describe how these analogies relate to the process of prompt chaining in AI.</li>
+<li>How does prompt chaining enhance workflow management in AI systems?</li>
+<li>Discuss the cost efficiency benefits of employing prompt chaining in AI applications.</li>
+<li>Explain how prompt chaining can lead to a reduction in errors during complex task execution.</li>
+<li>Why is dynamic information loading important in the context of AI's current limitations, and how does prompt chaining address this issue?</li>
+<li>Outline the step-by-step approach to implementing prompt chaining in an AI-driven workflow. Include the purposes of each step.</li>
+<li>Identify and explain the best practices in prompt chaining to ensure its effectiveness and efficiency.</li>
+<li>In the provided example of setting up the environment for a Python-based AI interaction, what libraries are used, and for what purposes?</li>
+<li>How does the system message in the example guide the AI model's response to user queries?</li>
+<li>Explain the role of a product database in retrieving detailed product information as demonstrated in the example. How is the product information accessed?</li>
+<li>Describe the process of converting JSON strings to Python objects for further processing in AI workflows. Why is this conversion necessary?</li>
+<li>How does the final step of generating user responses from product data improve the AI's customer service interaction?</li>
+<li>Using the comprehensive customer service interaction example, describe how the system adapts to various customer needs (product inquiry, troubleshooting, warranty information, additional assistance) through prompt chaining.</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<ol>
+<li>Write a Python function <code>retrieve_model_response</code> that takes a message sequence as input and returns a model's response based on the given parameters. Include parameters for the model, temperature, and max_tokens.</li>
+<li>Demonstrate how to use the <code>retrieve_model_response</code> function with a system instruction and a user query to extract relevant information from a customer service query.</li>
+<li>Create a sample product database and write functions to retrieve product details by name and to get all products within a specific category.</li>
+<li>Show how to convert a JSON string into a Python list for further processing, including error handling for invalid JSON strings.</li>
+<li>Write a function <code>generate_response_from_data</code> that formats a list of product data into a user-friendly response string.</li>
+<li>Using the functions and methodologies described, outline a comprehensive customer service interaction scenario that processes an initial product inquiry, handles a troubleshooting request, answers a warranty question, and offers additional product recommendations.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>

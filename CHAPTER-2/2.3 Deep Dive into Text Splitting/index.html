@@ -1,0 +1,1675 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../2.2%20LangChain%20Document%20Loaders/">
+      
+      
+        <link rel="next" href="../2.4%20The%20Power%20of%20Embeddings/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>2.3 Deep Dive into Text Splitting - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#23-deep-dive-into-text-splitting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.3 Deep Dive into Text Splitting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20Building%20and%20Evaluating%20LLM%20Applications/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-document-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Document Splitting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Document Splitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-text-splitters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Text Splitters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-guide-to-document-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Guide to Document Splitting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Guide to Document Splitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup and Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-splitting-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Splitting Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document Splitting Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#character-text-splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Character Text Splitter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recursive-character-text-splitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recursive Character Text Splitter
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#practical-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-splitting-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Splitting Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Splitting Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#handling-complex-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Complex Text
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specialized-splitting-tokens-and-markdown-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specialized Splitting: Tokens and Markdown Headers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Specialized Splitting: Tokens and Markdown Headers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-based-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token-Based Splitting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdown-header-text-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Markdown Header Text Splitting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices-and-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Tips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="23-deep-dive-into-text-splitting">2.3 Deep Dive into Text Splitting</h1>
+<h2 id="understanding-document-splitting">Understanding Document Splitting</h2>
+<p>Document splitting is a critical step that occurs after loading data into a document format but before storing it for further processing. The goal is to create semantically meaningful chunks that facilitate efficient data retrieval and analysis. This section outlines the principles and challenges of document splitting, highlighting the importance of semantic relevance and consistency across chunks.</p>
+<p><strong>Understanding Chunk Size and Overlap</strong></p>
+<ul>
+<li><strong>Chunk Size</strong>: Refers to the length of each document chunk, which can be determined by various measures such as character count or token count. The appropriate chunk size depends on the specific requirements of the application and the nature of the text being processed.</li>
+<li><strong>Chunk Overlap</strong>: A strategy employed to maintain context continuity between adjacent chunks. A small overlap ensures that critical information is not lost at the boundaries of chunks, enabling more coherent data retrieval and analysis.</li>
+</ul>
+<p><strong>Implementing Text Splitters in Lang Chain</strong></p>
+<p>Lang Chain provides a suite of text splitters designed to accommodate different splitting strategies. These splitters offer two primary methods:</p>
+<ul>
+<li><strong>Create Documents</strong>: Accepts a list of text strings and returns a set of document chunks.</li>
+<li><strong>Split Documents</strong>: Takes a list of pre-loaded documents and divides them into smaller chunks.</li>
+</ul>
+<p>The choice between these methods depends on whether the input data is raw text or structured documents.</p>
+<h3 id="types-of-text-splitters">Types of Text Splitters</h3>
+<p>This section introduces various text splitters available in Lang Chain, each tailored to specific types of text or document structures.</p>
+<p><strong>Character and Token-Based Splitters</strong></p>
+<ul>
+<li><strong>Character Text Splitter</strong>: Splits text based on character count, ideal for straightforward chunking where semantic integrity is not a primary concern.</li>
+<li><strong>Token Text Splitter</strong>: Divides text based on tokens, which is particularly useful when preparing data for LLMs with specific token limitations.</li>
+</ul>
+<p><strong>Recursive Character Text Splitter</strong></p>
+<p>A more sophisticated splitter that recursively divides text based on a hierarchy of separators (e.g., paragraphs, sentences, and words). This approach allows for more nuanced splitting, ensuring that chunks maintain semantic coherence.</p>
+<p><strong>Specialized Splitters for Code and Markdown</strong></p>
+<ul>
+<li><strong>Language Text Splitter</strong>: Designed for source code, this splitter recognizes language-specific syntax and separators, ensuring that code blocks are appropriately segmented.</li>
+<li><strong>Markdown Header Text Splitter</strong>: Targets markdown documents, splitting them based on header levels and adding header information to chunk metadata for enhanced context.</li>
+</ul>
+<h2 id="practical-guide-to-document-splitting">Practical Guide to Document Splitting</h2>
+<p>Before diving into text splitting techniques, it's essential to set up the development environment correctly. This setup includes importing necessary libraries, configuring API keys, and ensuring all dependencies are correctly installed.</p>
+<h3 id="setup-and-configuration">Setup and Configuration</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+<span class="c1"># Append the path to access custom modules</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../..&#39;</span><span class="p">)</span>
+
+<span class="c1"># Load environment variables from a .env file</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># Set the OpenAI API key from environment variables</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">]</span>
+</code></pre></div>
+<h3 id="document-splitting-strategies">Document Splitting Strategies</h3>
+<p>Document splitting can significantly affect the performance of text-based models and analyses. Choosing the right strategy and parameters is crucial for maintaining the relevance and coherence of the resulting chunks.</p>
+<p>LangChain provides two primary types of text splitters: <code>CharacterTextSplitter</code> and <code>RecursiveCharacterTextSplitter</code>. Each serves different needs based on the structure and nature of the text.</p>
+<h4 id="character-text-splitter">Character Text Splitter</h4>
+<p>This splitter divides text based on a specified number of characters or tokens, with an optional overlap between chunks for context continuity.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">CharacterTextSplitter</span>
+
+<span class="c1"># Define chunk size and overlap for splitting</span>
+<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="n">chunk_overlap</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1"># Initialize the Character Text Splitter</span>
+<span class="n">character_text_splitter</span> <span class="o">=</span> <span class="n">CharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="n">chunk_overlap</span>
+<span class="p">)</span>
+</code></pre></div>
+<h4 id="recursive-character-text-splitter">Recursive Character Text Splitter</h4>
+<p>Ideal for generic text, it recursively splits the document using a hierarchy of separators, from larger structures like paragraphs to smaller ones like sentences and words.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+
+<span class="c1"># Initialize the Recursive Character Text Splitter</span>
+<span class="n">recursive_character_text_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="n">chunk_overlap</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="practical-examples">Practical Examples</h3>
+<p><strong>Simple Text Strings</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Example text string of the alphabet</span>
+<span class="n">alphabet_text</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>
+
+<span class="c1"># Attempt to split the alphabet_text using both splitters</span>
+<span class="n">recursive_character_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">alphabet_text</span><span class="p">)</span>
+<span class="n">character_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">alphabet_text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Under the Hood</strong>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a class to split text into chunks based on character count.</span>
+<span class="k">class</span> <span class="nc">CharacterTextSplitter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the splitter with specified chunk size and overlap.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - chunk_size: The number of characters each chunk should contain.</span>
+<span class="sd">        - chunk_overlap: The number of characters to overlap between adjacent chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_overlap</span> <span class="o">=</span> <span class="n">chunk_overlap</span>
+
+    <span class="k">def</span> <span class="nf">split_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits the given text into chunks according to the initialized chunk size and overlap.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - text: The string of text to be split.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        A list of text chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Initialize an empty list to store the chunks of text.</span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Start index for slicing the text.</span>
+
+        <span class="c1"># Loop to split the text until the end of the text is reached.</span>
+        <span class="k">while</span> <span class="n">start_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">end_index</span> <span class="o">=</span> <span class="n">start_index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>  <span class="c1"># Calculate the end index for the current chunk.</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span><span class="n">end_index</span><span class="p">])</span>  <span class="c1"># Slice the text and append the chunk to the list.</span>
+            <span class="c1"># Update the start index for the next chunk, taking into account the chunk overlap.</span>
+            <span class="n">start_index</span> <span class="o">=</span> <span class="n">end_index</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_overlap</span>
+        <span class="k">return</span> <span class="n">chunks</span>  <span class="c1"># Return the list of text chunks.</span>
+
+<span class="c1"># Inherits from CharacterTextSplitter to add recursive splitting functionality.</span>
+<span class="k">class</span> <span class="nc">RecursiveCharacterTextSplitter</span><span class="p">(</span><span class="n">CharacterTextSplitter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">split_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">current_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively splits text into smaller chunks until each chunk is below the chunk size threshold or max depth is reached.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - text: The string of text to be split.</span>
+<span class="sd">        - max_depth: The maximum depth of recursion to prevent infinite recursion.</span>
+<span class="sd">        - current_depth: The current depth of recursion.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        A list of text chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Base condition: if maximum depth reached or text length is within chunk size, return text as a single chunk.</span>
+        <span class="k">if</span> <span class="n">current_depth</span> <span class="o">==</span> <span class="n">max_depth</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Split the text into two halves for recursive splitting.</span>
+            <span class="n">mid_point</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">first_half</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">mid_point</span><span class="p">]</span>
+            <span class="n">second_half</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">mid_point</span><span class="p">:]</span>
+            <span class="c1"># Recursively split each half and concatenate the results.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">first_half</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">current_depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> \
+                   <span class="bp">self</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">second_half</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">current_depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Example usage of the above classes:</span>
+
+<span class="c1"># Define chunk size and overlap for splitting.</span>
+<span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="n">chunk_overlap</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1"># Initialize the Character Text Splitter with specified chunk size and overlap.</span>
+<span class="n">character_text_splitter</span> <span class="o">=</span> <span class="n">CharacterTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="n">chunk_overlap</span><span class="p">)</span>
+
+<span class="c1"># Initialize the Recursive Character Text Splitter with specified chunk size.</span>
+<span class="n">recursive_character_text_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span>
+
+<span class="c1"># Define a sample text string to be split.</span>
+<span class="n">alphabet_text</span> <span class="o">=</span> <span class="s1">&#39;abcdefghijklmnopqrstuvwxyz&#39;</span>
+
+<span class="c1"># Use both splitters to split the sample text and store the results.</span>
+<span class="n">recursive_chunks</span> <span class="o">=</span> <span class="n">recursive_character_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">alphabet_text</span><span class="p">)</span>
+<span class="n">simple_chunks</span> <span class="o">=</span> <span class="n">character_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">alphabet_text</span><span class="p">)</span>
+
+<span class="c1"># Print the resulting chunks from the recursive splitter.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Recursive Splitter Chunks:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">recursive_chunks</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+<span class="c1"># Print the resulting chunks from the simple splitter.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Simple Splitter Chunks:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">simple_chunks</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+</code></pre></div></p>
+<p>This demonstrates how splitters handle basic text strings, with or without specified separators.</p>
+<h3 id="advanced-splitting-techniques">Advanced Splitting Techniques</h3>
+<h4 id="handling-complex-text">Handling Complex Text</h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a complex text sample</span>
+<span class="n">complex_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;When writing documents, writers will use document structure to group content...</span>
+<span class="s2">Sentences have a period at the end, but also, have a space.&quot;&quot;&quot;</span>
+
+<span class="c1"># Apply recursive splitting with customized chunk size and separators</span>
+<span class="n">recursive_character_text_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+    <span class="n">separators</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">recursive_character_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">complex_text</span><span class="p">)</span>
+</code></pre></div>
+<p>This example illustrates splitting complex text into meaningful chunks, considering the document's inherent structure.</p>
+<h3 id="specialized-splitting-tokens-and-markdown-headers">Specialized Splitting: Tokens and Markdown Headers</h3>
+<h4 id="token-based-splitting">Token-Based Splitting</h4>
+<p>For applications where the context window of an LLM is defined in tokens, splitting by token count can align the chunks more closely with the model's requirements.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">TokenTextSplitter</span>
+
+<span class="c1"># Initialize the Token Text Splitter</span>
+<span class="n">token_text_splitter</span> <span class="o">=</span> <span class="n">TokenTextSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Splitting document pages by tokens</span>
+<span class="n">document_chunks_by_tokens</span> <span class="o">=</span> <span class="n">token_text_splitter</span><span class="o">.</span><span class="n">split_documents</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="markdown-header-text-splitting">Markdown Header Text Splitting</h4>
+<p>Markdown documents often contain structured headers that can be used to guide the splitting process, preserving the document's logical organization.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">langchain.text_splitter</span> <span class="kn">import</span> <span class="n">MarkdownHeaderTextSplitter</span>
+
+<span class="c1"># Define headers to split on in a Markdown document</span>
+<span class="n">markdown_headers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;Header 1&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;##&quot;</span><span class="p">,</span> <span class="s2">&quot;Header 2&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Initialize the Markdown Header Text Splitter</span>
+<span class="n">markdown_header_text_splitter</span> <span class="o">=</span> <span class="n">MarkdownHeaderTextSplitter</span><span class="p">(</span>
+    <span class="n">headers_to_split_on</span><span class="o">=</span><span class="n">markdown_headers</span>
+<span class="p">)</span>
+
+<span class="c1"># Split a real Markdown document preserving header metadata</span>
+<span class="n">markdown_document_splits</span> <span class="o">=</span> <span class="n">markdown_header_text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">markdown_document_content</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="best-practices-and-tips">Best Practices and Tips</h2>
+<ul>
+<li><strong>Semantic Coherence</strong>: When splitting text, prioritize strategies that preserve the semantic integrity of the content. Consider the document's structure and the nature of the text.</li>
+<li><strong>Overlap Management</strong>: Properly manage chunk overlap to ensure continuity without redundant information. Experiment with different overlap sizes to find the optimal balance.</li>
+<li><strong>Metadata Preservation</strong>: Ensure that splitting processes maintain or enhance chunk metadata, providing valuable context for each piece of text.</li>
+</ul>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>What is the primary goal of document splitting in text processing?</li>
+<li>How does chunk size affect the processing of document chunks?</li>
+<li>Why is chunk overlap important in document splitting, and how does it contribute to data analysis?</li>
+<li>Compare and contrast the <code>CharacterTextSplitter</code> and the <code>TokenTextSplitter</code> provided by Lang Chain. What are their key differences and applications?</li>
+<li>Explain the concept of a recursive character text splitter. How does it differ from basic splitters in handling text?</li>
+<li>In the context of processing code and markdown documents, what specialized splitters does Lang Chain offer, and how do they address the unique needs of these document types?</li>
+<li>Describe the setup process for a development environment aimed at document splitting. What key components and configurations are necessary?</li>
+<li>Discuss the advantages and challenges of using a <code>RecursiveCharacterTextSplitter</code> for splitting generic text. Include examples of parameters that might be adjusted to optimize splitting.</li>
+<li>How does the example of splitting the alphabet string with different splitters illustrate the operational differences between a simple and a recursive text splitter?</li>
+<li>What considerations should be taken into account when deciding between character-based and token-based splitting techniques for large language models (LLMs)?</li>
+<li>Explain how markdown header text splitting preserves the logical organization of documents and why this might be important for document analysis.</li>
+<li>Outline best practices for ensuring semantic coherence and optimal overlap management in document splitting strategies.</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<ol>
+<li>
+<p>Write a Python function named <code>split_by_char</code> that takes two arguments: <code>text</code> (a string) and <code>chunk_size</code> (an integer). The function should return a list of chunks, where each chunk is a substring of <code>text</code> of length <code>chunk_size</code>, except possibly for the last chunk, which may be shorter. Use a loop to implement this functionality.</p>
+</li>
+<li>
+<p>Modify the <code>split_by_char</code> function to accept an additional optional argument <code>chunk_overlap</code> (an integer, default value 0). Modify the function to include an overlap of <code>chunk_overlap</code> characters between adjacent chunks. Ensure that the first chunk still starts at the beginning of the text, and adjust the function accordingly.</p>
+</li>
+<li>
+<p>Create a Python class named <code>TokenTextSplitter</code> with an initializer that accepts two arguments: <code>chunk_size</code> and <code>chunk_overlap</code> (with a default value of 0 for <code>chunk_overlap</code>). Implement a method named <code>split_text</code> within this class. The method should accept a string <code>text</code> and return a list of chunks, where each chunk has up to <code>chunk_size</code> tokens, taking <code>chunk_overlap</code> into account between chunks. You may assume that tokens are separated by spaces for this task.</p>
+</li>
+<li>
+<p>Write a function named <code>recursive_split</code> that takes three parameters: <code>text</code> (a string), <code>max_chunk_size</code> (an integer), and <code>separators</code> (a list of strings, in the order they should be applied). The function should recursively split <code>text</code> at the first separator in <code>separators</code> if <code>text</code> is longer than <code>max_chunk_size</code>. If the split at the first separator doesn't reduce the size of any chunk below <code>max_chunk_size</code>, it should attempt to split using the next separator in the list, and so on. The function should return a list of chunks that are smaller than or equal to <code>max_chunk_size</code>. For simplicity, you can assume that each separator string appears at most once in <code>text</code>.</p>
+</li>
+<li>
+<p>Implement a Python class named <code>MarkdownHeaderTextSplitter</code> with an initializer that takes a single argument: <code>headers_to_split_on</code> (a list of tuples, where each tuple contains two elements: a string representing the markdown header syntax like <code>"#"</code> or <code>"##"</code>, and a string representing the header level name like <code>"Header 1"</code> or <code>"Header 2"</code>). Add a method named <code>split_text</code> that takes a string <code>markdown_text</code> and splits it into chunks based on the presence of headers specified in <code>headers_to_split_on</code>. Each chunk should include the header and the subsequent text until the next header of the same or higher priority. The method should return a list of these chunks. Consider headers in <code>headers_to_split_on</code> to determine splitting priority, with earlier entries in the list having higher priority.</p>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>

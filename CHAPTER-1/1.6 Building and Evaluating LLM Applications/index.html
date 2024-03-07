@@ -1,0 +1,1925 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../1.5%20The%20Power%20of%20Prompt%20Chaining/">
+      
+      
+        <link rel="next" href="../1.7%20Summary%20and%20Reflections/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
+    
+    
+      
+        <title>1.6 Building and Evaluating LLM Applications - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#16-building-and-evaluating-llm-applications" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1.6 Building and Evaluating LLM Applications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-1. OPEN AI API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.2%20Classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.4%20Elevating%20Machine%20Reasoning%3A%20Advanced%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.5%20The%20Power%20of%20Prompt%20Chaining/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#developing-metrics-for-performance-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing Metrics for Performance Measurement
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-development-to-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Development to Deployment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-stakes-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      High-Stakes Applications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices-and-recommendations-for-llm-application-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices and Recommendations for LLM Application Development
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodologies-for-evaluating-llm-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methodologies for Evaluating LLM Outputs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methodologies for Evaluating LLM Outputs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#developing-a-rubric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing a Rubric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-evaluation-protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Evaluation Protocols
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-expert-comparisons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Expert Comparisons
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-studies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Studies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Case Studies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evaluating-customer-service-chatbots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluating Customer Service Chatbots
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#academic-text-summarization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Academic Text Summarization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-evaluation-techniques-for-llm-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Evaluation Techniques for LLM Outputs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-for-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up for Evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting Up for Evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-llm-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving LLM Responses
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluating-responses-with-rubrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluating Responses with Rubrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluating Responses with Rubrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructing-a-detailed-rubric" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructing a Detailed Rubric
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparing-with-ideal-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparing with Ideal Answers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparing with Ideal Answers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-ideal-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Ideal Answers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-against-ideal-answers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Against Ideal Answers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-tips-and-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Tips and Recommendations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Tips and Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuous-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Continuous Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diverse-test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diverse Test Cases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engagement-with-experts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Engagement with Experts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leverage-advanced-models-for-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Leverage Advanced Models for Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further Reading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Theory questions:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practice-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practice questions:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.7%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.7 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-2. LANGCHAIN
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.2%20LangChain%20Document%20Loaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.3%20Deep%20Dive%20into%20Text%20Splitting/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.4%20The%20Power%20of%20Embeddings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.5%20Semantic%20Search.%20Advanced%20Retrieval%20Strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.6%20RAG%20Systems.%20Techniques%20for%20Question%20Answering/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.7%20Building%20Chatbots%20with%20LangChain/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.8%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.8 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    CHAPTER-3. LLMOPS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            CHAPTER-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.1%20Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.2%20Mastering%20LLM%20Workflows%20with%20Kubeflow%20Pipelines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.3%20Implementing%20the%20AI%20Quiz%20Generation%20Mechanism/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/3.4%20Summary%20and%20Reflections/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Summary and Reflections
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Answers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Answers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 Classification
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderaton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.4 Elevating Machine Reasoning
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.5 The Power of Prompt Chaining
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Answers%201.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.6 Building and Evaluating LLM Applications
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 LangChain Document Loaders
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Deep Dive into Text Splitting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 The Power of Embeddings
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Semantic Search. Advanced Retrieval Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 RAG Systems. Techniques for Question Answering
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/Answers%202.7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.7 Building Chatbots with LangChain
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Mastering LLM Workflows with Kubeflow Pipelines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-3/Answers%203.3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 Implementing the AI Quiz Generation Mechanism
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="16-building-and-evaluating-llm-applications">1.6 Building and Evaluating LLM Applications</h1>
+<p>The development and deployment of large language model (LLM) applications present unique challenges and opportunities for researchers and developers. As these applications grow in complexity and influence, the importance of accurately evaluating their outputs cannot be overstated. This chapter delves into the crucial aspects of evaluating LLM outputs, focusing on developing metrics for performance measurement, transitioning from development to deployment, and the special considerations required for high-stakes applications.</p>
+<p>Evaluating the outputs of LLM applications is essential for understanding their effectiveness and ensuring they meet the intended objectives. This evaluation process involves a combination of qualitative and quantitative assessments designed to measure the application's performance across various dimensions.</p>
+<h3 id="developing-metrics-for-performance-measurement">Developing Metrics for Performance Measurement</h3>
+<p>Developing robust metrics for performance measurement is foundational to the evaluation process. These metrics provide a quantitative basis for assessing how well an LLM application achieves its objectives. Average accuracy, for example, offers a straightforward measure of the application's ability to produce correct outputs. However, depending on the application's goals, developers may need to employ a range of metrics, including precision, recall, F1 score, and user satisfaction ratings, among others.</p>
+<p>These metrics serve multiple purposes: they not only facilitate the initial assessment of the application's effectiveness but also guide ongoing development efforts. By identifying areas where the application underperforms, developers can target specific aspects for improvement. Furthermore, performance metrics enable stakeholders to make informed decisions about the application's deployment and potential areas of application.</p>
+<h3 id="from-development-to-deployment">From Development to Deployment</h3>
+<p>The journey from development to deployment is iterative and requires continuous refinement of the LLM application. Initially, developers may work with a relatively simple set of prompts and a limited development set to prototype the application. This initial phase focuses on establishing a functional baseline and identifying any glaring deficiencies.</p>
+<p>As the development progresses, the complexity of the system increases. Developers expand the range of prompts, incorporate larger and more diverse development sets, and introduce more sophisticated evaluation metrics. This iterative process aims to strike an optimal balance between development effort and application performance. It's important to recognize that not every application needs to achieve perfection to be useful or effective. In many cases, an application that meets its core objectives efficiently can provide significant value, even if it has some limitations.</p>
+<h3 id="high-stakes-applications">High-Stakes Applications</h3>
+<p>When LLM applications are deployed in high-stakes scenarios—such as healthcare, legal advice, or financial planning—the stakes for accurate and reliable outputs are significantly higher. In these contexts, the consequences of erroneous outputs can be severe, making rigorous evaluation not just beneficial but essential.</p>
+<p>For high-stakes applications, the evaluation process must be especially thorough. Developers should extend their evaluation beyond standard development sets to include randomly sampled validation sets and, if necessary, a dedicated hold-out test set. This approach helps to ensure that the model's performance is not only high on average but also consistent and reliable across a wide range of scenarios.</p>
+<p>Moreover, developers must consider the ethical implications of deploying LLM applications in sensitive contexts. This includes ensuring that the application does not perpetuate biases or inaccuracies that could lead to harm. Rigorous testing, including bias detection and mitigation strategies, becomes crucial to preparing these applications for responsible deployment.</p>
+<p>In conclusion, the evaluation of LLM applications is a multifaceted process that requires careful consideration of performance metrics, iterative development, and special attention to high-stakes applications. By adhering to rigorous evaluation standards, developers can enhance the reliability, utility, and ethical integrity of their LLM applications, ensuring they contribute positively to the fields in which they are deployed.</p>
+<h2 id="best-practices-and-recommendations-for-llm-application-development">Best Practices and Recommendations for LLM Application Development</h2>
+<p>When developing and deploying large language model (LLM) applications, adopting a set of best practices and recommendations can significantly enhance the quality, reliability, and ethical standards of the final product. Below, we explore key strategies that developers should consider throughout the lifecycle of an LLM application, from initial development to final deployment.</p>
+<p><strong>Start Small</strong></p>
+<ul>
+<li><strong>Adopt a Modular Approach</strong>: Begin by focusing on a limited set of examples or scenarios that are core to your application's functionality. This allows you to establish a solid foundation and understand the model's capabilities and limitations in a controlled setting.</li>
+<li><strong>Expand Gradually</strong>: As you gain insights from initial tests, gradually introduce more complexity and diversity into your test set. This opportunistic expansion lets you tailor the development process to the model's evolving performance and the unique requirements of your application.</li>
+</ul>
+<p><strong>Iterate Rapidly</strong></p>
+<ul>
+<li><strong>Leverage LLM Flexibility</strong>: Take advantage of the fast iteration cycles enabled by LLMs to quickly refine prompts, adjust parameters, and experiment with different approaches. This rapid iteration process is invaluable for discovering optimal configurations and improving model responses.</li>
+<li><strong>Embrace Experimental Mindset</strong>: Encourage a culture of experimentation within your development team. Frequent iterations and the willingness to try new strategies can lead to innovative solutions and significant enhancements in application performance.</li>
+</ul>
+<p><strong>Automate Testing</strong></p>
+<ul>
+<li><strong>Develop Automation Tools</strong>: Implement scripts or functions designed to automatically evaluate the model's outputs against a set of expected results. Automation not only streamlines the testing process but also helps in identifying discrepancies and errors with greater precision.</li>
+<li><strong>Integrate Continuous Testing</strong>: Incorporate automated testing into your development pipeline as a continuous process. This ensures that every change or update is immediately evaluated, maintaining a constant feedback loop for ongoing improvement.</li>
+</ul>
+<p><strong>Tailor Evaluation to Application Needs</strong></p>
+<ul>
+<li><strong>Customize Evaluation Metrics</strong>: The choice of evaluation metrics should directly reflect the application's objectives and the impact of potential errors. This means selecting metrics that accurately measure the aspects of performance most critical to the application's success.</li>
+<li><strong>Adjust Evaluation Rigor</strong>: The depth and rigor of the evaluation process should be proportional to the application's potential impact and the severity of errors. High-stakes applications require more stringent testing and validation protocols to ensure reliability and safety.</li>
+</ul>
+<p><strong>Consider Ethical Implications</strong></p>
+<ul>
+<li><strong>Conduct Thorough Bias and Fairness Analysis</strong>: For applications where decisions have significant consequences, it's crucial to conduct in-depth testing for biases and ensure measures are in place to mitigate any identified issues. This involves both quantitative evaluations and qualitative assessments to understand the broader implications of model outputs.</li>
+<li><strong>Engage in Ethical Review</strong>: Implement a process for ethical review that considers the societal, cultural, and individual impacts of your application. This review should involve diverse perspectives and expertise to comprehensively assess the ethical dimensions of your application.</li>
+</ul>
+<p>By adhering to these best practices and recommendations, developers can create LLM applications that not only perform effectively but also align with ethical standards and societal expectations. These strategies emphasize the importance of a thoughtful, iterative approach to development, underscored by a commitment to fairness, reliability, and responsible innovation.</p>
+<h2 id="methodologies-for-evaluating-llm-outputs">Methodologies for Evaluating LLM Outputs</h2>
+<p>Evaluating the outputs of Large Language Models (LLMs) is a multifaceted process that requires careful planning and execution to ensure that the insights gained are both actionable and reflective of the model's capabilities. This section expands upon methodologies for developing a comprehensive evaluation framework, focusing on constructing a detailed rubric, implementing structured evaluation protocols, and utilizing expert comparisons as a benchmark for quality.</p>
+<h3 id="developing-a-rubric">Developing a Rubric</h3>
+<p>The cornerstone of a robust evaluation process is the development of a detailed rubric that outlines the key characteristics of high-quality responses. This rubric serves as a guideline for evaluators, ensuring consistency and objectivity in the assessment of LLM outputs. Key attributes to consider in a rubric for text generation tasks include:</p>
+<ul>
+<li>
+<p><strong>Contextual Relevance</strong>: Evaluates how well the response aligns with the specific context and intent of the query. This involves assessing whether the response is on-topic and whether it addresses the nuances and underlying assumptions of the query.</p>
+</li>
+<li>
+<p><strong>Factual Accuracy</strong>: Measures the correctness and reliability of the information provided. This attribute is critical for tasks where the integrity of the content can significantly impact decisions or beliefs.</p>
+</li>
+<li>
+<p><strong>Completeness</strong>: Assesses whether the response fully addresses all aspects of the query, leaving no significant points unanswered or unexplored. This includes evaluating the response for thoroughness and the inclusion of all relevant details.</p>
+</li>
+<li>
+<p><strong>Coherence and Fluency</strong>: Examines the logical flow, readability, and linguistic quality of the text. This involves looking at sentence structure, the use of connectors, and the overall organization of ideas to ensure the response is understandable and engaging.</p>
+</li>
+</ul>
+<h3 id="implementing-evaluation-protocols">Implementing Evaluation Protocols</h3>
+<p>With a detailed rubric established, the evaluation of LLM outputs can be structured into a systematic protocol:</p>
+<ol>
+<li>
+<p><strong>Preparation</strong>: This stage involves collecting a diverse set of queries that cover the breadth of the LLM's intended use cases. For each query, responses are generated using the LLM, ensuring a wide range of scenarios are represented.</p>
+</li>
+<li>
+<p><strong>Scoring</strong>: In this phase, each LLM-generated response is assessed independently against the rubric criteria. Scores are assigned based on how well the response meets each criterion, using a consistent scale (e.g., 1-5 or 1-10). This process may involve multiple evaluators to mitigate bias and increase reliability.</p>
+</li>
+<li>
+<p><strong>Analysis</strong>: Once scoring is complete, the results are aggregated to identify overarching trends, strengths, and weaknesses in the LLM's outputs. This analysis can help pinpoint areas where the model excels, as well as aspects that require further refinement or training.</p>
+</li>
+</ol>
+<h3 id="using-expert-comparisons">Using Expert Comparisons</h3>
+<p>Incorporating expert comparisons into the evaluation process provides a high benchmark for assessing the quality of LLM outputs. This approach involves:</p>
+<ul>
+<li>
+<p><strong>Direct Matching for Factual Content</strong>: Comparing the LLM's responses with those crafted by subject matter experts to evaluate accuracy and depth of information. This direct comparison helps in identifying discrepancies and areas where the LLM may lack precision.</p>
+</li>
+<li>
+<p><strong>Utilizing Metrics like BLEU</strong>: Employing computational metrics such as BLEU for a quantitative assessment of similarity between the LLM outputs and expert-crafted responses. While BLEU is traditionally used in machine translation, it can be adapted to gauge the linguistic and thematic closeness of responses in other text generation tasks.</p>
+</li>
+<li>
+<p><strong>Applying Nuanced Judgment Calls</strong>: Beyond quantitative measures, expert evaluators can provide qualitative feedback on the relevance, originality, and quality of the information provided by the LLM. This nuanced assessment captures aspects of response quality that automated metrics may overlook.</p>
+</li>
+</ul>
+<p>By employing these methodologies, developers and researchers can gain a comprehensive understanding of an LLM's performance across various dimensions. This holistic evaluation approach not only highlights the model's current capabilities but also guides targeted improvements, ensuring the development of more reliable, accurate, and user-relevant LLM applications.</p>
+<h2 id="case-studies">Case Studies</h2>
+<p>This section delves into practical applications and methodologies for evaluating LLM outputs, presenting real-world case studies that illustrate the complexities and strategies involved in such evaluations. These case studies span various domains, each with its unique challenges and considerations for assessment.</p>
+<h3 id="evaluating-customer-service-chatbots">Evaluating Customer Service Chatbots</h3>
+<p>In the rapidly evolving landscape of customer service, chatbots powered by LLMs have become instrumental in providing support and engagement. This case study outlines the journey of a company in developing a comprehensive rubric designed specifically for evaluating the effectiveness of their customer service chatbots. The rubric addresses several key dimensions of response quality, including:</p>
+<ul>
+<li><strong>Responsiveness</strong>: Measures how quickly and relevantly the chatbot addresses customer inquiries, considering the importance of timely support in service settings.</li>
+<li><strong>Empathy and Tone</strong>: Evaluates the chatbot's ability to convey empathy and maintain an appropriate tone, reflecting the brand's values and customer expectations.</li>
+<li><strong>Problem-Solving Efficiency</strong>: Assesses the chatbot's capability to provide accurate solutions or guidance, crucial for resolving customer issues satisfactorily.</li>
+<li><strong>Adaptability</strong>: Looks at how well the chatbot can handle unexpected queries or shift topics seamlessly, a vital trait for managing the dynamic nature of customer interactions.</li>
+</ul>
+<p>The case study highlights the iterative process of rubric development, testing, and refinement, including feedback loops with customer service representatives and actual users to ensure the chatbot's performance aligns with real-world expectations.</p>
+<h3 id="academic-text-summarization">Academic Text Summarization</h3>
+<p>The task of summarizing academic articles presents unique challenges, particularly in terms of maintaining accuracy, completeness, and objectivity in summaries of complex and technical content. This case study explores the development and evaluation of an LLM tasked with this function, focusing on:</p>
+<ul>
+<li><strong>Content Accuracy</strong>: The paramount importance of factual correctness in summaries, given the potential impact on academic discourse and research.</li>
+<li><strong>Information Density</strong>: Balancing the need for brevity with the requirement to include all critical points and findings from the original article.</li>
+<li><strong>Cohesion and Flow</strong>: Ensuring that the summary not only captures the essence of the article but also presents it in a coherent and logically structured manner.</li>
+<li><strong>Technical Competency</strong>: The LLM's ability to accurately use and interpret domain-specific terminology and concepts, essential for credibility and usability in academic settings.</li>
+</ul>
+<p>The case study details methods for creating a domain-specific evaluation framework, incorporating expert reviews, and leveraging academic benchmarks to validate the LLM's summarization capabilities.</p>
+<h2 id="advanced-evaluation-techniques-for-llm-outputs">Advanced Evaluation Techniques for LLM Outputs</h2>
+<p>The evaluation of LLM outputs, especially in applications where responses are inherently subjective or highly variable, requires innovative and nuanced approaches. This chapter introduces advanced techniques and methodologies aimed at addressing the multifaceted nature of text generation evaluation. Key areas of focus include:</p>
+<ul>
+<li><strong>Semantic Similarity Assessments</strong>: Utilizing advanced NLP tools and techniques to analyze the semantic correspondence between LLM outputs and reference texts, going beyond surface-level comparisons to understand deeper meanings and nuances.</li>
+<li><strong>Crowdsourced Evaluation</strong>: Leveraging the collective judgment of a diverse group of raters to assess the quality of LLM-generated text, providing a broader perspective on its effectiveness and applicability.</li>
+<li><strong>Automated Coherence and Consistency Checks</strong>: Implementing algorithms capable of detecting logical inconsistencies or breaks in coherence within LLM outputs, critical for maintaining the integrity and reliability of generated content.</li>
+<li><strong>Dynamic Evaluation Frameworks</strong>: Developing flexible and adaptive evaluation models that can be customized for specific tasks or domains, allowing for the nuanced assessment of LLM outputs across a wide range of applications.</li>
+</ul>
+<p>By integrating these advanced evaluation techniques, professionals in the field can enhance their understanding of LLM capabilities and limitations, driving forward the development of more sophisticated and effective LLM applications. These approaches not only provide a more granular assessment of LLM performance but also contribute to the broader goal of improving machine-generated text's quality, relevance, and impact.</p>
+<h2 id="setting-up-for-evaluation">Setting Up for Evaluation</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before diving into the evaluation process, ensure the necessary tools and configurations are in place:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="c1"># Load the OpenAI API key from a .env file</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;OPENAI_API_KEY&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="retrieving-llm-responses">Retrieving LLM Responses</h3>
+<p>To evaluate the LLM's performance, first, obtain a response to a user query:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fetch_llm_response</span><span class="p">(</span><span class="n">prompts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches a response from the LLM based on a series of prompts.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prompts (list): A list of message dictionaries, where each message has a &#39;role&#39; (system or user) and &#39;content&#39;.</span>
+<span class="sd">        model (str): Identifier for the LLM model to use.</span>
+<span class="sd">        temperature (float): Controls the randomness of the output, with 0 being the most deterministic.</span>
+<span class="sd">        max_tokens (int): The maximum number of tokens in the response.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The content of the LLM&#39;s response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">prompts</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span> 
+        <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="evaluating-responses-with-rubrics">Evaluating Responses with Rubrics</h2>
+<h3 id="constructing-a-detailed-rubric">Constructing a Detailed Rubric</h3>
+<p>A rubric serves as a guideline for evaluating the LLM's answers, focusing on several key aspects:</p>
+<ul>
+<li>Contextual relevance and factual accuracy</li>
+<li>Completeness of the response</li>
+<li>Coherence and grammatical correctness</li>
+</ul>
+<h3 id="evaluation-process">Evaluation Process</h3>
+<p>After obtaining the LLM's response to a query, proceed to evaluate it against the rubric:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">evaluate_response_against_detailed_rubric</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">llm_response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluates the LLM&#39;s response against a detailed rubric, considering various aspects of the response</span>
+<span class="sd">    including accuracy, relevance, and completeness based on the provided test data. This function</span>
+<span class="sd">    aims to provide a nuanced evaluation by scoring the response on multiple criteria and offering</span>
+<span class="sd">    actionable feedback.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        test_data (dict): A dictionary containing the &#39;customer_query&#39;, &#39;context&#39; (background information),</span>
+<span class="sd">                          and optionally &#39;expected_answers&#39; to facilitate a more granular evaluation.</span>
+<span class="sd">        llm_response (str): The response generated by the LLM to the customer query.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing the overall score, scores by criteria, and detailed feedback.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define the rubric criteria and initialize scores</span>
+    <span class="n">rubric_criteria</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;relevance&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;completeness&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;coherence&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="n">rubric_criteria</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Construct the evaluation prompt</span>
+    <span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;Evaluate the customer service agent&#39;s response considering the provided context.&quot;</span>
+    <span class="n">evaluation_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">    [Question]: </span><span class="si">{</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;customer_query&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">    [Context]: </span><span class="si">{</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;context&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">    [Expected Answers]: </span><span class="si">{</span><span class="n">test_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expected_answers&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">    [LLM Response]: </span><span class="si">{</span><span class="n">llm_response</span><span class="si">}</span>
+
+<span class="s2">    Evaluate the response based on accuracy, relevance to the query, completeness of the information provided,</span>
+<span class="s2">    and the coherence of the text. Provide scores (0-10) for each criterion and any specific feedback.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Assuming a function fetch_llm_evaluation to handle the evaluation process</span>
+    <span class="n">evaluation_results</span> <span class="o">=</span> <span class="n">fetch_llm_evaluation</span><span class="p">(</span><span class="n">system_prompt</span><span class="p">,</span> <span class="n">evaluation_prompt</span><span class="p">)</span>
+
+    <span class="c1"># Parse the evaluation results to fill in the rubric scores and feedback</span>
+    <span class="c1"># This step assumes the evaluation results are structured in a way that can be programmatically parsed</span>
+    <span class="c1"># For example, using a predetermined format or markers within the text</span>
+    <span class="n">parse_evaluation_results</span><span class="p">(</span><span class="n">evaluation_results</span><span class="p">,</span> <span class="n">rubric_criteria</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the overall score based on the weighted average of the criteria scores</span>
+    <span class="n">overall_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="n">rubric_criteria</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="n">total_weight</span>
+
+    <span class="c1"># Compile the detailed feedback and scores</span>
+    <span class="n">detailed_feedback</span> <span class="o">=</span> <span class="p">{</span><span class="n">criteria</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">rubric_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="n">rubric_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;feedback&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">criteria</span> <span class="ow">in</span> <span class="n">rubric_criteria</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;overall_score&#39;</span><span class="p">:</span> <span class="n">overall_score</span><span class="p">,</span>
+        <span class="s1">&#39;detailed_scores&#39;</span><span class="p">:</span> <span class="n">detailed_feedback</span>
+    <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">fetch_llm_evaluation</span><span class="p">(</span><span class="n">system_prompt</span><span class="p">,</span> <span class="n">evaluation_prompt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates fetching an LLM-based evaluation. This function would typically send a request to an LLM</span>
+<span class="sd">    service with the evaluation prompts and return the LLM&#39;s response for processing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Placeholder for LLM call</span>
+    <span class="k">return</span> <span class="s2">&quot;Simulated LLM Response&quot;</span>
+
+<span class="k">def</span> <span class="nf">parse_evaluation_results</span><span class="p">(</span><span class="n">evaluation_text</span><span class="p">,</span> <span class="n">rubric_criteria</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the evaluation text returned by the LLM and extracts scores and feedback for each criterion</span>
+<span class="sd">    in the rubric. Updates the rubric_criteria dictionary in place.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        evaluation_text (str): The text response from the LLM containing evaluation scores and feedback.</span>
+<span class="sd">        rubric_criteria (dict): The dictionary of rubric criteria to be updated with scores and feedback.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Example parsing logic, to be replaced with actual parsing of the LLM&#39;s response</span>
+    <span class="k">for</span> <span class="n">criteria</span> <span class="ow">in</span> <span class="n">rubric_criteria</span><span class="p">:</span>
+        <span class="n">rubric_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Example score</span>
+        <span class="n">rubric_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Good job on this criterion.&quot;</span>  <span class="c1"># Example feedback</span>
+</code></pre></div>
+<h3 id="example-evaluation">Example Evaluation</h3>
+<p>Using the function <code>evaluate_response_against_rubric</code>, conduct an evaluation of a response to understand its alignment with the provided context and the accuracy of the information.</p>
+<h2 id="comparing-with-ideal-answers">Comparing with Ideal Answers</h2>
+<h3 id="setting-up-ideal-answers">Setting Up Ideal Answers</h3>
+<p>For some queries, an "ideal" or expert-generated response may serve as a benchmark for comparison. This approach helps in assessing how closely the LLM's output matches the quality of an expert response.</p>
+<h3 id="evaluation-against-ideal-answers">Evaluation Against Ideal Answers</h3>
+<p>Evaluate the LLM's response in comparison to the ideal answer to gauge its effectiveness:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">detailed_evaluation_against_ideal_answer</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">llm_response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Conducts a detailed comparison of the LLM&#39;s response to an ideal or expert-generated answer, assessing</span>
+<span class="sd">    the response&#39;s factual accuracy, relevance, completeness, and coherence. This method provides a</span>
+<span class="sd">    structured evaluation, offering both qualitative feedback and a quantitative score.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        test_data (dict): Contains &#39;customer_query&#39; and &#39;ideal_answer&#39; for a nuanced comparison.</span>
+<span class="sd">        llm_response (str): The LLM-generated response to be evaluated.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A comprehensive evaluation report, including a qualitative assessment and a quantitative score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define evaluation criteria similar to the rubric-based evaluation</span>
+    <span class="n">evaluation_criteria</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;factual_accuracy&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;alignment_with_ideal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;completeness&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;coherence&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="n">evaluation_criteria</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># Constructing the comparison prompt</span>
+    <span class="n">system_prompt</span> <span class="o">=</span> <span class="s2">&quot;Evaluate the LLM&#39;s response by comparing it to an ideal answer, focusing on factual content and overall alignment.&quot;</span>
+    <span class="n">comparison_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">    [Question]: </span><span class="si">{</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;customer_query&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">    [Ideal Answer]: </span><span class="si">{</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;ideal_answer&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">    [LLM Response]: </span><span class="si">{</span><span class="n">llm_response</span><span class="si">}</span>
+
+<span class="s2">    Assess the LLM&#39;s response for its factual accuracy, relevance and alignment with the ideal answer, completeness of the information provided, and coherence. Assign scores (0-10) for each criterion and provide specific feedback.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Fetch the detailed evaluation from an LLM or evaluation module</span>
+    <span class="n">detailed_comparison_results</span> <span class="o">=</span> <span class="n">fetch_llm_evaluation</span><span class="p">(</span><span class="n">system_prompt</span><span class="p">,</span> <span class="n">comparison_prompt</span><span class="p">)</span>
+
+    <span class="c1"># Parse the detailed comparison results to extract scores and feedback</span>
+    <span class="n">parse_evaluation_results</span><span class="p">(</span><span class="n">detailed_comparison_results</span><span class="p">,</span> <span class="n">evaluation_criteria</span><span class="p">)</span>
+
+    <span class="c1"># Compute the overall score based on weighted averages</span>
+    <span class="n">overall_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">criterion</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="n">evaluation_criteria</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="n">total_weight</span>
+
+    <span class="c1"># Compile the comprehensive feedback and scores</span>
+    <span class="n">comprehensive_feedback</span> <span class="o">=</span> <span class="p">{</span><span class="n">criteria</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">evaluation_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="s1">&#39;feedback&#39;</span><span class="p">:</span> <span class="n">evaluation_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;feedback&#39;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">criteria</span> <span class="ow">in</span> <span class="n">evaluation_criteria</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;overall_score&#39;</span><span class="p">:</span> <span class="n">overall_score</span><span class="p">,</span>
+        <span class="s1">&#39;detailed_evaluation&#39;</span><span class="p">:</span> <span class="n">comprehensive_feedback</span>
+    <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">fetch_llm_evaluation</span><span class="p">(</span><span class="n">system_prompt</span><span class="p">,</span> <span class="n">comparison_prompt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates fetching a detailed evaluation from an LLM or evaluation module. This function is a placeholder</span>
+<span class="sd">    for actual interaction with an LLM service, which would use the provided prompts to generate an evaluation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Placeholder for LLM call</span>
+    <span class="k">return</span> <span class="s2">&quot;Simulated detailed evaluation response&quot;</span>
+
+<span class="k">def</span> <span class="nf">parse_evaluation_results</span><span class="p">(</span><span class="n">evaluation_text</span><span class="p">,</span> <span class="n">evaluation_criteria</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses the detailed evaluation text to extract scores and feedback for each criterion. Updates the</span>
+<span class="sd">    evaluation_criteria dictionary in place with the parsed scores and feedback.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        evaluation_text (str): The detailed evaluation response from the LLM or evaluation module.</span>
+<span class="sd">        evaluation_criteria (dict): The dictionary of evaluation criteria to be updated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Example parsing logic, assuming a structured format for the evaluation response</span>
+    <span class="k">for</span> <span class="n">criteria</span> <span class="ow">in</span> <span class="n">evaluation_criteria</span><span class="p">:</span>
+        <span class="c1"># Placeholder logic; actual parsing would depend on the LLM&#39;s response format</span>
+        <span class="n">evaluation_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Example score</span>
+        <span class="n">evaluation_criteria</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="s1">&#39;feedback&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Well aligned with the ideal answer.&quot;</span>  <span class="c1"># Example feedback</span>
+</code></pre></div>
+<h2 id="practical-tips-and-recommendations">Practical Tips and Recommendations</h2>
+<p>To ensure the effective evaluation of Large Language Models (LLMs), particularly in applications involving complex text generation, it's essential to adopt a strategic and methodical approach. Here are expanded practical tips and recommendations to guide professionals through the evaluation process, enhancing the accuracy and relevance of LLM outputs.</p>
+<h3 id="continuous-evaluation">Continuous Evaluation</h3>
+<ul>
+<li><strong>Implement Version Tracking</strong>: Maintain detailed records of model versions and corresponding performance metrics. This historical data is invaluable for understanding how changes in the model or training data influence overall performance.</li>
+<li><strong>Automate Feedback Loops</strong>: Integrate user feedback mechanisms directly into your application to continually collect data on the LLM's real-world performance. This ongoing feedback can be a powerful signal for when re-evaluation is necessary.</li>
+</ul>
+<h3 id="diverse-test-cases">Diverse Test Cases</h3>
+<ul>
+<li><strong>Simulate Real-World Scenarios</strong>: Develop test cases that closely mimic the variety and complexity of real-world scenarios the LLM is expected to handle. This includes edge cases and less common queries that may reveal limitations or unexpected behaviors in the model.</li>
+<li><strong>Cultural and Linguistic Diversity</strong>: Ensure that test cases reflect a wide range of cultural and linguistic contexts to evaluate the LLM's performance across diverse user groups. This is crucial for applications with a global user base.</li>
+</ul>
+<h3 id="engagement-with-experts">Engagement with Experts</h3>
+<ul>
+<li><strong>Expert Panels for Continuous Improvement</strong>: Establish panels of subject matter experts who can provide ongoing insights into the LLM's outputs, offering suggestions for improvement and helping refine evaluation rubrics over time.</li>
+<li><strong>Blind Evaluations to Reduce Bias</strong>: When involving experts, consider blind evaluations where the identity of the response (LLM-generated vs. expert-generated) is not disclosed, to ensure unbiased assessments.</li>
+</ul>
+<h3 id="leverage-advanced-models-for-evaluation">Leverage Advanced Models for Evaluation</h3>
+<ul>
+<li><strong>Cross-Model Comparisons</strong>: Compare the outputs of your LLM with those from other advanced models to benchmark performance and identify areas for improvement. This comparative analysis can reveal insights into the state of the art in LLM capabilities.</li>
+<li><strong>Use Specialized Evaluation Models</strong>: Explore specialized models designed for evaluation tasks, such as those trained to identify inconsistencies, logical errors, or factual inaccuracies in text. These models can provide an additional layer of scrutiny.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Evaluating LLM outputs is an intricate process that requires a balanced approach, combining rigorous methodology with an openness to continuous learning and adaptation. The adoption of comprehensive evaluation strategies, informed by detailed rubrics, expert insights, and the use of advanced models, is essential for professionals aiming to maximize the effectiveness and applicability of LLMs. By adhering to these practices, it is possible to navigate the challenges of subjective assessments and multiple correct answers, ensuring that LLMs meet the high standards expected in today's dynamic and demanding environments.</p>
+<h2 id="further-reading">Further Reading</h2>
+<p>To deepen your understanding and stay updated on best practices and emerging trends in LLM evaluation, consider exploring the following resources:</p>
+<ul>
+<li><strong>OpenAI Documentation on LLMs</strong>: A foundational resource for understanding the capabilities and limitations of current LLM technologies.</li>
+<li><strong>"Evaluating Machine Translation – The BLEU Score Explained"</strong>: Offers insights into one of the most widely used metrics for assessing the quality of machine translation, applicable to other areas of text generation.</li>
+<li><strong>OpenAI's Open Source Evaluation Framework</strong>: Provides tools and methodologies for the community-driven evaluation of LLMs, facilitating collaboration and standardization in the field.</li>
+</ul>
+<p>By engaging with these resources and applying the outlined practical tips, professionals can effectively bridge the gap between theoretical knowledge and the practical application of LLMs. This guidebook chapter serves as a comprehensive overview for evaluating LLM outputs, aiming to equip professionals with the knowledge and tools necessary for success in this evolving field.</p>
+<h2 id="theory-questions">Theory questions:</h2>
+<ol>
+<li>Describe the significance of evaluating the outputs of LLM applications and mention at least three dimensions across which these outputs should be assessed.</li>
+<li>Explain the role of developing robust performance metrics in the evaluation of LLM applications. Give examples of such metrics.</li>
+<li>Discuss the iterative process involved in transitioning LLM applications from development to deployment.</li>
+<li>Why is rigorous evaluation particularly crucial for high-stakes LLM applications? Provide examples of such applications.</li>
+<li>Outline the best practices for developing and deploying LLM applications, including the importance of starting small and iterating rapidly.</li>
+<li>How does automating testing contribute to the LLM application development process?</li>
+<li>Explain the importance of customizing evaluation metrics and adjusting the rigor of evaluation based on the application's impact.</li>
+<li>Discuss the methodologies for developing a comprehensive evaluation framework for LLM outputs, including the development of a rubric and implementing evaluation protocols.</li>
+<li>Describe the advanced evaluation techniques for LLM outputs and their contribution to enhancing model performance evaluation.</li>
+<li>How can continuous evaluation and diverse test cases improve the reliability and relevance of LLM applications?</li>
+</ol>
+<h2 id="practice-questions">Practice questions:</h2>
+<ol>
+<li>Write a Python function that uses an environment variable to configure and authenticate with an LLM API (e.g., OpenAI's API).</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "toc.integrate", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      
+    
+  </body>
+</html>
