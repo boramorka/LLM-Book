@@ -831,15 +831,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summary-and-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary and Best Practices
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#function-overview" class="md-nav__link">
     <span class="md-ellipsis">
       Function Overview
@@ -1549,9 +1540,6 @@
 
 <span class="c1"># Execute the pipeline to generate a quiz (execution example not shown)</span>
 </code></pre></div>
-<h4 id="summary-and-best-practices">Summary and Best Practices</h4>
-<p>In this chapter, we've covered the steps to build an AI-powered quiz generator, from environmental setup and dataset creation to prompt engineering and execution. Best practices include clear variable naming for readability, detailed commenting for maintainability, and structured prompt design for effective AI utilization.</p>
-<p>For further exploration, consider experimenting with different AI models, refining the quiz bank for more diverse subjects, or integrating additional APIs for expanded functionality.</p>
 <p>In this section, we encapsulate the entire process of setting up and executing the AI-powered quiz generation into a single, reusable function. This design pattern promotes modularity and reusability, allowing for easy adjustments and maintenance. The function <code>generate_quiz_assistant_pipeline</code> combines all the necessary components—prompt creation, model selection, and output parsing—into a coherent workflow that can be invoked with customized inputs.</p>
 <h3 id="function-overview">Function Overview</h3>
 <p>The <code>generate_quiz_assistant_pipeline</code> function is designed to be versatile, accommodating different prompts and configurations for the quiz generation process. Its parameters allow for customization of the user's question template and the selection of specific language models and output parsers.</p>
