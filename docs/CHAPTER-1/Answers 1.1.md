@@ -35,7 +35,7 @@ import openai
 openai.api_key = 'your_api_key_here'
 
 response = openai.Completion.create(
-  engine="text-davinci-003",
+  engine="gpt-3.5-turbo",
   prompt="What is the future of AI?",
   max_tokens=100
 )
@@ -55,7 +55,7 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 response = openai.Completion.create(
-  engine="text-davinci-003",
+  engine="gpt-3.5-turbo",
   prompt="What is the future of AI?",
   max_tokens=100
 )
@@ -75,7 +75,7 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 response = openai.Completion.create(
-  engine="text-davinci-003",
+  engine="gpt-3.5-turbo",
   prompt="What is the future of AI?",
   max_tokens=100
 )
@@ -102,7 +102,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 try:
     response = openai.Completion.create(
-      engine="text-davinci-003",
+      engine="gpt-3.5-turbo",
       prompt="What is the future of AI?",
       max_tokens=100
     )
@@ -149,7 +149,7 @@ def chat_with_openai():
 
         try:
             response = openai.Completion.create(
-              engine="text-davinci-003",
+              engine="gpt-3.5-turbo",
               prompt=user_input,
               max_tokens=100
             )
@@ -201,7 +201,7 @@ def chat_with_openai():
 
         try:
             response = openai.Completion.create(
-              engine="text-davinci-003",
+              engine="gpt-3.5-turbo",
               prompt=user_input,
               max_tokens=100
             )
@@ -238,7 +238,7 @@ def generate_blog_outline(topic):
     prompt = f"Create a detailed outline for a blog post about {topic}"
     try:
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo",
             prompt=prompt,
             max_tokens=150,
             temperature=0.5
@@ -274,7 +274,7 @@ def generate_blog_outline(topic):
     
     try:
         response = openai.Completion.create(
-            engine="text-davinci-003",
+            engine="gpt-3.5-turbo",
             prompt=prompt,
             max_tokens=150,
             temperature=0.5
