@@ -1274,7 +1274,7 @@
 <span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="s1">&#39;your_api_key_here&#39;</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-  <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span>
+  <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
   <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;What is artificial intelligence?&quot;</span><span class="p">,</span>
   <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span>
 <span class="p">)</span>
@@ -1308,7 +1308,7 @@
 <span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cmpl-XYZ123&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// A unique identifier for the completion request.</span>
 <span class="w">  </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text_completion&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The type of object, indicating it&#39;s a text completion.</span>
 <span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1613679373</span><span class="p">,</span><span class="w"> </span><span class="c1">// The UNIX timestamp when the request was created.</span>
-<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The model used for generating the text completion.</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The model used for generating the text completion.</span>
 <span class="w">  </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="c1">// An array containing the completion results. There can be multiple choices if specified in the request.</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Here is the generated text responding to your prompt.&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">// The generated text in response to the input prompt.</span>
@@ -1336,7 +1336,7 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># Attempt to send a request to the OpenAI API to generate text</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-        <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span> <span class="c1"># Specifies the model to use for the completion</span>
+        <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="c1"># Specifies the model to use for the completion</span>
         <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;This is a sample prompt&quot;</span><span class="p">,</span> <span class="c1"># The input text prompt the model should respond to</span>
         <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span> <span class="c1"># The maximum number of tokens to generate in the response</span>
     <span class="p">)</span>
