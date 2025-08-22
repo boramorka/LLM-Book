@@ -97,6 +97,7 @@ Found a bug? Have an idea for improvement? Contributions are welcome!
 ## 📫 Connect
 
 - **Author**: Nikita Goryachev
+- **LindkedIn**: [@boramorka](https://www.linkedin.com/in/boramorka/)
 - **GitHub**: [@boramorka](https://github.com/boramorka)
 - **Book**: [https://boramorka.github.io/LLM-Book/](https://boramorka.github.io/LLM-Book/)
 
