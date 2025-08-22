@@ -16,11 +16,13 @@
 ## Practice
 1. 
 ```python
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 
 def moderate_content(content):
-    response = openai.Moderation.create(input=content)
-    return response["results"][0]["flagged"]
+    response = client.moderations.create(model="omni-moderation-latest", input=content)
+    return response.results[0].flagged
 ```
 
 2. 
@@ -77,12 +79,14 @@ def direct_evaluation_for_injection(user_input):
 
 6. 
 ```python
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 
 # Function from Task 1: Moderate a single piece of content
 def moderate_content(content):
-    response = openai.Moderation.create(input=content)
-    return response["results"][0]["flagged"]
+    response = client.moderations.create(model="omni-moderation-latest", input=content)
+    return response.results[0].flagged
 
 # Function from Task 2: Sanitize delimiter from the input
 def sanitize_delimiter(input_text, delimiter):

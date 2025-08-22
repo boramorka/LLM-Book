@@ -29,18 +29,17 @@ To address these tasks, I'll guide you through the process of creating and evolv
 ### Task 1: Basic API Request
 
 ```python
-import openai
+from openai import OpenAI
 
-# Replace 'your_api_key_here' with your actual OpenAI API key
-openai.api_key = 'your_api_key_here'
+client = OpenAI()
 
-response = openai.Completion.create(
-  engine="gpt-3.5-turbo",
-  prompt="What is the future of AI?",
+response = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[{"role": "user", "content": "What is the future of AI?"}],
   max_tokens=100
 )
 
-print(response.choices[0].text)
+print(response.choices[0].message.content)
 ```
 
 ### Task 2: Handling API Keys Securely
@@ -48,19 +47,18 @@ print(response.choices[0].text)
 To improve upon Task 1, we'll now load the API key from an environment variable. This means you need to set an environment variable named `OPENAI_API_KEY` with your actual API key as its value.
 
 ```python
-import openai
 import os
+from openai import OpenAI
 
-# Load the OpenAI API key from an environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-response = openai.Completion.create(
-  engine="gpt-3.5-turbo",
-  prompt="What is the future of AI?",
+response = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[{"role": "user", "content": "What is the future of AI?"}],
   max_tokens=100
 )
 
-print(response.choices[0].text)
+print(response.choices[0].message.content)
 ```
 
 ### Task 3: Interpreting API Responses
@@ -68,24 +66,22 @@ print(response.choices[0].text)
 Expanding further, this version of the script also prints the model used, the number of tokens generated, and the finish reason for each request.
 
 ```python
-import openai
 import os
+from openai import OpenAI
 
-# Load the OpenAI API key from an environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-response = openai.Completion.create(
-  engine="gpt-3.5-turbo",
-  prompt="What is the future of AI?",
+response = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[{"role": "user", "content": "What is the future of AI?"}],
   max_tokens=100
 )
 
 # Printing the response text
-print("Response:", response.choices[0].text.strip())
+print("Response:", response.choices[0].message.content.strip())
 
 # Printing additional response information
-print("Model used:", response['model'])
-print("Tokens generated:", len(response.choices[0].text.split()))
+print("Model used:", response.model)
 print("Finish reason:", response.choices[0].finish_reason)
 ```
 
@@ -94,33 +90,32 @@ print("Finish reason:", response.choices[0].finish_reason)
 Finally, we add try-except blocks to handle errors gracefully, covering the scenarios mentioned in the objective.
 
 ```python
-import openai
 import os
+from openai import OpenAI
+from openai import APIConnectionError, RateLimitError, APIStatusError
 
-# Load the OpenAI API key from an environment variable
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 try:
-    response = openai.Completion.create(
-      engine="gpt-3.5-turbo",
-      prompt="What is the future of AI?",
+    response = client.chat.completions.create(
+      model="gpt-4o-mini",
+      messages=[{"role": "user", "content": "What is the future of AI?"}],
       max_tokens=100
     )
     
     # Printing the response text
-    print("Response:", response.choices[0].text.strip())
+    print("Response:", response.choices[0].message.content.strip())
     
     # Printing additional response information
-    print("Model used:", response['model'])
-    print("Tokens generated:", len(response.choices[0].text.split()))
+    print("Model used:", response.model)
     print("Finish reason:", response.choices[0].finish_reason)
 
-except openai.error.InvalidRequestError as e:
-    print(f"Invalid request: {e}")
-except openai.error.RateLimitError as e:
+except RateLimitError as e:
     print(f"Rate limit exceeded: {e}")
-except openai.error.OpenAIError as e:
-    print(f"OpenAI error: {e}")
+except APIConnectionError as e:
+    print(f"Connection error: {e}")
+except APIStatusError as e:
+    print(f"API returned an error: {e}")
 except Exception as e:
     print(f"Other error occurred: {e}")
 ```
@@ -134,11 +129,10 @@ To fulfill Task 5 and Task 6, we'll create a Python script that develops upon th
 First, let's create the CLI without the post-processing. This script incorporates the error handling as specified in Task 4.
 
 ```python
-import openai
+from openai import OpenAI
 import os
 
-# Ensure you have set the environment variable OPENAI_API_KEY with your API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def chat_with_openai():
     print("Starting chat with OpenAI. Type 'quit' to exit.")
@@ -148,21 +142,15 @@ def chat_with_openai():
             break
 
         try:
-            response = openai.Completion.create(
-              engine="gpt-3.5-turbo",
-              prompt=user_input,
+            response = client.chat.completions.create(
+              model="gpt-4o-mini",
+              messages=[{"role": "user", "content": user_input}],
               max_tokens=100
             )
-            print("OpenAI:", response.choices[0].text.strip())
+            print("OpenAI:", response.choices[0].message.content.strip())
 
-        except openai.error.InvalidRequestError as e:
-            print(f"Invalid request: {e}")
-        except openai.error.RateLimitError as e:
-            print(f"Rate limit exceeded: {e}")
-        except openai.error.OpenAIError as e:
-            print(f"OpenAI error: {e}")
         except Exception as e:
-            print(f"Other error occurred: {e}")
+            print(f"Error: {e}")
 
 if __name__ == "__main__":
     chat_with_openai()
@@ -175,12 +163,11 @@ To add post-processing for the response, we'll use the `textblob` library for ba
 Additionally, we will perform trimming excessive whitespace as a basic form of formatting. If you want more advanced grammar correction, you could explore more comprehensive NLP tools or services.
 
 ```python
-import openai
+from openai import OpenAI
 import os
 from textblob import TextBlob
 
-# Ensure you have set the environment variable OPENAI_API_KEY with your API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def post_process_response(response_text):
     # Create a TextBlob object for grammar correction
@@ -200,20 +187,14 @@ def chat_with_openai():
             break
 
         try:
-            response = openai.Completion.create(
-              engine="gpt-3.5-turbo",
-              prompt=user_input,
+            response = client.chat.completions.create(
+              model="gpt-4o-mini",
+              messages=[{"role": "user", "content": user_input}],
               max_tokens=100
             )
-            processed_response = post_process_response(response.choices[0].text)
+            processed_response = post_process_response(response.choices[0].message.content)
             print("OpenAI:", processed_response)
 
-        except openai.error.InvalidRequestError as e:
-            print(f"Invalid request: {e}")
-        except openai.error.RateLimitError as e:
-            print(f"Rate limit exceeded: {e}")
-        except openai.error.OpenAIError as e:
-            print(f"OpenAI error: {e}")
         except Exception as e:
             print(f"Other error occurred: {e}")
 
@@ -228,26 +209,25 @@ This enhanced CLI not only interacts with the user and the OpenAI API in real-ti
 This script prompts the user for a topic and uses the OpenAI API to generate an outline for a blog post on that topic. The response is formatted as a bulleted list for clarity.
 
 ```python
-import openai
+from openai import OpenAI
 import os
 
-# Ensure your OPENAI_API_KEY environment variable is set
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_blog_outline(topic):
     prompt = f"Create a detailed outline for a blog post about {topic}"
     try:
-        response = openai.Completion.create(
-            engine="gpt-3.5-turbo",
-            prompt=prompt,
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
             max_tokens=150,
             temperature=0.5
         )
-        outline = response.choices[0].text.strip()
+        outline = response.choices[0].message.content.strip()
         print("Blog Post Outline:")
         print(outline)
 
-    except openai.error.OpenAIError as e:
+    except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
@@ -260,22 +240,21 @@ if __name__ == "__main__":
 For this task, we'll modify the script from Task 7 to include logging for response time and token usage. This data will be written to a log file for later analysis. This approach is crucial for identifying optimization opportunities, such as caching frequent requests or adjusting token limits.
 
 ```python
-import openai
+from openai import OpenAI
 import os
 import time
 import json
 
-# Ensure your OPENAI_API_KEY environment variable is set
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_blog_outline(topic):
     prompt = f"Create a detailed outline for a blog post about {topic}"
     start_time = time.time()  # Start time for measuring response time
     
     try:
-        response = openai.Completion.create(
-            engine="gpt-3.5-turbo",
-            prompt=prompt,
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
             max_tokens=150,
             temperature=0.5
         )
@@ -283,7 +262,7 @@ def generate_blog_outline(topic):
         end_time = time.time()  # End time for measuring response time
         response_time = end_time - start_time
         
-        outline = response.choices[0].text.strip()
+        outline = response.choices[0].message.content.strip()
         print("Blog Post Outline:")
         print(outline)
         
@@ -291,14 +270,13 @@ def generate_blog_outline(topic):
         log_data = {
             'topic': topic,
             'response_time': response_time,
-            'tokens_generated': len(response.choices[0].text.split()),
-            'total_tokens': response.usage.total_tokens
+            'finish_reason': response.choices[0].finish_reason
         }
         
         with open("api_usage_log.json", "a") as log_file:
             log_file.write(json.dumps(log_data) + "\n")
 
-    except openai.error.OpenAIError as e:
+    except Exception as e:
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":

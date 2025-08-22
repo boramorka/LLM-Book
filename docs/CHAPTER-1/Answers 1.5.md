@@ -21,10 +21,12 @@
 
 1. 
 ```python
-import openai
+from openai import OpenAI
 
-def retrieve_model_response(message_sequence, model="gpt-3.5-turbo", temperature=0, max_tokens=500):
-    response = openai.ChatCompletion.create(
+client = OpenAI()
+
+def retrieve_model_response(message_sequence, model="gpt-4o-mini", temperature=0, max_tokens=500):
+    response = client.chat.completions.create(
         model=model,
         messages=message_sequence,
         temperature=temperature, 

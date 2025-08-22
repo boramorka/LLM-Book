@@ -181,7 +181,7 @@ class QueryProcessor:
         Mocks sending a query to the OpenAI API and receiving a response.
         """
         try:
-            # Here you would use openai.ChatCompletion.create() to send the query
+            # Here you would use OpenAI().chat.completions.create(...) to send the query
             # For demonstration, we return a mock response
             if "compare" in user_query:
                 return "#### Step 1: Analyzing the query.#### Step 2: Gathering relevant information.#### Final response: The BlueWave Chromebook is more cost-effective."

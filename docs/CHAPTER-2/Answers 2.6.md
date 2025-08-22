@@ -16,7 +16,7 @@
 1.
 ```python
 from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 def initialize_vector_database(directory_path):
     # Initialize the embeddings generator using OpenAI's embeddings
@@ -37,8 +37,7 @@ initialize_vector_database(documents_storage_directory)
 2.
 ```python
 from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
@@ -48,7 +47,7 @@ def setup_retrieval_qa_chain(model_name, documents_storage_directory):
     vector_database = Chroma(persist_directory=documents_storage_directory, embedding_function=embeddings_generator)
 
     # Initialize the language model
-    language_model = ChatOpenAI(model_name=model_name, temperature=0)
+    language_model = ChatOpenAI(model=model_name, temperature=0)
 
     # Custom prompt template
     custom_prompt_template = """To better assist with the inquiry, consider the details provided below as your reference...
@@ -67,7 +66,7 @@ Insightful Response:"""
     return question_answering_chain
 
 # Example usage:
-model_name = "gpt-3.5-turbo"
+model_name = "gpt-4o-mini"
 documents_storage_directory = 'path/to/your/documents'
 qa_chain = setup_retrieval_qa_chain(model_name, documents_storage_directory)
 ```
