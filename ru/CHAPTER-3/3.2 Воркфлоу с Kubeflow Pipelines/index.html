@@ -1,0 +1,2308 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://boramorka.github.io/LLM-book/ru/CHAPTER-3/3.2%20%D0%92%D0%BE%D1%80%D0%BA%D1%84%D0%BB%D0%BE%D1%83%20%D1%81%20Kubeflow%20Pipelines/">
+      
+      
+        <link rel="prev" href="../3.1%20%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/">
+      
+      
+        <link rel="next" href="../3.3%20%D0%9C%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%B7%D0%BC%20%D0%B3%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%B2%D0%B8%D0%B7%D0%B0%20%D0%98%D0%98/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>3.2 Воркфлоу с Kubeflow Pipelines - LLMOps. Make AI Work For You.</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#32-kubeflow-pipelines" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-header__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LLMOps. Make AI Work For You.
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.2 Воркфлоу с Kubeflow Pipelines
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Выберите язык">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../../en/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../" hreflang="ru" class="md-select__link">
+              Русский
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/boramorka/LLM-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LLMOps. Make AI Work For You." class="md-nav__button md-logo" aria-label="LLMOps. Make AI Work For You." data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LLMOps. Make AI Work For You.
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/boramorka/LLM-book" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    boramorka/LLM-book
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Обзор
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ГЛАВА-1. OPEN AI API
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            ГЛАВА-1. OPEN AI API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.1%20%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.1 Введение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.2%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.2 Классификация
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.3%20Advanced%20Moderaton/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.4%20%D0%9F%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%83%D1%82%D0%BE%D0%B5%20%D0%BC%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B5%20%D1%80%D0%B0%D1%81%D1%81%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.4 Продвинутое машинное рассуждение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.5%20%D0%A1%D0%B8%D0%BB%D0%B0%20%D1%87%D0%B5%D0%B9%D0%BD%D0%B8%D0%BD%D0%B3%D0%B0%20%D0%BF%D1%80%D0%BE%D0%BC%D0%BF%D1%82%D0%BE%D0%B2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.5 Сила чейнинга промптов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.6%20%D0%9F%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B8%20%D0%BE%D1%86%D0%B5%D0%BD%D0%BA%D0%B0%20LLM-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.6 Построение и оценка LLM-приложений
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/1.7%20%D0%98%D1%82%D0%BE%D0%B3%D0%B8%20%D0%B8%20%D1%80%D0%B0%D0%B7%D0%BC%D1%8B%D1%88%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.7 Итоги и размышления
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ГЛАВА-2. LANGCHAIN
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            ГЛАВА-2. LANGCHAIN
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.1%20%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.1 Введение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.2%20%D0%97%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D1%87%D0%B8%D0%BA%D0%B8%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%BE%D0%B2%20LangChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.2 Загрузчики документов LangChain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.3%20%D0%A3%D0%B3%D0%BB%D1%83%D0%B1%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20%D1%82%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D0%BE%D0%B5%20%D1%80%D0%B0%D0%B7%D0%B1%D0%B8%D0%B5%D0%BD%D0%B8%D0%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.3 Углубление в текстовое разбиение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.4%20%D0%A1%D0%B8%D0%BB%D0%B0%20%D1%8D%D0%BC%D0%B1%D0%B5%D0%B4%D0%B4%D0%B8%D0%BD%D0%B3%D0%BE%D0%B2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.4 Сила эмбеддингов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.5%20%D0%A1%D0%B5%D0%BC%D0%B0%D0%BD%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BF%D0%BE%D0%B8%D1%81%D0%BA.%20%D0%9F%D1%80%D0%BE%D0%B4%D0%B2%D0%B8%D0%BD%D1%83%D1%82%D1%8B%D0%B5%20%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%B5%D0%B3%D0%B8%D0%B8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.5 Семантический поиск. Продвинутые стратегии
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.6%20RAG.%20%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D0%BA%D0%B8%20%D0%B4%D0%BB%D1%8F%20QA/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.6 RAG. Техники для QA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.7%20%D0%A7%D0%B0%D1%82-%D0%B1%D0%BE%D1%82%D1%8B%20%D0%BD%D0%B0%20LangChain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.7 Чат-боты на LangChain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/2.8%20%D0%98%D1%82%D0%BE%D0%B3%D0%B8%20%D0%B8%20%D1%80%D0%B0%D0%B7%D0%BC%D1%8B%D1%88%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.8 Итоги и размышления
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ГЛАВА-3. LLMOPS
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            ГЛАВА-3. LLMOPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.1%20%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.1 Введение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    3.2 Воркфлоу с Kubeflow Pipelines
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.2 Воркфлоу с Kubeflow Pipelines
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступ к данным через .output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Только именованные аргументы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Советы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связывание компонентов: передача выводов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Связывание компонентов: передача выводов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компонент с зависимостью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Передача выходов между компонентами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipelinetask-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Распространенная ошибка: передача PipelineTask вместо .output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические советы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конструирование и понимание пайплайнов в Kubeflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конструирование и понимание пайплайнов в Kubeflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполнение и обработка вывода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка ошибок: неправильные типы возврата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические советы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация и выполнение Kubeflow Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация и выполнение Kubeflow Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компиляция пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Просмотр скомпилированного пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Запуск пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примечание о выполнении
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Резюме
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматизация и оркестрация пайплайна тонкой настройки с Kubeflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоматизация и оркестрация пайплайна тонкой настройки с Kubeflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторное использование существующих пайплайнов для эффективности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подготовка данных и версионирование модели
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настройка пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение аргументов пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполнение пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заключение
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Теоретические вопросы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические задания
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.3%20%D0%9C%D0%B5%D1%85%D0%B0%D0%BD%D0%B8%D0%B7%D0%BC%20%D0%B3%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%B2%D0%B8%D0%B7%D0%B0%20%D0%98%D0%98/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.3 Механизм генерации квиза ИИ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.4%20%D0%98%D1%82%D0%BE%D0%B3%D0%B8%20%D0%B8%20%D1%80%D0%B0%D0%B7%D0%BC%D1%8B%D1%88%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.4 Итоги и размышления
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Ответы
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Ответы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.1 Введение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.2 Классификация
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.3 Advanced Moderation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.4 Продвинутое рассуждение
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.5 Чейнинг промптов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-1/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%201.6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1.6 Построение и оценка
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.2 Загрузчики документов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.3 Разбиение текста
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.4 Эмбеддинги
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.5 Семантический поиск
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.6 RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CHAPTER-2/%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%202.7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2.7 Чат-боты
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%203.2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.2 Kubeflow Pipelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%D0%9E%D1%82%D0%B2%D0%B5%D1%82%D1%8B%203.3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3.3 Генерация квиза
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Доступ к данным через .output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Только именованные аргументы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Советы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Связывание компонентов: передача выводов
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Связывание компонентов: передача выводов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компонент с зависимостью
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Передача выходов между компонентами
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipelinetask-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Распространенная ошибка: передача PipelineTask вместо .output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические советы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Конструирование и понимание пайплайнов в Kubeflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Конструирование и понимание пайплайнов в Kubeflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполнение и обработка вывода
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Обработка ошибок: неправильные типы возврата
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические советы
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Реализация и выполнение Kubeflow Pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Реализация и выполнение Kubeflow Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Компиляция пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Просмотр скомпилированного пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Запуск пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Примечание о выполнении
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Резюме
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeflow_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Автоматизация и оркестрация пайплайна тонкой настройки с Kubeflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоматизация и оркестрация пайплайна тонкой настройки с Kubeflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Повторное использование существующих пайплайнов для эффективности
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Подготовка данных и версионирование модели
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настройка пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Определение аргументов пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Выполнение пайплайна
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Заключение
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Теоретические вопросы
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Практические задания
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="32-kubeflow-pipelines">3.2 Воркфлоу с Kubeflow Pipelines</h1>
+<p>Рассмотрим, как оркестрировать и автоматизировать ML‑воркфлоу с помощью Kubeflow Pipelines — открытого фреймворка, упрощающего создание, развертывание и эксплуатацию сложных цепочек шагов для дата‑сайентистов, ML‑инженеров и разработчиков. Автоматизация экономит время, обеспечивает воспроизводимость и стабильность результатов — фундамент надёжных ML‑систем. Начнём с настройки SDK и «строительных блоков» пайплайнов:</p>
+<p>Для начала подключим необходимые модули из SDK Kubeflow Pipelines. Эти модули являются «строительными блоками» для определения пайплайнов.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Импортируем модули предметно-ориентированного языка (DSL) и компилятора из Kubeflow Pipelines SDK</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">dsl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">compiler</span>
+</code></pre></div>
+<p>Здесь <code>dsl</code> предоставляет декораторы и классы для описания компонентов и структуры, а <code>compiler</code> компилирует пайплайн в исполняемый формат для движка Kubeflow.</p>
+<p>Библиотеки активно развиваются, поэтому предупреждения о будущих изменениях или устаревших функциях — не редкость; чтобы не перегружать вывод при обучении или демонстрации, их иногда выборочно скрывают (при этом разумно периодически проверять релиз‑ноты):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Подавление предупреждений FutureWarning, исходящих из Kubeflow Pipelines SDK</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;kfp.*&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Здесь используем стандартный модуль <code>warnings</code>: фильтрация <code>FutureWarning</code> из <code>kfp.*</code> помогает сосредоточиться на важных сообщениях.</p>
+<p>Полезно помнить: следите за релизами Kubeflow Pipelines и скрывайте предупреждения выборочно — полное подавление способно скрыть серьёзные проблемы.</p>
+<p>За подробностями держите под рукой документацию Kubeflow Pipelines и руководства по MLOps (например, материалы Google Cloud по непрерывной доставке и автоматизированным пайплайнам): освоив их, вы заметно повысите эффективность и надёжность ML‑воркфлоу.</p>
+<p>Kubeflow структурирует ML‑воркфлоу в повторно используемые компоненты и пайплайны: компоненты — изолированные шаги (препроцессинг, обучение, деплой и т. п.), а пайплайн — композиция, где выходы одного шага становятся входами следующих, формируя сложный процесс.</p>
+<p>Для ориентира начнём с простого компонента «приветствие», который принимает имя и возвращает строку; это базовая демонстрация определения компонента в SDK Kubeflow Pipelines:</p>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Импортируем модуль DSL из Kubeflow Pipelines для определения компонентов и пайплайнов</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Определяем простой компонент с помощью декоратора @dsl.component</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">greet_person</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Формируем приветственное сообщение, объединяя строку &quot;Hello&quot; с входным именем</span>
+    <span class="n">greeting_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">!&#39;</span>
+
+    <span class="c1"># Компонент возвращает сформированное приветственное сообщение</span>
+    <span class="k">return</span> <span class="n">greeting_message</span>
+</code></pre></div>
+Декоратор <code>@dsl.component</code> помечает функцию как компонент пайплайна; <code>greet_person</code> принимает аргумент <code>name</code> и формирует приветствие, которое в реальном пайплайне можно передать дальше.</p>
+<p>Старайтесь держать интерфейсы входов/выходов ясными и проектируйте компоненты так, чтобы их было удобно переиспользовать в разных пайплайнах.</p>
+<p>Для углубления разборов полезны разделы «Создание компонентов и пайплайнов» в документации и исследования по проектированию ML‑систем. Этот простой пример закладывает основу понимания инкапсуляции задач и автоматизации; дальше мы свяжем несколько компонентов в комплексные пайплайны для сложных ML‑кейсов.</p>
+<p>При работе с компонентами важно понимать Outputs и <code>PipelineTask</code>: функция, помеченная <code>@dsl.component</code>, при вызове внутри пайплайна не возвращает «готовые» данные, а отдаёт объект <code>PipelineTask</code>, представляющий выполнение шага и служащий связующим звеном для передачи данных дальше.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Присваиваем результат вызова функции компонента переменной</span>
+<span class="n">hello_task</span> <span class="o">=</span> <span class="n">greet_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Erwin&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hello_task</span><span class="p">)</span>
+</code></pre></div>
+<p>Компонент возвращает не строку, а <code>PipelineTask</code> — объект, представляющий выполнение шага в пайплайне.</p>
+<h4 id="output">Доступ к данным через <code>.output</code></h4>
+<p>Чтобы использовать вывод компонента внутри пайплайна, необходимо обращаться к атрибуту <code>.output</code> объекта <code>PipelineTask</code>. Он позволяет передать результат одного шага на вход следующему, организуя таким образом поток данных в пайплайне.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Получаем вывод компонента через атрибут .output</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hello_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<p>Атрибут <code>.output</code> имеет встроенный тип данных (String/Integer/Float/Boolean/List/Dict), совместимый между компонентами пайплайна.</p>
+<h4 id="_1">Только именованные аргументы</h4>
+<p>Важно: все параметры компонента передаются только по именам (с использованием ключевых аргументов). Это повышает ясность кода и предотвращает потенциальные ошибки, особенно когда у компонента несколько входов.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Этот вызов приведет к ошибке, так как используется позиционный аргумент</span>
+<span class="c1"># hello_task = greet_person(&quot;Erwin&quot;)</span>
+
+<span class="c1"># Корректный способ вызова функции компонента с использованием именованных аргументов</span>
+<span class="n">hello_task</span> <span class="o">=</span> <span class="n">greet_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Erwin&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Вызов с позиционными аргументами приведет к ошибке; использование именованных параметров повышает читаемость кода и снижает вероятность ошибок.</p>
+<h4 id="_2">Советы</h4>
+<ul>
+<li><strong>Имена параметров</strong>: При вызове компонентов всегда используйте только именованные аргументы.</li>
+<li><strong>Выводы компонентов</strong>: Планируйте передачу данных между шагами пайплайна через <code>PipelineTask.output</code>.</li>
+</ul>
+<p>Понимание этих аспектов упрощает построение сложных и эффективных ML-пайплайнов, делая их устойчивыми, поддерживаемыми и масштабируемыми.</p>
+<h3 id="_3">Связывание компонентов: передача выводов</h3>
+<p>Опираясь на наше понимание компонентов Kubeflow Pipeline, мы теперь рассмотрим, как создать пайплайн, в котором вывод одного компонента служит входом для другого. Этот процесс демонстрирует мощь Kubeflow Pipelines в оркестровке сложных рабочих процессов.</p>
+<h4 id="_4">Компонент с зависимостью</h4>
+<p>Определим второй компонент, который принимает вывод первого (приветствие) и добавляет уточняющий вопрос. Этот пример иллюстрирует, как один шаг пайплайна может зависеть от результата предыдущего.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Импортируем модуль DSL из Kubeflow Pipelines для определения компонентов</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Определяем компонент, который зависит от вывода другого компонента</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">component</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ask_about_wellbeing</span><span class="p">(</span><span class="n">greeting_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Формируем новое сообщение, включающее приветствие и уточняющий вопрос</span>
+    <span class="n">follow_up_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">greeting_message</span><span class="si">}</span><span class="s2">. How are you?&quot;</span>
+
+    <span class="c1"># Компонент возвращает новое сообщение</span>
+    <span class="k">return</span> <span class="n">follow_up_message</span>
+</code></pre></div>
+<h4 id="_5">Передача выходов между компонентами</h4>
+<p>Передадим вывод первого компонента (<code>greet_person</code>) на вход второму (<code>ask_about_wellbeing</code>). Это ключевой шаг в связывании компонентов и организации потока данных в пайплайне.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Создаем задачу для первого компонента и сохраняем его вывод</span>
+<span class="n">greeting_task</span> <span class="o">=</span> <span class="n">greet_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Erwin&quot;</span><span class="p">)</span>
+
+<span class="c1"># Передаем вывод первого компонента в качестве входа второму компоненту</span>
+<span class="n">wellbeing_task</span> <span class="o">=</span> <span class="n">ask_about_wellbeing</span><span class="p">(</span><span class="n">greeting_message</span><span class="o">=</span><span class="n">greeting_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wellbeing_task</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wellbeing_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<p>Здесь <code>greeting_task.output</code> передается как <code>greeting_message</code> во второй компонент, демонстрируя, как организуется поток данных между шагами пайплайна.</p>
+<h4 id="pipelinetask-output">Распространенная ошибка: передача <code>PipelineTask</code> вместо <code>.output</code></h4>
+<p>При связывании компонентов важно передавать именно атрибут <code>PipelineTask.output</code>, а не сам объект <code>PipelineTask</code>. Попытка передать объект <code>PipelineTask</code> приведет к ошибке, так как компонент ожидает встроенный тип данных, а не объект задачи.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Некорректное использование: передача объекта PipelineTask вместо его вывода</span>
+<span class="c1"># Этот вызов приведет к ошибке</span>
+<span class="c1"># wellbeing_task = ask_about_wellbeing(greeting_message=greeting_task)</span>
+
+<span class="c1"># Корректное использование: передача атрибута .output объекта PipelineTask</span>
+<span class="n">wellbeing_task</span> <span class="o">=</span> <span class="n">ask_about_wellbeing</span><span class="p">(</span><span class="n">greeting_message</span><span class="o">=</span><span class="n">greeting_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="_6">Практические советы</h4>
+<ul>
+<li><strong>Всегда передавайте <code>.output</code> для зависимости</strong>: При соединении компонентов убедитесь, что вы передаете атрибут <code>.output</code> объекта задачи предшествующего компонента. Это распространенная ошибка, но ее легко избежать при тщательном обзоре кода.</li>
+<li><strong>Тестируйте компоненты индивидуально</strong>: Перед интеграцией компонентов в больший пайплайн тестируйте их по отдельности, чтобы убедиться, что они работают как ожидается. Этот подход помогает выявлять и исправлять проблемы на раннем этапе процесса разработки.</li>
+</ul>
+<p>Овладев связыванием компонентов в Kubeflow Pipelines, вы сможете конструировать сложные рабочие процессы машинного обучения, которые будут модульными, легко читаемыми и гибкими. Эта методология не только улучшает сотрудничество между членами команды, но и облегчает повторное использование компонентов в различных проектах, значительно ускоряя процесс разработки.</p>
+<h3 id="kubeflow">Конструирование и понимание пайплайнов в Kubeflow</h3>
+<p>Суть Kubeflow Pipelines заключается в его способности оркестрировать сложные рабочие процессы. Пайплайн в Kubeflow — это высокоуровневая структура, которая связывает несколько компонентов, позволяя данным передаваться от одного компонента к другому и создавая сквозной воркфлоу. В этом разделе демонстрируется, как определить простой пайплайн, использующий наши ранее определенные компоненты.</p>
+<h4 id="_7">Определение пайплайна</h4>
+<p>Мы создадим пайплайн, который связывает компоненты <code>greet_person</code> и <code>ask_about_wellbeing</code>. Этот пайплайн принимает имя, использует его для приветствия человека, а затем задает уточняющий вопрос. Данный пример показывает, как определить пайплайна и как правильно обрабатывать выводы компонентов внутри него.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Импортируем модуль DSL для определения пайплайнов</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">dsl</span>
+
+<span class="c1"># Определяем пайплайн, который оркестрирует наши компоненты приветствия и уточняющего вопроса</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello_and_wellbeing_pipeline</span><span class="p">(</span><span class="n">recipient_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Создаем задачу для компонента greet_person</span>
+    <span class="n">greeting_task</span> <span class="o">=</span> <span class="n">greet_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">recipient_name</span><span class="p">)</span>
+
+    <span class="c1"># Создаем задачу для компонента ask_about_wellbeing, используя вывод greeting_task</span>
+    <span class="n">wellbeing_task</span> <span class="o">=</span> <span class="n">ask_about_wellbeing</span><span class="p">(</span><span class="n">greeting_message</span><span class="o">=</span><span class="n">greeting_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="c1"># Корректно возвращаем вывод wellbeing_task, который является финальным сообщением</span>
+    <span class="k">return</span> <span class="n">wellbeing_task</span><span class="o">.</span><span class="n">output</span>
+</code></pre></div>
+<p>В этом пайплайне параметр <code>recipient_name</code> передается напрямую в компонент <code>greet_person</code>. Вывод <code>greet_person</code> (<code>greeting_task.output</code>) затем передается как вход в компонент <code>ask_about_wellbeing</code>. Пайплайн возвращает вывод <code>wellbeing_task</code>, демонстрируя, как данные протекают через пайплайн.</p>
+<h4 id="_8">Выполнение и обработка вывода</h4>
+<p>При запуске пайплайна вы можете ожидать получить финальный строковый вывод напрямую ("Hello, Erwin. How are you?"). Однако из-за природы Kubeflow Pipelines сама функция пайплайна возвращает объект <code>PipelineTask</code>, а не сырые данные вывода.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Выполняем пайплайн с указанным именем получателя</span>
+<span class="n">pipeline_output</span> <span class="o">=</span> <span class="n">hello_and_wellbeing_pipeline</span><span class="p">(</span><span class="n">recipient_name</span><span class="o">=</span><span class="s2">&quot;Erwin&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipeline_output</span><span class="p">)</span>
+</code></pre></div>
+<p>Это поведение подчеркивает ключевой момент: в Kubeflow Pipelines определение пайплайна описывает рабочий процесс. Фактическое выполнение этого рабочего процесса происходит в среде Kubeflow Pipelines, где данные передаются между компонентами, как указано, и выводы обрабатываются согласно структуре пайплайна.</p>
+<h4 id="_9">Обработка ошибок: неправильные типы возврата</h4>
+<p>Попытка вернуть объект <code>PipelineTask</code> напрямую из пайплайна, а не его <code>.output</code>, приведет к ошибке. Это происходит потому, что возвращаемое значение пайплайна должно быть типом данных, производимых финальным компонентом, соответствующим ожидаемым выводам.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Попытка определить пайплайн, который некорректно возвращает объект PipelineTask</span>
+<span class="nd">@dsl</span><span class="o">.</span><span class="n">pipeline</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello_and_wellbeing_pipeline_with_error</span><span class="p">(</span><span class="n">recipient_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">greeting_task</span> <span class="o">=</span> <span class="n">greet_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">recipient_name</span><span class="p">)</span>
+    <span class="n">wellbeing_task</span> <span class="o">=</span> <span class="n">ask_about_wellbeing</span><span class="p">(</span><span class="n">greeting_message</span><span class="o">=</span><span class="n">greeting_task</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="c1"># Некорректный возврат самого объекта PipelineTask</span>
+    <span class="k">return</span> <span class="n">wellbeing_task</span>
+    <span class="c1"># Этот вызов приведет к ошибке</span>
+</code></pre></div>
+<h4 id="_10">Практические советы</h4>
+<ul>
+<li><strong>Типы возвращаемых значений</strong>: Убедитесь, что тип возвращаемого значения пайплайна соответствует типу данных, производимых его финальным компонентом. Это критически важно для корректного выполнения и обработки вывода пайплайна.</li>
+<li><strong>Выполнение пайплайна</strong>: Помните, что выполнение определения пайплайна в скрипте или Jupyter-ноутбуке подготавливает рабочий процесс. Фактическое выполнение происходит в среде Kubeflow Pipelines, где доступна инфраструктура для запуска пайплайна.</li>
+</ul>
+<p>На этом примере вы увидели, как определить простой, но эффективный пайплайн в Kubeflow. Этот процесс подчеркивает важность понимания выводов компонентов, потока данных и возможностей оркестровки Kubeflow Pipelines. Эти концепции являются основополагающими для построения масштабируемых и эффективных рабочих процессов машинного обучения.</p>
+<h3 id="kubeflow-pipeline">Реализация и выполнение Kubeflow Pipeline</h3>
+<p>Реализация Kubeflow Pipeline включает несколько ключевых шагов: определение компонентов пайплайна, оркестрация этих компонентов в пайплайн, компиляция пайплайна в исполняемый формат и, наконец, запуск пайплайна в подходящей среде. Здесь мы сосредоточимся на этих шагах на примере <code>hello_and_wellbeing_pipeline</code>.</p>
+<h4 id="_11">Компиляция пайплайна</h4>
+<p>Чтобы развернуть и запустить наш пайплайн, сначала нужно скомпилировать его в формат, понятный среде выполнения. Для этого Kubeflow Pipelines использует файлы YAML. Процесс компиляции переводит определенный на Python пайплайн в статическую конфигурацию, описывающую структуру пайплайна, его компоненты и поток данных.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Импорт модуля компилятора из Kubeflow Pipelines SDK</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">compiler</span>
+
+<span class="c1"># Компиляция пайплайна в YAML‑файл</span>
+<span class="n">compiler</span><span class="o">.</span><span class="n">Compiler</span><span class="p">()</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">hello_and_wellbeing_pipeline</span><span class="p">,</span> <span class="s1">&#39;pipeline.yaml&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Этот шаг создает файл <code>pipeline.yaml</code>, содержащий скомпилированную версию нашего пайплайна. Именно этот YAML будет развернут в среде выполнения.</p>
+<h4 id="_12">Просмотр скомпилированного пайплайна</h4>
+<p>После компиляции вы можете просмотреть YAML‑файл, чтобы понять, как в нем представлена структура пайплайна. Этот шаг необязателен, но помогает лучше разобраться в процессе компиляции и итоговой конфигурации пайплайна.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Просмотр содержимого скомпилированного YAML‑файла пайплайна</span>
+<span class="err">!</span><span class="n">cat</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">yaml</span>
+</code></pre></div>
+<p>Эта команда выводит содержимое <code>pipeline.yaml</code> на экран, позволяя изучить структуру, компоненты и настройки скомпилированного пайплайна.</p>
+<h4 id="_13">Запуск пайплайна</h4>
+<p>Для запуска скомпилированного пайплайна мы воспользуемся Vertex AI Pipelines — управляемой безсерверной средой от Google Cloud. Эта среда позволяет выполнять пайплайн, не заботясь о базовой инфраструктуре.</p>
+<p>Сначала необходимо определить аргументы пайплайна. Эти аргументы представляют входные данные, позволяющие настраивать поведение пайплайна для разных запусков.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Определение аргументов пайплайна</span>
+<span class="n">pipeline_arguments</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;recipient_name&quot;</span><span class="p">:</span> <span class="s2">&quot;World!&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Затем мы используем класс <code>PipelineJob</code> из модуля <code>google.cloud.aiplatform</code>, чтобы сконфигурировать и отправить пайплайн на выполнение.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Импорт PipelineJob из SDK Google Cloud AI Platform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.cloud.aiplatform</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineJob</span>
+
+<span class="c1"># Конфигурирование задания пайплайна</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">PipelineJob</span><span class="p">(</span>
+        <span class="c1"># Путь к скомпилированному YAML‑файлу пайплайна</span>
+        <span class="n">template_path</span><span class="o">=</span><span class="s2">&quot;pipeline.yaml&quot;</span><span class="p">,</span>
+        <span class="c1"># Отображаемое имя задания пайплайна</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;hello_and_wellbeing_ai_pipeline&quot;</span><span class="p">,</span>
+        <span class="c1"># Аргументы пайплайна</span>
+        <span class="n">parameter_values</span><span class="o">=</span><span class="n">pipeline_arguments</span><span class="p">,</span>
+        <span class="c1"># Регион, в котором будет выполняться пайплайн</span>
+        <span class="n">location</span><span class="o">=</span><span class="s2">&quot;us-central1&quot;</span><span class="p">,</span>
+        <span class="c1"># Директория для хранения временных файлов во время выполнения</span>
+        <span class="n">pipeline_root</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Отправка задания пайплайна на выполнение</span>
+<span class="n">job</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+
+<span class="c1"># Проверка статуса задания пайплайна</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+</code></pre></div>
+<p>Этот скрипт настраивает задачу пайплайна с нашим скомпилированным <code>pipeline.yaml</code>, устанавливает отображаемое имя, указывает входные параметры и определяет регион выполнения и местоположение для хранения временных файлов. Метод <code>job.submit()</code> отправляет пайплайн для выполнения в Vertex AI Pipelines.</p>
+<h3 id="_14">Примечание о выполнении</h3>
+<p>Из-за ограничений среды класса или ноутбука, фактическое выполнение этого пайплайна в Vertex AI Pipelines не может быть продемонстрировано здесь. Однако, запустив предоставленный код в вашей собственной среде Google Cloud, вы можете развернуть и выполнить пайплайн.</p>
+<h3 id="_15">Резюме</h3>
+<p>Это руководство провело вас через процесс реализации Kubeflow Pipeline: от определения компонентов и их оркестрации в пайплайн до компиляции в развертываемый формат и, наконец, выполнения в управляемой среде. Освоив эти шаги, вы сможете эффективно использовать Kubeflow Pipelines для автоматизации и масштабирования ваших ML-воркфлоу.</p>
+<h3 id="kubeflow_1">Автоматизация и оркестрация пайплайна тонкой настройки с Kubeflow</h3>
+<p>В этом примере мы изучаем, как автоматизировать и оркестрировать пайплайн тонкой настройки для базовой модели PaLM 2 от Google, используя Kubeflow Pipelines. Этот подход подчеркивает практичность повторного использования существующих пайплайнов для ускорения разработки и развертывания моделей машинного обучения, особенно при работе с большими, сложными моделями, такими как PaLM 2.</p>
+<h4 id="_16">Повторное использование существующих пайплайнов для эффективности</h4>
+<p>Повторное использование существующего пайплайна значительно сокращает время и усилия на разработку, так как используются предварительно построенные воркфлоу. Это не только ускоряет процесс экспериментирования, но и обеспечивает сохранение лучших практик, заложенных в оригинальный пайплайн. В этом сценарии мы фокусируемся на пайплайне параметрически-эффективной тонкой настройки (PEFT) для PaLM 2, предоставленном Google. Это позволяет нам точно настроить модель на нашем конкретном наборе данных, не начиная с нуля.</p>
+<h4 id="_17">Подготовка данных и версионирование модели</h4>
+<p>Для тонкой настройки мы используем два JSONL файла, которые содержат данные для обучения и оценки соответственно. Удаление временных меток из файлов обеспечивает согласованность для всех участников и упрощает процесс подготовки данных.</p>
+<div class="highlight"><pre><span></span><code><span class="n">TRAINING_DATA_URI</span> <span class="o">=</span> <span class="s2">&quot;./tune_data_stack_overflow_python_qa.jsonl&quot;</span>
+<span class="n">EVALUATION_DATA_URI</span> <span class="o">=</span> <span class="s2">&quot;./tune_eval_data_stack_overflow_python_qa.jsonl&quot;</span>
+</code></pre></div>
+<p>Версионирование модели — это критически важная практика в операциях машинного обучения (MLOps), которая обеспечивает воспроизводимость, аудит и возможность отката. В этом примере мы добавляем текущую дату и время к имени модели для создания уникального идентификатора версии.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:</span><span class="si">%d</span><span class="s2">:%m:%Y&quot;</span><span class="p">)</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;deep-learning-ai-model-</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+<h4 id="_18">Настройка пайплайна</h4>
+<p>Затем мы указываем ключевые параметры для настройки модели PaLM:</p>
+<ul>
+<li><code>TRAINING_STEPS</code>: Определяет количество шагов обучения. Для экстрактивного QA рекомендуется диапазон 100-500.</li>
+<li><code>EVALUATION_INTERVAL</code>: Устанавливает, как часто модель оценивается во время обучения. По умолчанию каждые 20 шагов.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">TRAINING_STEPS</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">EVALUATION_INTERVAL</span> <span class="o">=</span> <span class="mi">20</span>
+</code></pre></div>
+<p>Аутентификация и настройка проекта - это необходимые шаги для доступа к ресурсам и сервисам Google Cloud. Функция <code>authenticate</code> из утилитарного скрипта предоставляет учетные данные и ID проекта, необходимых для настройки среды выполнения пайплайна.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">authenticate</span>
+<span class="n">credentials</span><span class="p">,</span> <span class="n">PROJECT_ID</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">()</span>
+<span class="n">REGION</span> <span class="o">=</span> <span class="s2">&quot;us-central1&quot;</span>
+</code></pre></div>
+<h4 id="_19">Определение аргументов пайплайна</h4>
+<p>Следующий шаг включает определение аргументов пайплайна. Эти аргументы указывают входы и конфигурации для пайплайна, адаптируя процесс тонкой настройки к нашим конкретным требованиям.</p>
+<div class="highlight"><pre><span></span><code><span class="n">pipeline_arguments</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model_display_name&quot;</span><span class="p">:</span> <span class="n">MODEL_NAME</span><span class="p">,</span>
+    <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="n">REGION</span><span class="p">,</span>
+    <span class="s2">&quot;large_model_reference&quot;</span><span class="p">:</span> <span class="s2">&quot;text-bison@001&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">PROJECT_ID</span><span class="p">,</span>
+    <span class="s2">&quot;train_steps&quot;</span><span class="p">:</span> <span class="n">TRAINING_STEPS</span><span class="p">,</span>
+    <span class="s2">&quot;dataset_uri&quot;</span><span class="p">:</span> <span class="n">TRAINING_DATA_URI</span><span class="p">,</span>
+    <span class="s2">&quot;evaluation_interval&quot;</span><span class="p">:</span> <span class="n">EVALUATION_INTERVAL</span><span class="p">,</span>
+    <span class="s2">&quot;evaluation_data_uri&quot;</span><span class="p">:</span> <span class="n">EVALUATION_DATA_URI</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="_20">Выполнение пайплайна</h4>
+<p>Наконец, мы настраиваем и отправляем задачу пайплайна для выполнения, используя класс <code>PipelineJob</code>. Этот шаг включает указание пути к многократно используемому YAML-файлу пайплайна, отображаемого имени для задачи, аргументов пайплайна, региона выполнения и корневой директории пайплайна для временных файлов. Включение кэширования оптимизирует выполнение за счет повторного использования выводов компонентов, которые не изменились.</p>
+<div class="highlight"><pre><span></span><code><span class="n">pipeline_root</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+
+<span class="n">job</span> <span class="o">=</span> <span class="n">PipelineJob</span><span class="p">(</span>
+        <span class="n">template_path</span><span class="o">=</span><span class="n">template_path</span><span class="p">,</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;deep_learning_ai_pipeline-</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">parameter_values</span><span class="o">=</span><span class="n">pipeline_arguments</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">REGION</span><span class="p">,</span>
+        <span class="n">pipeline_root</span><span class="o">=</span><span class="n">pipeline_root</span><span class="p">,</span>
+        <span class="n">enable_caching</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">job</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="_21">Заключение</h4>
+<p>Этот пример иллюстрирует процесс автоматизации и оркестрации пайплайна тонкой настройки для базовой модели с использованием Kubeflow Pipelines. Повторно используя существующий пайплайн, указывая ключевые параметры и выполняя пайплайн в управляемой среде, мы можем эффективно донастроить большие модели, такие как PaLM 2, на конкретных наборах данных. Этот подход не только ускоряет процесс разработки модели, но и включает лучшие практики MLOps, такие как версионирование, воспроизводимость и эффективное использование ресурсов.</p>
+<h2 id="_22">Теоретические вопросы</h2>
+<ol>
+<li>Роль Kubeflow Pipelines в автоматизации рабочих процессов машинного обучения (ML-воркфлоу) и обеспечении воспроизводимости.</li>
+<li>Функции модулей <code>dsl</code> и <code>compiler</code> в SDK.</li>
+<li>Как управлять <code>FutureWarning</code>, сохраняя читаемость и не пропуская важные изменения?</li>
+<li>Почему важны четкие интерфейсы и повторное использование компонентов?</li>
+<li>Назначение декоратора <code>@dsl.component</code>.</li>
+<li>Что представляет собой объект <code>PipelineTask</code> при вызове компонента и какова его польза?</li>
+<li>Как передать вывод одного компонента на вход другому?</li>
+<li>Почему компоненты принимают только именованные аргументы?</li>
+<li>Как связать компоненты и какова роль атрибута <code>.output</code>?</li>
+<li>Как определяется пайплайн и на что следует обратить внимание для корректного вывода?</li>
+<li>Шаги компиляции, просмотра и запуска пайплайна, а также роль YAML.</li>
+<li>Как повторное использование пайплайнов (например, PEFT для PaLM 2) ускоряет работу и сохраняет лучшие практики?</li>
+<li>Зачем версионировать данные и модели в MLOps, и приведите пример идентификатора версии.</li>
+<li>Как задаются аргументы пайплайна для тонкой настройки модели?</li>
+<li>Плюсы и минусы автоматизации и оркестрации сложных рабочих процессов в Kubeflow (для больших моделей).</li>
+</ol>
+<h2 id="_23">Практические задания</h2>
+<ol>
+<li>Импортируйте <code>dsl</code> и <code>compiler</code> из SDK Kubeflow и подавите <code>FutureWarning</code> из <code>kfp.*</code>.</li>
+<li>Определите компонент <code>add_numbers(a:int, b:int)-&gt;int</code> с помощью <code>@dsl.component</code>.</li>
+<li>Подавите <code>DeprecationWarning</code> из любых модулей (через <code>warnings</code>).</li>
+<li>Создайте два компонента: один возвращает число, второй удваивает его; свяжите их в пайплайне.</li>
+<li>Скомпилируйте простой пайплайн в YAML с помощью <code>compiler</code>.</li>
+<li>Покажите, как получить <code>PipelineTask</code> при вызове компонента и обратиться к его атрибуту <code>.output</code>.</li>
+<li>Продемонстрируйте ошибку возврата <code>PipelineTask</code> из функции пайплайна и исправьте её, добавив комментарии.</li>
+<li>Напишите скрипт предобработки JSON в JSON (фильтрация/маппинг), имитирующий компонент препроцессинга.</li>
+<li>Функция версионирования: добавьте текущие дату и время к базовому имени модели.</li>
+<li>Задайте аргументы и отправьте скомпилированный YAML в среду исполнения (псевдо‑API).</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
