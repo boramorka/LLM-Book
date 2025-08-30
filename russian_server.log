@@ -1,0 +1,6 @@
+INFO    -  Building documentation...
+INFO    -  Cleaning site directory
+INFO    -  Documentation built in 0.41 seconds
+INFO    -  [16:11:22] Watching paths for changes: 'docs/ru', 'mkdocs-ru.yml'
+INFO    -  [16:11:22] Serving on http://localhost:8001/LLM-book/ru/
+INFO    -  [16:11:47] Browser connected: http://localhost:8001/LLM-book/ru/

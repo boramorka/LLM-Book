@@ -179,15 +179,174 @@ convert_md_to_html_and_extract_links(directory_path)
 
 5.
 ```python
+from textblob import TextBlob
+from langchain.document_loaders.generic import GenericLoader
+from langchain.document_loaders.parsers import OpenAIWhisperParser
+from langchain.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
 
+def transcribe_and_analyze_sentiment(video_url):
+    # Directory where audio files will be temporarily saved
+    audio_save_directory = "temp_audio/"
+    
+    try:
+        # Initialize loader with YouTube Audio Loader and Whisper Parser
+        youtube_loader = GenericLoader(
+            YoutubeAudioLoader([video_url], audio_save_directory),
+            OpenAIWhisperParser()
+        )
+
+        # Load the document (transcription)
+        youtube_documents = youtube_loader.load()
+
+        # Access the transcribed content
+        transcribed_text = youtube_documents[0].page_content
+
+        # Perform sentiment analysis using TextBlob
+        blob = TextBlob(transcribed_text)
+        polarity = blob.sentiment.polarity
+        
+        # Determine sentiment evaluation
+        if polarity > 0.1:
+            sentiment_evaluation = "positive"
+        elif polarity < -0.1:
+            sentiment_evaluation = "negative"
+        else:
+            sentiment_evaluation = "neutral"
+        
+        print(f"Polarity: {polarity:.3f}")
+        print(f"Sentiment evaluation: {sentiment_evaluation}")
+        
+        return transcribed_text, polarity, sentiment_evaluation
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None, None, None
+
+# Example usage
+video_url = "https://www.youtube.com/watch?v=example_video_id"
+text, polarity, sentiment = transcribe_and_analyze_sentiment(video_url)
 ```
 
 6.
 ```python
+import pandas as pd
+import os
+import markdown
+from bs4 import BeautifulSoup
 
+def create_notion_dataframe_with_word_count(directory_path):
+    # List to store document data
+    documents_data = []
+    
+    # Iterate through all Markdown files in the directory
+    for filename in os.listdir(directory_path):
+        if filename.endswith(".md"):
+            # Construct full file path
+            file_path = os.path.join(directory_path, filename)
+            
+            # Read the Markdown file
+            with open(file_path, 'r', encoding='utf-8') as md_file:
+                md_content = md_file.read()
+            
+            # Convert Markdown to HTML
+            html_content = markdown.markdown(md_content)
+            
+            # Use BeautifulSoup to extract clean text
+            soup = BeautifulSoup(html_content, 'html.parser')
+            clean_text = soup.get_text()
+            
+            # Count the number of words
+            word_count = len(clean_text.split())
+            
+            # Extract title (first line with # or filename)
+            title = filename.replace('.md', '')
+            lines = md_content.split('\n')
+            for line in lines:
+                if line.strip().startswith('#'):
+                    title = line.strip('#').strip()
+                    break
+            
+            # Add data to the list
+            documents_data.append({
+                'filename': filename,
+                'title': title,
+                'word_count': word_count,
+                'content': clean_text[:100] + '...'  # First 100 characters for preview
+            })
+    
+    # Create DataFrame
+    df = pd.DataFrame(documents_data)
+    
+    # Sort by word count in descending order
+    df_sorted = df.sort_values('word_count', ascending=False)
+    
+    # Print titles of the top 3 longest documents
+    print("Titles of the top 3 longest documents:")
+    for i, row in df_sorted.head(3).iterrows():
+        print(f"{i+1}. {row['title']} ({row['word_count']} words)")
+    
+    return df_sorted
+
+# Example usage
+directory_path = "path/to/your/notion/data"
+df = create_notion_dataframe_with_word_count(directory_path)
+print(df.head())
 ```
 
 7.
 ```python
+import requests
+from bs4 import BeautifulSoup
+import re
+import nltk
+from nltk.tokenize import sent_tokenize
 
+# Download necessary NLTK data
+nltk.download('punkt')
+
+def load_and_summarize_web_content(url):
+    try:
+        # Get content from URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raises HTTPError for 4xx, 5xx status codes
+
+        # Use BeautifulSoup to parse HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        # Remove scripts and styles for better cleaning
+        for script in soup(["script", "style"]):
+            script.decompose()
+
+        # Get clean text, removing all HTML tags
+        clean_text = soup.get_text(separator=' ', strip=True)
+        
+        # Clean extra whitespace and line breaks
+        clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+
+        # Tokenize text into sentences using NLTK
+        sentences = sent_tokenize(clean_text)
+        
+        if len(sentences) >= 2:
+            # Create simple summary from first and last sentences
+            summary = f"First sentence: {sentences[0]}\nLast sentence: {sentences[-1]}"
+        elif len(sentences) == 1:
+            summary = f"Single sentence: {sentences[0]}"
+        else:
+            summary = "Could not extract sentences from the text."
+        
+        print("Simple page summary:")
+        print(summary)
+        
+        return summary
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
+    except Exception as e:
+        print(f"An error occurred during parsing: {e}")
+        return None
+
+# Example usage
+url = "https://example.com"
+summary = load_and_summarize_web_content(url)
 ```
