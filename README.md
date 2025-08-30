@@ -1,112 +1,91 @@
-# 📚 LLMOps — Make AI Work For You
+# 📖 LLMOps: Make AI Work For You
 
-[🌐 Read Online](https://boramorka.github.io/LLM-Book/) · [🔍 Table of Contents](https://boramorka.github.io/LLM-Book/) · [⭐ Star this repo](https://github.com/boramorka/LLM-Book)
+> A comprehensive, hands-on guide for data scientists, ML engineers, and software developers to build real products with Large Language Models.
 
----
+[![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://boramorka.github.io/LLM-Book/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![MkDocs](https://img.shields.io/badge/docs-MkDocs-blue)](https://www.mkdocs.org/)
 
-## ✨ About This Book
+## 🌍 Available Languages
 
-A comprehensive hands-on guide to **LLM Operations** - the art of building, deploying, and maintaining production-ready applications powered by Large Language Models. From OpenAI API fundamentals to advanced MLOps pipelines, this book provides everything you need to ship AI applications that actually work.
+- **🇺🇸 [English](https://boramorka.github.io/LLM-Book/en/)** - Full English documentation
+- **🇷🇺 [Русский](https://boramorka.github.io/LLM-Book/ru/)** - Полная русская документация
 
-**Perfect for:** Data Scientists, ML Engineers, Software Developers, and anyone serious about bringing LLMs to production.
+## 📚 About the Book
 
----
+This book is a practical guide by **Nikita Goryachev** covering:
 
-## 📖 What You'll Learn
+### 📖 Chapter 1: OpenAI API Fundamentals
+- Introduction to ChatGPT API capabilities, classification, and applications
+- Advanced moderation and machine reasoning techniques  
+- Prompt chaining strategies
+- Building and evaluating LLM applications
 
-### 🎯 Chapter 1: OpenAI API Mastery
-- **Introduction to LLMs** and the OpenAI ecosystem
-- **Text Classification** and content analysis
-- **Content Moderation** using OpenAI's safety tools
-- **Advanced Reasoning** techniques (Chain of Thought, Inner Monologue)
-- **Prompt Chaining** strategies for complex workflows
-- **Building & Evaluating** LLM applications
+### 🔗 Chapter 2: Conversational Chatbots with LangChain
+- Practical chatbot development with LangChain
+- Environment setup to advanced retrieval
+- Context and dialogue memory for human-like interactions
 
-### 🔗 Chapter 2: LangChain & RAG Systems
-- **Document Processing** with LangChain loaders
-- **Text Splitting** strategies for optimal chunking
-- **Embeddings & Vector Search** for semantic understanding
-- **Retrieval Augmented Generation (RAG)** systems
-- **Intelligent Chatbots** with memory and context
-- **Advanced Retrieval** techniques
+### ⚙️ Chapter 3: LLMOps
+- Structured guide to integrating LLMs into development workflows
+- Model selection, tuning, deployment, and monitoring
+- Automation, best practices, and ethical considerations
 
-### 🚀 Chapter 3: LLMOps & Production
-- **MLOps Pipelines** with Kubeflow
-- **AI-Powered Quiz Generation** systems
-- **Production Best Practices** for LLM applications
-- **Monitoring & Evaluation** strategies
-- **Scalable Architecture** patterns
+## 🚀 Quick Start
 
----
+### Reading Online
+Visit our documentation site: **[boramorka.github.io/LLM-Book](https://boramorka.github.io/LLM-Book/)**
 
-## 🎯 Hands-On Learning Experience
+### Local Development
 
-Every chapter includes:
-- **💻 Real Code Examples** - Production-ready code you can run immediately
-- **🧪 Practice Exercises** - Reinforce concepts with hands-on challenges
-- **✅ Complete Solutions** - Step-by-step answers for all exercises
-- **🚀 Latest APIs** - Updated to OpenAI v1 SDK and modern LangChain
-- **📊 Real-World Scenarios** - Practical applications you'll actually build
+```bash
+# Clone the repository
+git clone https://github.com/boramorka/LLM-Book.git
+cd LLM-Book
 
----
+# Install dependencies
+pip install mkdocs mkdocs-material
 
-## 🛠️ Technologies You'll Master
+# Serve English version
+mkdocs serve -f mkdocs-en.yml -a localhost:8002
 
-- 🤖 **OpenAI API** (v1 SDK) - Latest chat completions, embeddings, moderation
-- 🧩 **LangChain** - The most popular LLM framework
-- 🔍 **Vector Databases** - Semantic search and retrieval
-- 🚀 **MLOps Tools** - Kubeflow, pipelines, monitoring
-- 🐍 **Python Best Practices** - Clean, maintainable code
-- 🔧 **Production Tools** - Deployment, scaling, monitoring
+# Serve Russian version  
+mkdocs serve -f mkdocs-ru.yml -a localhost:8001
+```
 
----
+### Building All Versions
 
-## 📚 Start Reading
+```bash
+# Build all language versions
+./deploy.sh
 
-🌐 **Read the full book online**: [https://boramorka.github.io/LLM-Book/](https://boramorka.github.io/LLM-Book/)
+# Deploy to GitHub Pages
+./deploy-github.sh
+```
 
-### Who This Book Is For:
-- **Data Scientists** transitioning to LLM applications
-- **ML Engineers** building production AI systems
-- **Software Developers** integrating LLMs into their products
-- **AI Enthusiasts** wanting to build real-world applications
-- **Anyone** serious about LLM operations and deployment
+## 👨‍💻 About the Author
 
----
-
-## 🎓 Learning Path
-
-1. **Start with Chapter 1** - Master OpenAI API fundamentals
-2. **Build RAG systems** - Learn document processing and retrieval
-3. **Deploy to production** - Understand MLOps and scaling
-4. **Complete exercises** - Reinforce learning with hands-on practice
-
----
+**Nikita Goryachev** is a Senior AI/ML Engineer at Sber, leading a team that implements state-of-the-art algorithms in NLP and recommendation systems. The team organizes industry meetups, participates in conferences (RecSys in Singapore, AI Journey in Moscow), and develops RePlay — an open-source library for recommendations.
 
 ## 🤝 Contributing
 
-Found a bug? Have an idea for improvement? Contributions are welcome!
+This book is open for contributions! Feel free to:
 
-- 🐛 **Report issues** for bugs or typos
-- 💡 **Suggest improvements** for content or examples
-- 🔧 **Submit PRs** for code improvements
-- 📝 **Share feedback** on what you'd like to see
-
----
-
-## 📫 Connect
-
-- **Author**: Nikita Goryachev
-- **LindkedIn**: [@boramorka](https://www.linkedin.com/in/boramorka/)
-- **GitHub**: [@boramorka](https://github.com/boramorka)
-- **Book**: [https://boramorka.github.io/LLM-Book/](https://boramorka.github.io/LLM-Book/)
-
----
+- Report issues or typos
+- Suggest improvements
+- Submit translations to other languages
+- Add practical examples
 
 ## 📄 License
 
-This content is provided for educational purposes. Feel free to use the code examples and concepts in your own projects. Please attribute the source when sharing.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- 📖 **Documentation**: [boramorka.github.io/LLM-Book](https://boramorka.github.io/LLM-Book/)
+- 🐙 **Repository**: [github.com/boramorka/LLM-Book](https://github.com/boramorka/LLM-Book)
+- 💼 **Author**: [Nikita Goryachev](https://github.com/boramorka)
 
 ---
 
-⭐ **If this book helped you, consider giving it a star!** It helps others discover this resource and motivates further improvements.
+⭐ **Star this repository if it helped you!**

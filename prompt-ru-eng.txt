@@ -1,1 +1,0 @@
-Translate the following Russian text into natural, fluent English. Adapt grammar, style, and word choice so it reads smoothly for a native English speaker. Use the same file structure like LLM-Book/docs/ru but LLM-Book/docs/en. It means for each original file you creating a new one in en folder. Translate the filename also.

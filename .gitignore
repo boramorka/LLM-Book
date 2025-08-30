@@ -1,0 +1,42 @@
+# MkDocs build directory
+site/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Development logs and temp files
+*.log
+.tmp/
+.temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local development scripts  
+serve-*.sh
+*_server.log
+
+# Personal notes and prompts
+prompt*.txt
+notes*.md
