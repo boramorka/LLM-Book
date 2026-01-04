@@ -196,8 +196,7 @@ class MarkdownHeaderTextSplitter:
     def split_text(self, markdown_text):
         chunks = []
         current_chunk = []
-        lines = markdown_text.split('
-')
+        lines = markdown_text.split('\n')
 
         for line in lines:
             # Check if the line starts with one of the header markers
@@ -205,8 +204,7 @@ class MarkdownHeaderTextSplitter:
             if match:
                 # If we already collected lines, store the previous chunk
                 if current_chunk:
-                    chunks.append('
-'.join(current_chunk).strip())
+                    chunks.append('\n'.join(current_chunk).strip())
                     current_chunk = []
                 current_chunk.append(line)
             else:
@@ -214,8 +212,7 @@ class MarkdownHeaderTextSplitter:
 
         # Append the last collected chunk if present
         if current_chunk:
-            chunks.append('
-'.join(current_chunk).strip())
+            chunks.append('\n'.join(current_chunk).strip())
 
         return chunks
 ```
